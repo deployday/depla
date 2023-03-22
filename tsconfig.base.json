@@ -1,23 +1,28 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
+    "target": "esnext",
     "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "build",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["node", "jest"],
+    "declaration": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
+    "rootDir": ".",
+    "allowJs": true,
     "paths": {
       "@depl/convert-sitemap-to-domain-models": [
         "packages/convert-sitemap-to-domain-models/src/index.ts"
-      ]
+      ],
+      "@depl/olddispatcher": ["packages/olddispatcher/src/index.ts"],
+      "@depl/unpacker": ["packages/unpacker/src/index.ts"],
+      "create-depla": ["packages/create-depla/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,0 +1,83 @@
+{
+  "name": "create-depla",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/create-depla/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/build/packages/create-depla"],
+      "options": {
+        "commands": [
+          {
+            "command": "node ./scripts/chmod build/packages/create-depla/bin/index.js"
+          }
+        ],
+        "parallel": false
+      }
+    },
+    "build-base": {
+      "executor": "@nrwl/js:tsc",
+      "options": {
+        "main": "packages/create-depla/bin/index.ts",
+        "updateBuildableProjectDepsInPackageJson": true,
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "assets": [
+          {
+            "input": "packages/create-depla",
+            "glob": "**/files/**",
+            "output": "/"
+          },
+          {
+            "input": "packages/create-depla",
+            "glob": "**/files/**/.gitkeep",
+            "output": "/"
+          },
+          {
+            "input": "packages/create-depla",
+            "glob": "**/*.json",
+            "ignore": ["**/tsconfig*.json", "project.json", ".eslintrc.json"],
+            "output": "/"
+          },
+          {
+            "input": "packages/create-depla",
+            "glob": "**/*.js",
+            "ignore": ["**/jest.config.js"],
+            "output": "/"
+          },
+          {
+            "input": "packages/create-depla",
+            "glob": "**/*.d.ts",
+            "output": "/"
+          },
+          {
+            "input": "",
+            "glob": "LICENSE",
+            "output": "/"
+          },
+          "packages/create-depla/bin/index.mjs"
+        ]
+      }
+    },
+    "run-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node build/packages/create-depla/bin/index.js"
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/create-depla"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/create-depla/**/*.ts"]
+      }
+    }
+  }
+}
