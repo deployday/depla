@@ -1,5 +1,10 @@
 {
   "plugins": ["@nxtensions/astro"],
+  "pluginsConfig": {
+    "@nrwl/js": {
+      "analyzeSourceFiles": true
+    }
+  },
   "npmScope": "depl",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
