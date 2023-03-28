@@ -1,0 +1,33 @@
+{
+  "name": "utils-astro-plugin-inject",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/utils/astro-plugin-inject/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "build/packages/utils/astro-plugin-inject",
+        "main": "packages/utils/astro-plugin-inject/src/index.ts",
+        "tsConfig": "packages/utils/astro-plugin-inject/tsconfig.lib.json",
+        "assets": ["packages/utils/astro-plugin-inject/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/utils/astro-plugin-inject"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/utils/astro-plugin-inject/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

@@ -28,6 +28,9 @@
       "@depla/utils-astro-collections-facade": [
         "packages/utils/astro-collections-facade/src/index.ts"
       ],
+      "@depla/utils-astro-plugin-inject": [
+        "packages/utils/astro-plugin-inject/src/index.ts"
+      ],
       "create-depla": ["packages/create-depla/src/index.ts"]
     }
   },
