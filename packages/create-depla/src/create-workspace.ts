@@ -135,9 +135,9 @@ export const createWorkspace = ({
         flags: `--importPath=@${scope}/shared/types/html --directory=shared/types --unitTestRunner=vitest --bundler=tsc`,
       },
       {
-        libName: `IOC`,
+        libName: `ioc`,
         generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/util/IOC --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
+        flags: `--importPath=@${scope}/shared/util/ioc --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
       },
       {
         libName: `astro-collections-facade`,

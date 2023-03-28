@@ -1,9 +1,9 @@
-import { IPost } from './interface';
+import { I<%= entity.nameCamelCase %> } from './interface';
 import { cleanSlug, generatePermalink } from '<%= scope %>/shared/util/url';
 
-async function getNormalizedPost(post: IPost, user, config): Promise<IPost> {
-  const { id, body, slug: rawSlug = '', data } = post;
-  const { remarkPluginFrontmatter } = await post.render();
+async function getNormalized<%= entity.nameCamelCase %>(<%= entity.name %>: I<%= entity.nameCamelCase %>, user, config): Promise<I<%= entity.nameCamelCase %>> {
+  const { id, body, slug: rawSlug = '', data } = <%= entity.name %>;
+  const { remarkPluginFrontmatter } = await <%= entity.name %>.render();
 
   const {
     tags: rawTags = [],
@@ -46,13 +46,13 @@ async function getNormalizedPost(post: IPost, user, config): Promise<IPost> {
   };
 }
 
-export async function PostSeed() {
-  const postsExist = await this.db.post.count();
-  if (!postsExist) {
-    const posts = await this.collections.getCollection('post');
-    for (const post of posts) {
+export async function <%= entity.nameCamelCase %>Seed() {
+  const <%= entity.namePlural %>Exist = await this.db.<%= entity.name %>.count();
+  if (!<%= entity.namePlural %>Exist) {
+    const <%= entity.namePlural %> = await this.collections.getCollection('<%= entity.name %>');
+    for (const <%= entity.name %> of <%= entity.namePlural %>) {
       const user = await this.db.user.findFirst();
-      const data = await getNormalizedPost(post, user, this.db.post.config);
+      const data = await getNormalized<%= entity.nameCamelCase %>(<%= entity.name %>, user, this.db.<%= entity.name %>.config);
       if (data.tags.length === 0) {
         data.tags.push('default');
       }
@@ -78,7 +78,7 @@ export async function PostSeed() {
       data.tags = {
         connect: tags,
       };
-      const result = await this.db.post.create({ data });
+      const result = await this.db.<%= entity.name %>.create({ data });
     }
   }
 }

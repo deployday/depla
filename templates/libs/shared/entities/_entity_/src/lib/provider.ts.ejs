@@ -1,0 +1,5 @@
+import { <%= entity.nameCamelCase %> } from './entity';
+
+export const provider = (c) => {
+  c.service('<%= entity.nameCamelCase %>', (c) => <%= entity.nameCamelCase %>(c));
+};

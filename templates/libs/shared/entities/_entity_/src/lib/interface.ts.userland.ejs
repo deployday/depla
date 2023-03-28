@@ -1,0 +1,12 @@
+import { z } from 'zod';
+
+import { <%= entity.name %>Collection } from '<%= scope %>/generated/shared/entities/<%=
+entity.name %>';
+import { I<%= entity.nameCamelCase %> } from '<%= scope %>/generated/shared/entities/<%= entity.name %>';
+
+// Your stuff goes in here..
+
+export {
+  <%= entity.name %>Collection,
+  I<%= entity.nameCamelCase %>
+}

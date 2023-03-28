@@ -1,12 +1,13 @@
-import { Container } from '<%= scope %>/shared/util/IOC';
+import { Container } from '<%= scope %>/shared/util/ioc';
 
 import { provider as environmentProvider } from '<%= scope %>/shared/util/environment';
 import { provider as configProvider } from '<%= scope %>/website/config';
 import { provider as routeProvider } from '<%= scope %>/shared/util/route';
 import { provider as dbProvider } from '<%= scope %>/shared/util/db';
 
-import { provider as postProvider } from '<%= scope %>/shared/entities/post';
-import { provider as userProvider } from '<%= scope %>/shared/entities/user';
+<% entities.forEach(function(entity){ %>
+import { provider as <%= entity %>Provider } from '<%= scope %>/shared/entities/<%= entity %>';
+<% }); %>
 
 export const app = new Container();
 
@@ -15,5 +16,6 @@ configProvider(app);
 routeProvider(app);
 dbProvider(app);
 
-postProvider(app);
-userProvider(app);
+<% entities.forEach(function(entity){ %>
+<%= entity %>Provider(app);
+<% }); %>

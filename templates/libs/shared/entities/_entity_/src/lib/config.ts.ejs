@@ -1,0 +1,29 @@
+export const config = {
+  name: '<%= entity.name %>',
+  disabled: false,
+  itemsPerPage: 4,
+
+  item: {
+    permalink: '/%slug%', // Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+    noindex: false,
+    disabled: false,
+  },
+
+  list: {
+    pathname: '<%= entity.namePlural %>', // main path, for example "articles" (/articles)
+    noindex: false,
+    disabled: false,
+  },
+
+  taxonomies: {
+    <% entity.taxonomies.forEach(function(taxonomy){ %>
+    <%= taxonomy.name %>: {
+      name: '<%= taxonomy.name %>',
+      pathname: '<%= taxonomy.namePlural %>', // Category main path /category/some-category
+      noindex: true,
+      disabled: false,
+      itemsPerPage: 6,
+    },
+    <% }); %>
+  },
+};

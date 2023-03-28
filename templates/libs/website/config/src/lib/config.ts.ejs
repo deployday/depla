@@ -1,14 +1,14 @@
 import { isProd } from '<%= scope %>/shared/util/environment';
 
 export const config = {
-  name: 'AstroWind',
+  name: '<%= projectName %>',
 
   basePathname: '/',
   trailingSlash: false,
 
-  title: 'Deployday — prompt based website builder & maintainer',
+  title: '<%= projectTitle %>',
   description:
-    '🚀 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs.',
+    '🚀 <%= projectDescription %>',
 
   defaultTheme: 'system', // Values: "system" | "light" | "dark" | "light:only" | "dark:only"
 
