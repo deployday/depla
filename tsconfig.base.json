@@ -37,6 +37,7 @@
       "@depla/utils-db": ["packages/utils/db/src/index.ts"],
       "@depla/utils-environment": ["packages/utils/environment/src/index.ts"],
       "@depla/utils-image": ["packages/utils/image/src/index.ts"],
+      "@depla/utils-route": ["packages/utils/route/src/index.ts"],
       "create-depla": ["packages/create-depla/src/index.ts"]
     }
   },

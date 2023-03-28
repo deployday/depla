@@ -1,0 +1,33 @@
+{
+  "name": "utils-route",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/utils/route/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "build/packages/utils/route",
+        "main": "packages/utils/route/src/index.ts",
+        "tsConfig": "packages/utils/route/tsconfig.lib.json",
+        "assets": ["packages/utils/route/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/utils/route"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/utils/route/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
