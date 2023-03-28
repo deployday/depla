@@ -22,6 +22,7 @@
       ],
       "@depl/olddispatcher": ["packages/olddispatcher/src/index.ts"],
       "@depl/unpacker": ["packages/unpacker/src/index.ts"],
+      "@depla/generate-code": ["packages/generate-code/src/index.ts"],
       "@depla/generate-stack": ["packages/generate-stack/src/index.ts"],
       "create-depla": ["packages/create-depla/src/index.ts"]
     }
