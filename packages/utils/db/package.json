@@ -1,0 +1,9 @@
+{
+  "name": "@depla/utils-db",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  }
+}

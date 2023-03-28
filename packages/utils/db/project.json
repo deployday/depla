@@ -1,0 +1,33 @@
+{
+  "name": "utils-db",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/utils/db/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "build/packages/utils/db",
+        "main": "packages/utils/db/src/index.ts",
+        "tsConfig": "packages/utils/db/tsconfig.lib.json",
+        "assets": ["packages/utils/db/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/utils/db"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/utils/db/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
