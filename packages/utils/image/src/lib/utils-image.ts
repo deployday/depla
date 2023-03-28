@@ -1,3 +1,4 @@
+// @ts-nocheck
 const load = async function () {
   let images: Record<string, () => Promise<unknown>> | undefined = undefined;
   try {

@@ -1,0 +1,33 @@
+{
+  "name": "utils-image",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/utils/image/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "build/packages/utils/image",
+        "main": "packages/utils/image/src/index.ts",
+        "tsConfig": "packages/utils/image/tsconfig.lib.json",
+        "assets": ["packages/utils/image/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/utils/image"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/utils/image/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
