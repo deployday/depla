@@ -1,0 +1,33 @@
+{
+  "name": "utils-url",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/utils/url/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "build/packages/utils/url",
+        "main": "packages/utils/url/src/index.ts",
+        "tsConfig": "packages/utils/url/tsconfig.lib.json",
+        "assets": ["packages/utils/url/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/utils/url"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/utils/url/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
