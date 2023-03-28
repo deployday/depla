@@ -35,6 +35,7 @@
         "packages/utils/astro-plugin-predict-reading-time/src/index.ts"
       ],
       "@depla/utils-db": ["packages/utils/db/src/index.ts"],
+      "@depla/utils-environment": ["packages/utils/environment/src/index.ts"],
       "create-depla": ["packages/create-depla/src/index.ts"]
     }
   },

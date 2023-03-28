@@ -1,4 +1,4 @@
-import { IEnvironment } from '<%= scope %>/shared/types/environment';
+import { IEnvironment } from './types';
 
 declare global {
   interface Window {
@@ -24,5 +24,6 @@ export const getEnvVarsHashmap = () => {
 
 const _env = getEnvVarsHashmap();
 
-export const env = (key) => _env?.[key];
+// @ts-ignore
+export const env = (key: string) => _env?.[key];
 export const isProd = env('NODE_ENV') === IEnvironment.PROD;
