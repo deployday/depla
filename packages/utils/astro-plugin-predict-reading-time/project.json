@@ -1,0 +1,37 @@
+{
+  "name": "utils-astro-plugin-predict-reading-time",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/utils/astro-plugin-predict-reading-time/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "build/packages/utils/astro-plugin-predict-reading-time",
+        "main": "packages/utils/astro-plugin-predict-reading-time/src/index.ts",
+        "tsConfig": "packages/utils/astro-plugin-predict-reading-time/tsconfig.lib.json",
+        "assets": ["packages/utils/astro-plugin-predict-reading-time/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true,
+        "buildableProjectDepsInPackageJsonType": "dependencies"
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/utils/astro-plugin-predict-reading-time"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "packages/utils/astro-plugin-predict-reading-time/**/*.ts"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
