@@ -1,0 +1,14 @@
+---
+import { app } from '<%= scope %>/website/app';
+import { PageLayout, SinglePost, ToBlogLink } from '<%= scope %>/shared/ui';
+
+export const getStaticPaths = app.post.getPostViewStaticPaths;
+
+const { post } = Astro.props;
+const meta = await app.post.getMetaByPost(post);
+---
+
+<PageLayout {meta}>
+  <SinglePost post={{ ...post, url: meta.canonical, image: meta.image }} />
+  <ToBlogLink />
+</PageLayout>
