@@ -1,0 +1,33 @@
+{
+  "name": "utils-astro-collections-facade",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/utils/astro-collections-facade/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "build/packages/utils/astro-collections-facade",
+        "main": "packages/utils/astro-collections-facade/src/index.ts",
+        "tsConfig": "packages/utils/astro-collections-facade/tsconfig.lib.json",
+        "assets": ["packages/utils/astro-collections-facade/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/utils/astro-collections-facade"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/utils/astro-collections-facade/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
