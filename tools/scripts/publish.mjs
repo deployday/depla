@@ -7,10 +7,11 @@
  * You might need to authenticate with NPM before running this script.
  */
 
-import { readCachedProjectGraph } from '@nrwl/devkit';
+import readCachedProjectGraph from '@nrwl/devkit';
 import { execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
 import chalk from 'chalk';
+import { readWorkspaceConfig } from '@nrwl/workspace';
 
 function invariant(condition, message) {
   if (!condition) {
@@ -30,7 +31,8 @@ invariant(
   `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
 );
 
-const graph = readCachedProjectGraph();
+console.log(readCachedProjectGraph);
+const graph = readCachedProjectGraph.default();
 const project = graph.nodes[name];
 
 invariant(

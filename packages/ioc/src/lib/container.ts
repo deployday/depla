@@ -1,12 +1,19 @@
+type IServiceCallback = (context: Container) => any;
+interface IService {
+  [name: string]: IServiceCallback;
+}
+
 export class Container {
+  services: IService;
+
   constructor() {
     this.services = {};
   }
 
-  service(name, cb) {
+  service(name: string, cb: IServiceCallback) {
     Object.defineProperty(this, name, {
       get: () => {
-        if (!this.services.hasOwnProperty(name)) {
+        if (!Object.hasOwnProperty.call(this.services, name)) {
           this.services[name] = cb(this);
         }
 
