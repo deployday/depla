@@ -1,0 +1,33 @@
+{
+  "name": "generate-stack",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/generate-stack/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/generate-stack",
+        "main": "packages/generate-stack/src/index.ts",
+        "tsConfig": "packages/generate-stack/tsconfig.lib.json",
+        "assets": ["packages/generate-stack/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs generate-stack {args.ver} {args.tag}"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/generate-stack/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

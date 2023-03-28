@@ -8,7 +8,7 @@ import {
   STATE_MODULE,
   MATERIAL_MODULE,
   LOGIN_MODULE,
-} from './modules';
+} from './modules.js';
 import mkdirp from 'mkdirp';
 
 // THE KITCHEN

@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "node ./tools/scripts/patch-nx-cli.js",
     "build": "nx run-many --target build --all --parallel 8 --exclude website",
+    "test": "nx run-many --target test --all --parallel 8 --exclude website",
     "create-depla:build": "nx run create-depla:build",
     "create-depla:watch": "nx run create-depla:build-base --watch",
     "create-depla:publish": "nx publish create-depla",
