@@ -13,26 +13,8 @@ import {
   CommandUnknownOpts,
 } from '@commander-js/extra-typings';
 import { printVerboseHook, rootDebug } from '../src/utils.js';
-import {
-  userSchema,
-  courseSchema,
-  lessonSchema,
-  assignmentSchema,
-  feedbackSchema,
-} from '../src/entities.js';
+import { postSchema } from '../src/entities.js';
 import { createWorkspace } from '../src/create-workspace.js';
-
-// spawn(
-//   'npx',
-//   ['nx', 'g', '@nxtensions/astro:app', 'website', '--no-interactive'],
-//   {
-//     cwd: '/Users/sergey/code/something',
-//     stdio: 'inherit',
-//     shell: true,
-//   }
-// );
-//
-// process.exit(0);
 
 const debug = rootDebug.extend('doSomething');
 
@@ -43,13 +25,6 @@ program
   .name('Obsidian PDF album creator')
   .description('Create printable styled PDF album from Obsidian');
 
-// program
-//   .command('print')
-//   .argument('<file>')
-//   .option('--double-sided')
-//   .action((targetFile, options) => {
-//     console.log(targetFile);
-//   });
 const defaults: {
   project: string;
 } = {
@@ -92,13 +67,7 @@ export const main = () => {
         chalk.yellow.bold('Hooray!')
       );
       const cmds = createWorkspace({
-        entities: [
-          userSchema,
-          courseSchema,
-          lessonSchema,
-          assignmentSchema,
-          feedbackSchema,
-        ],
+        entities: [postSchema],
         name: project as string,
       });
 

@@ -5,24 +5,9 @@ export const userSchema: IEntity = {
   modelPlural: 'users',
 };
 
-export const courseSchema: IEntity = {
-  model: 'course',
-  modelPlural: 'courses',
-};
-
-export const lessonSchema: IEntity = {
-  model: 'lesson',
-  modelPlural: 'lessons',
-};
-
-export const assignmentSchema: IEntity = {
-  model: 'assignment',
-  modelPlural: 'assignments',
-};
-
-export const feedbackSchema: IEntity = {
-  model: 'feedback',
-  modelPlural: 'feedback',
+export const postSchema: IEntity = {
+  model: 'post',
+  modelPlural: 'posts',
 };
 
 export const homeSchema: IEntity = {

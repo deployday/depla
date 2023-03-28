@@ -18,6 +18,94 @@ export const createWorkspace = ({
 }) => {
   const projectPath = path.resolve(process.cwd() + '/' + name);
   const scope = 'acme';
+  const libs = [
+    {
+      name: 'app',
+      directory: 'website',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/website/app --unitTestRunner=none --bundler=tsc`,
+    },
+    {
+      name: 'app',
+      directory: 'generated/website',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/generated/website/app --unitTestRunner=none --bundler=tsc`,
+    },
+    {
+      name: 'app',
+      directory: 'generated/shared',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/generated/shared/app --unitTestRunner=none --bundler=tsc`,
+    },
+    {
+      name: 'config',
+      directory: 'website',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/website/config --unitTestRunner=none --bundler=tsc`,
+    },
+    {
+      name: 'config',
+      directory: 'generated/website',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/generated/website/config --unitTestRunner=none --bundler=tsc`,
+    },
+    {
+      name: 'data',
+      directory: 'website',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/website/data --unitTestRunner=none --bundler=tsc`,
+    },
+    {
+      name: 'data',
+      directory: 'generated/website',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/generated/website/data --unitTestRunner=none --bundler=tsc`,
+    },
+    {
+      name: 'user',
+      directory: 'shared/entities',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/shared/entities/user --unitTestRunner=none --bundler=tsc`,
+    },
+    {
+      name: 'user',
+      directory: 'generated/shared/entities',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/generated/shared/entities/user --unitTestRunner=none --bundler=tsc`,
+    },
+    {
+      name: 'html',
+      directory: 'generated/shared/types',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/generated/shared/types/html --unitTestRunner=none --bundler=tsc`,
+    },
+    {
+      name: 'ui',
+      directory: 'shared',
+      generatorName: `@nxtensions/astro:lib`,
+      flags: `--importPath=@${scope}/shared/ui`,
+    },
+    {
+      name: 'ui',
+      directory: 'generated/shared',
+      generatorName: `@nxtensions/astro:lib`,
+      flags: `--importPath=@${scope}/generated/shared/ui`,
+    },
+  ];
+  entities.forEach((entity) => {
+    libs.push({
+      name: entity.model,
+      directory: 'shared/entities',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/shared/entities/${entity.model} --unitTestRunner=none --bundler=tsc`,
+    });
+    libs.push({
+      name: entity.model,
+      directory: 'generated/shared/entities',
+      generatorName: `@nrwl/js:lib`,
+      flags: `--importPath=@${scope}/generated/shared/entities/${entity.model} --unitTestRunner=none --bundler=tsc`,
+    });
+  });
   const config: Config = {
     name,
     scope,
@@ -75,111 +163,7 @@ export const createWorkspace = ({
         integrationName: 'sitemap image mdx partytown',
       },
     ],
-    libs: [
-      // website
-      {
-        libName: `app`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--directory=website --importPath=@${scope}/website/app --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `config`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--directory=website --importPath=@${scope}/website/config --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `data`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--directory=website --importPath=@${scope}/website/data --unitTestRunner=vitest --bundler=tsc`,
-      },
-      // nx
-      {
-        libName: `nx`,
-        generatorName: `@nrwl/nx-plugin:plugin`,
-      },
-      {
-        libName: `dev-astro-with-netlify-cms`,
-        generatorName: `@nrwl/nx-plugin:executor`,
-        flags: `--project=nx`,
-      },
-
-      //shared
-      {
-        libName: `ui`,
-        generatorName: `@nxtensions/astro:lib`,
-        flags: `--directory=shared --importPath=@${scope}/shared/ui`,
-      },
-      {
-        libName: `app`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/app --directory=shared --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `post`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/entities/post --directory=shared/entities --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `user`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/entities/user --directory=shared/entities --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `environment`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/types/environment --directory=shared/types --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `html`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/types/html --directory=shared/types --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `ioc`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/util/ioc --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `astro-collections-facade`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/util/astro-collections-facade --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `astro-plugin-inject`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/util/astro-plugin-inject --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `astro-plugin-predict-reading-time`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/util/astro-plugin-predict-reading-time --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `db`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/util/db --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `environment`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/util/environment --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `image`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/util/image --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `route`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/util/route --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
-      },
-      {
-        libName: `time`,
-        generatorName: `@nrwl/js:lib`,
-        flags: `--importPath=@${scope}/shared/util/time --directory=shared/util --unitTestRunner=vitest --bundler=tsc`,
-      },
-    ],
+    libs,
     entities,
     detached: {
       home: homeSchema,

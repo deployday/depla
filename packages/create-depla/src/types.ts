@@ -29,7 +29,8 @@ interface IApp {
 }
 
 interface ILib {
-  libName: string;
+  name: string;
+  directory: string;
   generatorName: string;
   flags?: string;
 }

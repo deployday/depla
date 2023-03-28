@@ -64,15 +64,11 @@ const fonts = ({ config }: { config: Config }) =>
 const libs = ({ config }: { config: Config }) => {
   const project_dir = path.resolve(config.name);
   return config?.libs?.reduce((code, lib) => {
-    return (code += `nx g ${lib.generatorName} ${lib.libName} ${
-      lib.flags || ''
-    } && \\\n`);
+    return (code += `nx g ${lib.generatorName} ${lib.name} --directory=${
+      lib.directory
+    } ${lib.flags || ''} && \\\n`);
   }, '');
 };
-// const libs = ({ config, suffix = '' }: { config: Config; suffix: string }) =>
-//   config?.libs?.reduce((code, lib) => {
-//     return (code += `nx g lib ${lib} ${suffix} && \\\n`);
-//   }, '');
 
 const integrations = ({
   config,
