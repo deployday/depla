@@ -5,7 +5,7 @@
       "analyzeSourceFiles": true
     }
   },
-  "npmScope": "depl",
+  "npmScope": "depla",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
