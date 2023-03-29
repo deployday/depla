@@ -61,6 +61,25 @@ const fonts = ({ config }: { config: Config }) =>
     return (code += `npm i -D @fontsource/${font} && \\\n`);
   }, '');
 
+const deplaJson = ({ config }: { config: Config }) => {
+  const deplaJson = config.libs.reduce(
+    (prev, curr) => {
+      const { name, directory } = curr;
+      if (directory.indexOf('entities') !== -1) {
+        if (prev.entities.indexOf(name) === -1) prev.entities.push(name);
+      }
+      prev.libs.push(`${directory}/${name}`);
+      return prev;
+    },
+    { libs: [], entities: [] }
+  );
+  return `echo $'${JSON.stringify(
+    deplaJson,
+    null,
+    2
+  )}' | sed "s/'/\\\\\'/g" > depla.json && \\\n`;
+};
+
 const libs = ({ config }: { config: Config }) => {
   const project_dir = path.resolve(config.name);
   return config?.libs?.reduce((code, lib) => {
@@ -194,6 +213,7 @@ export const generateWorkspace = (config: Config) => {
     { func: integrations, params: { config } },
     { func: libs, params: { config } },
     { func: fonts, params: { config } },
+    { func: deplaJson, params: { config } },
     // { func: slice, params: { config, module: STATE_MODULE } },
     // { func: componentLayer, params: { config, suffix: suffixes.component } },
     // {

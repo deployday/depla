@@ -106,6 +106,7 @@ export const createWorkspace = ({
       flags: `--importPath=@${scope}/generated/shared/entities/${entity.model} --unitTestRunner=none --bundler=tsc`,
     });
   });
+
   const config: Config = {
     name,
     scope,
