@@ -26,7 +26,7 @@ const workspace = ({ config }: { config: Config }) => {
   if (fs.existsSync(cache_dir)) {
     return `rm -fr ${project_dir} && cp -r ${cache_dir} ${project_dir} && \\\n`;
   } else {
-    return `${output}; cd ${project_dir}; volta pin node@16.16; cp -r ${project_dir} ${cache_dir} && \\\n`;
+    return `${output} && \\\n cd ${project_dir}; volta pin node@16.16; cp -r ${project_dir} ${cache_dir} && \\\n`;
   }
   //   const output = `npx --yes create-nx-workspace@latest ${config.name} \\
   //   --appName=${config.application} \\
@@ -73,11 +73,8 @@ const deplaJson = ({ config }: { config: Config }) => {
     },
     { libs: [], entities: [] }
   );
-  return `echo $'${JSON.stringify(
-    deplaJson,
-    null,
-    2
-  )}' | sed "s/'/\\\\\'/g" > depla.json && \\\n`;
+  return `echo ${JSON.stringify(deplaJson, null, 2)} > depla.json && \\\n`;
+  // return `echo HELLO | sed s/'/\\\\\'/g > depla.json && \\\n`;
 };
 
 const libs = ({ config }: { config: Config }) => {

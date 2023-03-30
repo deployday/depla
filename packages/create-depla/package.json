@@ -1,6 +1,6 @@
 {
   "name": "create-depla",
-  "version": "0.1.15",
+  "version": "0.1.17",
   "type": "module",
   "bin": {
     "create-depla": "./bin/index.js"
