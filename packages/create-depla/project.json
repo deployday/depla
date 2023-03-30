@@ -19,7 +19,7 @@
     "build-base": {
       "executor": "@nrwl/js:tsc",
       "options": {
-        "main": "packages/create-depla/bin/index.ts",
+        "main": "packages/create-depla/src/index.ts",
         "updateBuildableProjectDepsInPackageJson": true,
         "buildableProjectDepsInPackageJsonType": "dependencies",
         "assets": [

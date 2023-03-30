@@ -16,9 +16,9 @@ import { printVerboseHook, rootDebug } from '../src/utils.js';
 import { postSchema } from '../src/entities.js';
 import { createWorkspace } from '../src/create-workspace.js';
 
-const debug = rootDebug.extend('doSomething');
+const debug = rootDebug.extend('create-depla');
 
-const debugError = rootDebug.extend('doSomething:error');
+const debugError = rootDebug.extend('create-depla:error');
 
 const program: CommandUnknownOpts = new Command();
 program
@@ -46,6 +46,9 @@ export const main = () => {
     // @ts-ignore
     .action(async (projectName, options: OptionValues) => {
       let project = projectName;
+
+      debug(`Parsing the file....${project}`);
+      debugError(`Ooops`, options);
       if (!project) {
         if (options['yes']) {
           project = defaults.project;
@@ -97,7 +100,7 @@ export const main = () => {
           .split('&& \\')
           .slice(1)
           .map((cmd) => cmd.replace(/\r?\n|\r/g, ' ').trim());
-        console.log(firstCommand, commands);
+        // console.log(firstCommand, commands);
         // console.log(chalk.green.bold(firstCommand));
         // console.log(chalk.yellow.bold(commands));
         // const { stdout, stderr } = await $`${firstCommand}`;
@@ -108,7 +111,6 @@ export const main = () => {
         try {
           await execCommandAndStreamOutput(firstCommand);
 
-          console.log(commands);
           for (let i = 0; i < commands.length; i++) {
             await execCommandAndStreamOutput(commands[i], projectPath);
           }
@@ -123,8 +125,6 @@ export const main = () => {
 
       // s.stop(chalk.green.bold('DONE'));
       console.log(chalk.green.bold('DONE'));
-
-      debug(`Parsing the file....`);
     });
 
   program.parse();
