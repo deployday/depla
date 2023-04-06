@@ -95,11 +95,6 @@ export const main = () => {
           `rm -fr ${project_dir} && cp -r ${cache_dir} ${project_dir}`
         );
       } else {
-        const firstCommand = cmds.split('&& \\')[0].split('\\\n').join('');
-        const commands = cmds
-          .split('&& \\')
-          .slice(1)
-          .map((cmd) => cmd.replace(/\r?\n|\r/g, ' ').trim());
         // console.log(firstCommand, commands);
         // console.log(chalk.green.bold(firstCommand));
         // console.log(chalk.yellow.bold(commands));
@@ -108,11 +103,19 @@ export const main = () => {
 
         // s.start('Setting up');
         // Do installation
-        try {
-          await execCommandAndStreamOutput(firstCommand);
+        const commands = cmds
+          .split('&&')
+          .map((cmd) => cmd.replace(/\\|\r?\n|\r/g, ' ').trim());
+        console.log(commands)
 
+        // s.start('Setting up');
+        // Do installation
+        try {
+
+          let cwd = ''
           for (let i = 0; i < commands.length; i++) {
-            await execCommandAndStreamOutput(commands[i], projectPath);
+            if (!cwd && fs.existsSync(projectPath)) cwd = projectPath
+            await execCommandAndStreamOutput(commands[i], cwd);
           }
 
           await execCommandAndStreamOutput(

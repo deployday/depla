@@ -4,12 +4,15 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "node ./tools/scripts/patch-nx-cli.js",
-    "build": "nx run-many --target build --all --parallel 8 --exclude website",
-    "test": "nx run-many --target test --all --parallel 8 --exclude website",
+    "build": "nx run-many --target build --all --parallel 100 --exclude website",
+    "test": "nx run-many --target test --all --parallel 100 --exclude website",
+    "publish": "nx run-many --target publish --all --parallel 100 --exclude website",
     "create-depla:build": "nx run create-depla:build",
     "create-depla:watch": "nx run create-depla:build-base --watch",
     "create-depla:publish": "nx publish create-depla",
-    "create-depla": "node dist/packages/create-depla/cli.js"
+    "start": "npx nx affected:build --watch --parallel --maxParallel=100 --all",
+    "link": "source $(npm bin)/../../tools/scripts/link.sh $(npm bin)/../../build/packages",
+    "unlink": "source $(npm bin)/../../tools/scripts/unlink.sh $(npm bin)/../../build/packages"
   },
   "private": true,
   "dependencies": {

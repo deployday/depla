@@ -8,9 +8,25 @@
 
 Run `nx graph` to see a diagram of the dependencies of the projects.
 
+We use Volta as node manager. Upon `npx create-depla` command completion, you
+will have volta installed, however if you've had NVM installed before that,
+you'd need to move/remove ~/.nvm folder if it's positioned before $VOLTA_HOME
+in $PATH.
+
+
 ## Remote caching
 
 Run `npx nx connect-to-nx-cloud` to enable [remote caching](https://nx.app) and make CI faster.
+
+## Local development
+
+```
+npm i && npm start
+```
+
+in separate shell you could `npm link` all the packages with `npm run link`
+(and `npm link <package_name>` in consumer project folder before installing it) or
+`npm run unlink` to `npm unlink` when you're done.
 
 ## Further help
 

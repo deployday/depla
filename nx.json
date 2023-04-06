@@ -19,11 +19,14 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["build-base"],
+      "dependsOn": [{
+        "target": "build-base",
+        "projects": "self",
+        "params": "forward"
+      }],
       "inputs": ["production", "^production"]
     },
     "build-base": {
-      "dependsOn": ["^build-base"],
       "inputs": ["production", "^production"],
       "executor": "@nrwl/js:tsc",
       "options": {

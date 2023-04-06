@@ -11,22 +11,37 @@ import {
 } from './modules.js';
 import mkdirp from 'mkdirp';
 
+const NODE_VERSION = '16.16.0';
+const VOLTA_BINARY = `${os.homedir()}/.volta/bin/volta`;
+
 // THE KITCHEN
+const volta = ({ config }: { config: Config }) => {
+  const output = `curl https://get.volta.sh -o /tmp/volta \
+    && chmod +x /tmp/volta \
+    && /tmp/volta --skip-setup`;
+  return `${output} && \\`;
+};
+
 const workspace = ({ config }: { config: Config }) => {
   const workspaced_dir = path.resolve(os.homedir() + '/.depla/workspaces/');
   mkdirp.sync(workspaced_dir);
-  const output = `npx --yes create-nx-workspace@latest ${config.name} \\
-  --preset=empty \\
-  --nxCloud=false \\
-  --pm=npm`;
+  // const output = `${VOLTA_BINARY} help`;
+  const output = `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+  npx --yes create-nx-workspace@latest ${config.name} \
+  --preset=empty \
+  --nxCloud=false --pm=npm`;
   const hash = crypto.createHash('md5').update(output).digest('hex');
   const cache_dir = path.resolve(`${workspaced_dir}/${hash}`);
   // return `echo Hello && \\\n`;
   const project_dir = path.resolve(config.name);
   if (fs.existsSync(cache_dir)) {
-    return `rm -fr ${project_dir} && cp -r ${cache_dir} ${project_dir} && \\\n`;
+    if (fs.existsSync(project_dir)) {
+      return `rm -fr ${project_dir} && cp -r ${cache_dir} ${project_dir} && \\\n`;
+    } else {
+      return `cp -r ${cache_dir} ${project_dir} && \\\n`;
+    }
   } else {
-    return `${output} && \\\n cd ${project_dir}; volta pin node@16.16; cp -r ${project_dir} ${cache_dir} && \\\n`;
+    return `${output} && cd ${project_dir}; ${VOLTA_BINARY} pin node@${NODE_VERSION}; cp -r ${project_dir} ${cache_dir} && \\\n`;
   }
   //   const output = `npx --yes create-nx-workspace@latest ${config.name} \\
   //   --appName=${config.application} \\
@@ -204,13 +219,14 @@ const suffixes = {
 export const generateWorkspace = (config: Config) => {
   mkdirp.sync(path.resolve(os.homedir() + '/.depla'));
   const commands = [
+    { func: volta, params: { config } },
     { func: workspace, params: { config } },
-    { func: packages, params: { config } },
-    { func: apps, params: { config } },
-    { func: integrations, params: { config } },
-    { func: libs, params: { config } },
-    { func: fonts, params: { config } },
-    { func: deplaJson, params: { config } },
+    // { func: packages, params: { config } },
+    // { func: apps, params: { config } },
+    // { func: integrations, params: { config } },
+    // { func: libs, params: { config } },
+    // { func: fonts, params: { config } },
+    // { func: deplaJson, params: { config } },
     // { func: slice, params: { config, module: STATE_MODULE } },
     // { func: componentLayer, params: { config, suffix: suffixes.component } },
     // {
