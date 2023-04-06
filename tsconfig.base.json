@@ -41,6 +41,7 @@
       "@depla/utils-time": ["packages/utils/time/src/index.ts"],
       "@depla/utils-url": ["packages/utils/url/src/index.ts"],
       "create-depla": ["packages/create-depla/src/index.ts"],
+      "depla": ["packages/depla/src/index.ts"],
       "depla-stack-nx-astro-unocss": [
         "packages/depla-stack-nx-astro-unocss/src/index.ts"
       ]
