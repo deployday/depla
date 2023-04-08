@@ -10,9 +10,13 @@ import {
   OptionValues,
   CommandUnknownOpts,
 } from '@commander-js/extra-typings';
-import { createWorkspace } from 'depla';
-import { generate } from '../src/index.js';
-import { create } from 'domain';
+import { generateStack } from '../src/index.js';
+import {
+  execCommandAndStreamOutput,
+  entityFactory,
+  IEntity,
+  IGenerateStack,
+} from 'depla';
 // import { printVerboseHook, rootDebug } from '../src/utils.js';
 // import { postSchema } from '../src/entities.js';
 // import { createWorkspace } from '../src/create-workspace.js';
@@ -27,29 +31,65 @@ program
   .description('Create printable styled PDF album from Obsidian');
 
 const defaults: {
-  project: string;
+  domain: string[];
 } = {
-  project: 'happy-strawberry-in-icecream',
+  domain: ['post', 'comment'],
 };
 
 export const main = () => {
   program
-    .argument(
-      '[project-name]',
-      'directory where application will be unpacked',
-      ''
-    )
+    .argument('[entities]', 'domain entities', defaults.domain.join(', '))
     .option('-y, --yes', 'do not ask any questions ', false)
     .option('-v, --verbose', 'output debug logs', false)
     // .hook('preAction', printVerboseHook)
     // @ts-ignore
-    .action(async (projectName, options: OptionValues) => {
-      console.log(
-        chalk.blue('HEEEY WORKING'),
-        chalk.green(generate()),
-        projectName
+    .action(async (entities: string, options: OptionValues) => {
+      const domain: IEntity[] = entities
+        .split(',')
+        .map((entity) => entityFactory(entity.trim()));
+      const { commands, zip }: IGenerateStack = await generateStack(
+        [
+          {
+            name: 'asda',
+            generator: () => {
+              return 'foo';
+            },
+          },
+          {
+            name: 'asda',
+            generator: () => {
+              return 'zombie';
+            },
+          },
+        ],
+        domain,
+        { scope: 'asd', name: 'asd' }
       );
-      console.log(chalk.yellow('AND HERE IS import from create-depla'));
+      try {
+        console.log(
+          chalk.yellow('AND HERE are the commands to run:'),
+          commands
+        );
+        console.log('========');
+        console.log(chalk.green('AND HERE is contents of zip'));
+        zip.forEach(async (relativePath, file) => {
+          console.log(file.name);
+          const fileObj = zip.file(file.name);
+          const isFile = fileObj;
+          if (isFile) {
+            const contents = await fileObj.async('string');
+            console.log(contents);
+          }
+          // console.log(contents);
+        });
+
+        console.log('========');
+        for (let i = 0; i < commands.length; i++) {
+          await execCommandAndStreamOutput(commands[i]);
+        }
+      } catch (e) {
+        console.log('ERROR catched: ', e);
+      }
       // let project = projectName;
       // debug(`Parsing the project....${project}`);
       // if (!project) {

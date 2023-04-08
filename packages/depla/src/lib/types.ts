@@ -52,6 +52,9 @@ export interface ILayer {
   generator: Function;
 }
 
+export interface ITemplateGenerator {
+  generate: Function;
+}
 export interface IGenerateStack {
   commands: string[];
   zip: JSZip;
