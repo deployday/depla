@@ -1,3 +1,5 @@
+import JSZip from 'jszip';
+
 export interface Config {
   name: string;
   scope: string;
@@ -43,4 +45,14 @@ export interface IEntity {
 export interface Command {
   func: Function;
   params: {};
+}
+
+export interface ILayer {
+  name: string;
+  generator: Function;
+}
+
+export interface IGenerateStack {
+  commands: string[];
+  zip: JSZip;
 }
