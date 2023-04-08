@@ -6,6 +6,7 @@
     "importHelpers": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "build",
     "experimentalDecorators": true,
