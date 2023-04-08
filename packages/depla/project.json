@@ -5,15 +5,23 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/build/packages/depla"],
       "options": {
-        "outputPath": "build/packages/depla",
+        "commands": [
+          {
+            "command": "echo '`depla` npm package build task is done'"
+          }
+        ],
+        "parallel": false
+      }
+    },
+    "build-base": {
+      "executor": "@nrwl/js:tsc",
+      "options": {
         "main": "packages/depla/src/index.ts",
-        "tsConfig": "packages/depla/tsconfig.lib.json",
         "updateBuildableProjectDepsInPackageJson": true,
-        "buildableProjectDepsInPackageJsonType": "dependencies",
-        "assets": ["packages/depla/*.md"]
+        "buildableProjectDepsInPackageJsonType": "dependencies"
       }
     },
     "publish": {

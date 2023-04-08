@@ -5,18 +5,21 @@ import * as process from 'process';
 // import * as p from '@clack/prompts';
 import inquirer from 'inquirer';
 import * as crypto from 'crypto';
-import { execCommandAndStreamOutput } from '../src/exec.js';
+import { postSchema, createWorkspace, execCommandAndStreamOutput } from 'depla';
 import chalk from 'chalk';
 import {
   Command,
   OptionValues,
   CommandUnknownOpts,
 } from '@commander-js/extra-typings';
-import { printVerboseHook, rootDebug } from '../src/utils.js';
-import { postSchema } from '../src/entities.js';
-import { createWorkspace } from '../src/create-workspace.js';
+import { printVerboseHook, rootDebug } from '../src/lib/debug.js';
 
 const debug = rootDebug.extend('create-depla');
+// const execCommandAndStreamOutput = async (something, cwd = '') => {
+//   return new Promise((resolve, reject) => {
+//     resolve('hooray' + something);
+//   });
+// };
 
 const debugError = rootDebug.extend('create-depla:error');
 
@@ -106,15 +109,14 @@ export const main = () => {
         const commands = cmds
           .split('&&')
           .map((cmd) => cmd.replace(/\\|\r?\n|\r/g, ' ').trim());
-        console.log(commands)
+        console.log(commands);
 
         // s.start('Setting up');
         // Do installation
         try {
-
-          let cwd = ''
+          let cwd = '';
           for (let i = 0; i < commands.length; i++) {
-            if (!cwd && fs.existsSync(projectPath)) cwd = projectPath
+            if (!cwd && fs.existsSync(projectPath)) cwd = projectPath;
             await execCommandAndStreamOutput(commands[i], cwd);
           }
 

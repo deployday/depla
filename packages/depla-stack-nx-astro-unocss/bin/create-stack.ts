@@ -10,7 +10,7 @@ import {
   OptionValues,
   CommandUnknownOpts,
 } from '@commander-js/extra-typings';
-import { createDepla } from 'create-depla';
+import { createWorkspace } from 'depla';
 import { generate } from '../src/index.js';
 import { create } from 'domain';
 // import { printVerboseHook, rootDebug } from '../src/utils.js';
@@ -49,10 +49,7 @@ export const main = () => {
         chalk.green(generate()),
         projectName
       );
-      console.log(
-        chalk.yellow('AND HERE IS import from create-depla'),
-        createDepla()
-      );
+      console.log(chalk.yellow('AND HERE IS import from create-depla'));
       // let project = projectName;
       // debug(`Parsing the project....${project}`);
       // if (!project) {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as path from 'path';
 import * as fs from 'fs';
 import { spawn, ChildProcess, exec } from 'child_process';

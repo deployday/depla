@@ -19,44 +19,8 @@
     "build-base": {
       "executor": "@nrwl/js:tsc",
       "options": {
-        "main": "packages/create-depla/src/index.ts",
         "updateBuildableProjectDepsInPackageJson": true,
-        "buildableProjectDepsInPackageJsonType": "dependencies",
-        "assets": [
-          {
-            "input": "packages/create-depla",
-            "glob": "**/files/**",
-            "output": "/"
-          },
-          {
-            "input": "packages/create-depla",
-            "glob": "**/files/**/.gitkeep",
-            "output": "/"
-          },
-          {
-            "input": "packages/create-depla",
-            "glob": "**/*.json",
-            "ignore": ["**/tsconfig*.json", "project.json", ".eslintrc.json"],
-            "output": "/"
-          },
-          {
-            "input": "packages/create-depla",
-            "glob": "**/*.js",
-            "ignore": ["**/jest.config.js"],
-            "output": "/"
-          },
-          {
-            "input": "packages/create-depla",
-            "glob": "**/*.d.ts",
-            "output": "/"
-          },
-          {
-            "input": "",
-            "glob": "LICENSE",
-            "output": "/"
-          },
-          "packages/create-depla/bin/index.mjs"
-        ]
+        "buildableProjectDepsInPackageJsonType": "dependencies"
       }
     },
     "run-dev": {

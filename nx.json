@@ -27,13 +27,48 @@
       "inputs": ["production", "^production"]
     },
     "build-base": {
+      "dependsOn": ["^build-base"],
       "inputs": ["production", "^production"],
       "executor": "@nrwl/js:tsc",
       "options": {
         "outputPath": "build/{projectRoot}",
         "tsConfig": "{projectRoot}/tsconfig.lib.json",
         "main": "{projectRoot}/index.ts",
-        "updateBuildableProjectDepsInPackageJson": false
+        "updateBuildableProjectDepsInPackageJson": false,
+        "assets": [
+          {
+            "input": "{projectRoot}",
+            "glob": "**/files/**",
+            "output": "/"
+          },
+          {
+            "input": "{projectRoot}",
+            "glob": "**/files/**/.gitkeep",
+            "output": "/"
+          },
+          {
+            "input": "{projectRoot}",
+            "glob": "**/*.json",
+            "ignore": ["**/tsconfig*.json", "project.json", ".eslintrc.json"],
+            "output": "/"
+          },
+          {
+            "input": "{projectRoot}",
+            "glob": "**/*.js",
+            "ignore": ["**/jest.config.js"],
+            "output": "/"
+          },
+          {
+            "input": "{projectRoot}",
+            "glob": "**/*.d.ts",
+            "output": "/"
+          },
+          {
+            "input": "",
+            "glob": "LICENSE",
+            "output": "/"
+          }
+        ]
       },
       "outputs": ["{options.outputPath}"]
     },

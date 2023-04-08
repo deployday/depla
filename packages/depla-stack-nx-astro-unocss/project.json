@@ -9,10 +9,7 @@
       "options": {
         "commands": [
           {
-            "command": "npm install --prefix build/packages/depla-stack-nx-astro-unocss"
-          },
-          {
-            "command": "node ./scripts/chmod build/packages/depla-stack-nx-astro-unocss/bin/index.js"
+            "command": "node ./scripts/chmod.js build/packages/depla-stack-nx-astro-unocss/bin/index.js"
           }
         ],
         "parallel": false
@@ -35,8 +32,7 @@
       "options": {
         "main": "packages/depla-stack-nx-astro-unocss/bin/index.ts",
         "updateBuildableProjectDepsInPackageJson": true,
-        "buildableProjectDepsInPackageJsonType": "dependencies",
-        "assets": []
+        "buildableProjectDepsInPackageJsonType": "dependencies"
       }
     },
     "publish": {
