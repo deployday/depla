@@ -1,0 +1,12 @@
+{
+  "name": "@depla/astro-responsive-image",
+  "version": "0.0.2",
+  "type": "commonjs",
+  "keywords": [
+    "astro-integration",
+    "astro"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

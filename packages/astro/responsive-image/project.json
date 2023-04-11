@@ -1,0 +1,33 @@
+{
+  "name": "astro-responsive-image",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/astro/responsive-image/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "build/packages/astro/responsive-image",
+        "main": "packages/astro/responsive-image/src/index.ts",
+        "tsConfig": "packages/astro/responsive-image/tsconfig.lib.json",
+        "assets": ["packages/astro/responsive-image/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/astro/responsive-image"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/astro/responsive-image/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

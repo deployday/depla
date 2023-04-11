@@ -23,6 +23,9 @@
       ],
       "@depl/olddispatcher": ["packages/olddispatcher/src/index.ts"],
       "@depl/unpacker": ["packages/unpacker/src/index.ts"],
+      "@depla/astro-responsive-image": [
+        "packages/astro/responsive-image/src/index.ts"
+      ],
       "@depla/generate-code": ["packages/generate-code/src/index.ts"],
       "@depla/generate-stack": ["packages/generate-stack/src/index.ts"],
       "@depla/ioc": ["packages/ioc/src/index.ts"],
