@@ -1,16 +1,13 @@
 // @ts-nocheck
-import fs from 'fs';
-import path from 'path';
+import { writeFile, readdir } from 'node:fs/promises';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { mkdirp } from 'mkdirp';
-import { fileURLToPath } from 'node:url';
 // import { loadImage } from '@astro-nx-depla/shared/util/image';
 
-const defaultSizes = {
-  small: 767,
-  medium: 1023,
-  large: 2040,
-};
+const defaultSizes = [767, 1023, 2040];
 
 interface IFile {
   path: string;
@@ -22,7 +19,7 @@ const build = async ({
   sizes,
 }: {
   paths: { src: string; dest: string };
-  sizes: { small: number; medium: number; large: number };
+  sizes: number[];
 }) => {
   const filesToProcess: IFile[] = [];
 
@@ -33,7 +30,7 @@ const build = async ({
   }
 
   async function recurseFiles(directory: string) {
-    const f = await fs.promises.readdir(path.join(paths.src, directory), {
+    const f = await readdir(path.join(paths.src, directory), {
       withFileTypes: true,
     });
 
@@ -125,23 +122,20 @@ const build = async ({
     };
 
     const metaFile = source + '.json';
-    await fs.promises.writeFile(metaFile, JSON.stringify(metadata));
+    await writeFile(metaFile, JSON.stringify(metadata));
 
     // Create resized images
-    for (const key in sizes) {
-      const resizeDestination = getDestinationFilePathless(
-        file.path,
-        sizes[key]
-      );
+    for (const size of sizes) {
+      const resizeDestination = getDestinationFilePathless(file.path, size);
       const madeDir2 = await mkdirp(path.dirname(resizeDestination));
       console.log('MADEDIR2', madeDir2);
 
       const metadata = await sharp(source).metadata();
 
-      if (metadata.width > sizes[key]) {
+      if (metadata.width > size) {
         // Only resize if the image is larger than the target size
         sharp(source)
-          .resize(sizes[key], null)
+          .resize(size, null)
           .webp({ quality: 80 })
           .toFile(resizeDestination + '.webp');
       } else {
@@ -157,8 +151,11 @@ const build = async ({
 const createResponsiveImageIntegration = ({
   folder = '_img',
   sizes = defaultSizes,
+}: {
+  folder: string;
+  sizes: number[];
 }) => ({
-  name: '@depla/astro-responsive-image',
+  name: 'astro-responsive-image',
   hooks: {
     'astro:build:done': async ({ dir, routes }) => {
       const paths = {

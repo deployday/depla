@@ -5,13 +5,34 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "options": {
-        "outputPath": "build/packages/astro/responsive-image",
+        "commands": [
+          {
+            "command": "echo Hooray"
+          }
+        ],
+        "parallel": false
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "commands": [
+          {
+            "command": "nx run astro-responsive-image:build-base --watch"
+          }
+        ],
+        "parallel": false
+      }
+    },
+    "build-base": {
+      "executor": "@nrwl/js:tsc",
+      "options": {
         "main": "packages/astro/responsive-image/src/index.ts",
-        "tsConfig": "packages/astro/responsive-image/tsconfig.lib.json",
-        "assets": ["packages/astro/responsive-image/*.md"]
+        "updateBuildableProjectDepsInPackageJson": true,
+        "buildableProjectDepsInPackageJsonType": "dependencies"
       }
     },
     "publish": {
