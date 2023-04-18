@@ -1,0 +1,34 @@
+{
+  "name": "astro-image",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/astro-image/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "rm -fr ./build/packages/astro-image; mkdir ./build/packages/astro-image; cp -r ./packages/astro-image/src ./build/packages/astro-image/dist; cp ./packages/astro-image/package.json ./build/packages/astro-image/; echo Hooray"
+          }
+        ],
+        "parallel": false
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/astro-image"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/astro-image/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

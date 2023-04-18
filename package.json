@@ -16,6 +16,7 @@
   },
   "private": true,
   "dependencies": {
+    "@astrojs/image": "^0.15.1",
     "@clack/core": "^0.3.2",
     "@clack/prompts": "^0.6.3",
     "@commander-js/extra-typings": "^10.0.3",
