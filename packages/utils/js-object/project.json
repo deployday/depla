@@ -1,0 +1,33 @@
+{
+  "name": "utils-js-object",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/utils/js-object/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "build/packages/utils/js-object",
+        "main": "packages/utils/js-object/src/index.ts",
+        "tsConfig": "packages/utils/js-object/tsconfig.lib.json",
+        "assets": ["packages/utils/js-object/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm publish build/packages/utils/js-object"
+      },
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/utils/js-object/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}
