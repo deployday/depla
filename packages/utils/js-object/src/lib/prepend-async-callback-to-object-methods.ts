@@ -17,7 +17,7 @@ export const prependAsyncCallbackToObjectMethods = (Foo, cb) => {
     // before and after method execution.
     Foo[name] = async (...args) => {
       // all arguments that the method receives are in the 'arguments' object
-      await cb.call(this);
+      await cb.call(this, name);
 
       // now we call the original method, _method1, on this with all arguments we received
       // this is probably the most confusing line of code here ;)
