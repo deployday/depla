@@ -1,5 +1,16 @@
 {
   "name": "depla",
-  "version": "0.0.3",
-  "type": "module"
+  "version": "0.0.4",
+  "type": "module",
+  "bin": {
+    "depla": "./bin/index.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=16.16.0"
+  }
 }

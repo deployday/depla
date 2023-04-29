@@ -10,7 +10,7 @@
       "options": {
         "commands": [
           {
-            "command": "echo '`depla` npm package build task is done'"
+            "command": "node ./scripts/chmod build/packages/depla/bin/index.js"
           }
         ],
         "parallel": false
@@ -19,9 +19,14 @@
     "build-base": {
       "executor": "@nrwl/js:tsc",
       "options": {
-        "main": "packages/depla/src/index.ts",
         "updateBuildableProjectDepsInPackageJson": true,
         "buildableProjectDepsInPackageJsonType": "dependencies"
+      }
+    },
+    "run-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node build/packages/depla/bin/index.js"
       }
     },
     "publish": {
