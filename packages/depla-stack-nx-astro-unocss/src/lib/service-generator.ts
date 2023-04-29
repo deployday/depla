@@ -2,7 +2,7 @@ import { IEntity, ITemplateGenerator, Config } from 'depla';
 
 // CHALLENGE: Update service template to be dynamic
 const generate = (entity: IEntity, { scope }: Config) => {
-  const { ref, refs, model, models, singleParam } = entity;
+  // const { ref, refs, model, models, singleParam } = entity;
 
   const template = `
 import { HttpClient } from '@angular/common/http';

@@ -1,0 +1,114 @@
+{
+  "entities": <%- JSON.stringify(entities, null, 4) %>,
+  "relationships": [],
+  "shared": {
+    "slices": [
+      {
+        "name": "@depla/slice-data",
+        "options": {
+          "navigation": {
+            "header": [
+              "Home",
+              "About"
+            ],
+            "footer": [
+              "HEy"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "apps": [
+    {
+      "name": "website",
+      "entities": "*",
+      "slices": [
+        "@depla/slice-nx-workspace@0.0.4",
+        {
+          "name": "@depla/slice-astro-app",
+          "features": [
+            {
+              "name": "homepage",
+              "path": "/",
+              "file": "index.astro"
+            },
+            {
+              "name": "legal pages",
+              "pages": [
+                {
+                  "path": "/terms"
+                },
+                {
+                  "path": "/privacy"
+                }
+              ]
+            },
+            {
+              "name": "blog",
+              "paths": [
+                {
+                  "entity": "post",
+                  "path": "/blog",
+                  "type": "list",
+                  "noindex": false
+                },
+                {
+                  "entity": "post",
+                  "type": "view",
+                  "path": "/%year%/%slug%"
+                },
+                {
+                  "entity": "tag",
+                  "type": "list",
+                  "path": "/blog/tags/",
+                  "itemsPerPage": 4
+                },
+                {
+                  "entity": "tag",
+                  "type": "view",
+                  "path": "/blog/tags/%slug%",
+                  "noindex": false
+                }
+              ]
+            }
+          ]
+        },
+        "@depla/slice-astro-tailwind-unocss",
+        "@depla/slice-astro-fonts-bla-bla",
+        {
+          "name": "@depla/slice-data",
+          "options": {
+            "navigation": {
+              "header": [
+                "foo",
+                "bar"
+              ],
+              "footer": [
+                "foo",
+                "bar"
+              ]
+            }
+          }
+        },
+        {
+          "name": "@depla/slice-env",
+          "options": {
+            "prod": {
+              "domain": "https://example.com"
+            },
+            "dev": {
+              "domain": "http://localhost:3000"
+            }
+          }
+        },
+        {
+          "name": "@depla/slice-config",
+          "options": {
+            "basePath": "/"
+          }
+        }
+      ]
+    }
+  ]
+}

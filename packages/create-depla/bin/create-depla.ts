@@ -1,7 +1,8 @@
 import * as fs from 'fs';
-import * as path from 'path';
+import { resolve } from 'node:path';
 import * as os from 'os';
 import * as process from 'process';
+import mkdirp from 'mkdirp';
 // import * as p from '@clack/prompts';
 import inquirer from 'inquirer';
 import * as crypto from 'crypto';
@@ -37,65 +38,63 @@ const defaults: {
 export const main = () => {
   program
     .argument(
-      '[project-name]',
-      'directory where application will be unpacked',
+      '[path]',
+      'directory where application will be unpacked (`.` for current working directory)',
       ''
     )
+    .option('--stack', 'what stack shall we use', 'depla-stack-nx-astro-unocss')
     .option('-y, --yes', 'do not ask any questions ', false)
     .option('-v, --verbose', 'output debug logs', false)
     // .option('--path <path>', 'the target name')
     // .requiredOption('--includeDirectories', 'copy directories')
     .hook('preAction', printVerboseHook)
     // @ts-ignore
-    .action(async (projectName, options: OptionValues) => {
-      let project = projectName;
+    .action(async (path, options: OptionValues) => {
+      let project = path;
+      const { stack }: { stack?: string } = options;
 
-      debug(`Parsing the file....${project}`);
+      debug(`Parsing the file in....${project}`);
       debugError(`Ooops`, options);
       if (!project) {
+        console.log(options);
         if (options['yes']) {
           project = defaults.project;
         } else {
           const projectRes = await inquirer.prompt({
             type: 'input',
             name: 'name',
-            message: 'Project name?',
+            message: 'Project name? (also relative path)',
             validate(value: string): string | boolean {
-              return value ? true : `please provide project name`;
+              return value ? true : `hmm...how shall we call the new project?`;
             },
           });
           project = projectRes.name;
-          // project = await p.text({
-          //   message: 'Project name?',
-          //   placeholder: defaults.project,
-          //   initialValue: defaults.project,
-          //   validate(value: string): string {
-          //     return String(!value) ?? `Project name is required!`;
-          //   },
-          // });
         }
       }
 
-      const projectPath = path.resolve(project as string);
+      const projectPath = resolve(project as string);
+
+      // Find depla.json
+
       console.log(
         `%s Creating project ${projectPath}`,
         chalk.yellow.bold('Hooray!')
       );
-      const cmds = createWorkspace({
-        entities: [postSchema],
-        name: project as string,
-      });
+      // const cmds = createWorkspace({
+      //   entities: [postSchema],
+      //   name: project as string,
+      // });
+      const cmds = `npx ${stack} ${project}`;
 
       // const s = p.spinner();
 
-      const hash = crypto.createHash('md5').update(cmds).digest('hex');
-      const workspace_dir = path.resolve(os.homedir() + '/.depla/workspaces/');
-      const cache_dir = path.resolve(`${workspace_dir}/${hash}`);
-      // return `echo Hello && \\\n`;
-      const project_dir = path.resolve(project as string);
-      if (fs.existsSync(cache_dir) && false) {
+      const hash = crypto.createHash('md5').update(stack).digest('hex');
+      const workspace_dir = resolve(os.homedir() + '/.depla/workspaces/');
+      const cache_dir = resolve(`${workspace_dir}/${hash}`);
+      const ENABLE_CACHE = false;
+      if (fs.existsSync(cache_dir) && ENABLE_CACHE) {
         await execCommandAndStreamOutput(
-          `rm -fr ${project_dir} && cp -r ${cache_dir} ${project_dir}`
+          `rm -fr ${projectPath} && cp -r ${cache_dir} ${projectPath}`
         );
       } else {
         // console.log(firstCommand, commands);
@@ -110,6 +109,9 @@ export const main = () => {
           .split('&&')
           .map((cmd) => cmd.replace(/\\|\r?\n|\r/g, ' ').trim());
         console.log(commands);
+        if (!fs.existsSync(projectPath)) {
+          mkdirp.sync(resolve(projectPath));
+        }
 
         // s.start('Setting up');
         // Do installation
@@ -120,9 +122,11 @@ export const main = () => {
             await execCommandAndStreamOutput(commands[i], cwd);
           }
 
-          await execCommandAndStreamOutput(
-            `rm -fr ${cache_dir} && cp -r ${project_dir} ${cache_dir}`
-          );
+          if (ENABLE_CACHE) {
+            await execCommandAndStreamOutput(
+              `rm -fr ${cache_dir} && cp -r ${projectPath} ${cache_dir}`
+            );
+          }
         } catch (e) {
           console.log('ERROR catched: ', e);
         }
@@ -134,14 +138,14 @@ export const main = () => {
 
   program.parse();
 
-  const options = program.opts();
-  const limit = options['first'] ? 1 : undefined;
-  const separator = options['separator'] as string;
-  if (program.args.length > 1) {
-    // console.log(program.args[0].split(separator, limit));
-  } else {
-    // console.log(program.args);
-  }
+  // const options = program.opts();
+  // const limit = options['first'] ? 1 : undefined;
+  // const separator = options['separator'] as string;
+  // if (program.args.length > 1) {
+  //   // console.log(program.args[0].split(separator, limit));
+  // } else {
+  //   // console.log(program.args);
+  // }
 
   // const group = await p.group(
   //   {

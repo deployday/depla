@@ -11,11 +11,13 @@ import { provider as <%= entity %>Provider } from '<%= scope %>/shared/entities/
 
 export const app = new Container();
 
-environmentProvider(app);
-configProvider(app);
-routeProvider(app);
-dbProvider(app);
-
-<% entities.forEach(function(entity){ %>
-<%= entity %>Provider(app);
-<% }); %>
+const providers = [
+  environmentProvider,
+  configProvider,
+  routeProvider,
+  dbProvider,
+  <% entities.forEach(function(entity){ %>
+    <%= entity %>Provider(app);
+  <% }); %>
+]
+providers.forEach((provider) => provider(app))
