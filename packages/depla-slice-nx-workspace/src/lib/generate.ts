@@ -14,6 +14,7 @@ export const generate = (workspace: any) => {
             --preset=empty \
             --nxCloud=false --pm=npm`,
       ],
+      [`${VOLTA_BINARY} pin node@${NODE_VERSION}`, resolve(workspace.name)],
       [
         // ;; is replaced with ;, see exec.ts from `depla` package
         `find ${resolve(workspace.name)} -maxdepth 1 -exec mv {} ${resolve(
