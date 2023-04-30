@@ -42,7 +42,11 @@ export const main = () => {
       'directory where application will be unpacked (`.` for current working directory)',
       ''
     )
-    .option('--stack', 'what stack shall we use', 'depla-stack-nx-astro-unocss')
+    .option(
+      '--stack',
+      'what stack shall we use',
+      'depla-stack-nx-astro-unocss@latest'
+    )
     .option('-y, --yes', 'do not ask any questions ', false)
     .option('-v, --verbose', 'output debug logs', false)
     // .option('--path <path>', 'the target name')
