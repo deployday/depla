@@ -122,10 +122,10 @@ export const execCommandAndStreamOutput = async (
     const subcommand = subcommands[i].split('>')?.[0]?.trim();
     const outFilePath = subcommands[i].split('>')?.[1]?.trim();
     const outFileResolvedPath = path.join(cwd, `/${outFilePath}`);
-    console.log(chalk.yellow(subcommand));
     if (!subcommand) return Promise.resolve();
     let childProcess: ChildProcess;
     let cmdStr = subcommand.replace('SPECIAL_CHAR_TMP', ';');
+    console.log(chalk.yellow(cmdStr));
     if (subcommand.indexOf('|') !== -1) {
       childProcess = await spawnWithPipe(cmdStr, cwd, outFilePath);
     } else {

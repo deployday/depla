@@ -6,12 +6,18 @@ const NODE_VERSION = '16.16.0';
 
 export const slicesRunner = async (config: any) => {
   const { workspaces } = config;
-  for (let i = 0; i < workspaces.length; i++) {
-    const workspace = getWorkspaceByName(workspaces[i].name, config);
-    for (let y = 0; y < workspace.slices.length; y++) {
-      const cmd = `${VOLTA_BINARY} run --node ${NODE_VERSION} npx --yes ${workspace.slices[y]} ${workspace.name}`;
-      console.log(cmd);
-      await execCommandAndStreamOutput(cmd);
-    }
-  }
+  console.log(workspaces);
+  const commands = await Promise.all(
+    workspaces.map(async (workspaceConfig) => {
+      const workspace = getWorkspaceByName(workspaceConfig?.name, config);
+      return await Promise.all(
+        workspace.slices.map(async (slice) => {
+          const slicePackage = typeof slice === 'object' ? slice.name : slice;
+          const cmd = `${VOLTA_BINARY} run --node ${NODE_VERSION} npx --yes ${slicePackage} ${workspace.name}`;
+          return await execCommandAndStreamOutput(cmd);
+        })
+      );
+    })
+  );
+  return commands;
 };
