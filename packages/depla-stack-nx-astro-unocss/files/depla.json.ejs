@@ -2,22 +2,9 @@
   "entities": <%- JSON.stringify(entities, null, 4) %>,
   "relationships": [],
   "workspaces": [{
+    "name": "<%= name %>",
     "slices": [
-      "@depla/slice-nx-workspace@0.0.4",
-      {
-        "name": "@depla/slice-data",
-        "options": {
-          "navigation": {
-            "header": [
-              "Home",
-              "About"
-            ],
-            "footer": [
-              "HEy"
-            ]
-          }
-        }
-      }
+      "@depla/slice-nx-workspace"
     ],
     "apps": [
       {

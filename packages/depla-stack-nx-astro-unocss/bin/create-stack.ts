@@ -9,7 +9,7 @@ import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import * as crypto from 'crypto';
 import mkdirp from 'mkdirp';
-// import { execCommandAndStreamOutput } from '../src/exec.js';
+import { generate } from '../src/index.js';
 import chalk from 'chalk';
 import {
   Command,
@@ -72,8 +72,8 @@ export const main = () => {
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const filesDir = path.resolve(__dirname, `../files`);
       const { runBefore, runAfter, zip }: IGenerateStack =
-        await generateSliceForAllEntities(filesDir, {
-          scope: projectPath,
+        await generateSliceForAllEntities(filesDir, generate, {
+          name: projectPath,
           entities: domain,
         });
 

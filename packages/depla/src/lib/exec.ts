@@ -117,7 +117,7 @@ export const execCommandAndStreamOutput = async (
   cwd: string = process.cwd()
 ) => {
   if (!cmd.trim()) return Promise.resolve();
-  const subcommands = cmd.split(/;|&&/);
+  const subcommands = cmd.replace(`;;`, 'SPECIAL_CHAR_TMP').split(/;|&&/);
   for (let i = 0; i < subcommands.length; i++) {
     const subcommand = subcommands[i].split('>')?.[0]?.trim();
     const outFilePath = subcommands[i].split('>')?.[1]?.trim();
@@ -125,10 +125,11 @@ export const execCommandAndStreamOutput = async (
     console.log(chalk.yellow(subcommand));
     if (!subcommand) return Promise.resolve();
     let childProcess: ChildProcess;
+    let cmdStr = subcommand.replace('SPECIAL_CHAR_TMP', ';');
     if (subcommand.indexOf('|') !== -1) {
-      childProcess = await spawnWithPipe(subcommand, cwd, outFilePath);
+      childProcess = await spawnWithPipe(cmdStr, cwd, outFilePath);
     } else {
-      childProcess = spawnIt(subcommand, cwd, outFilePath);
+      childProcess = spawnIt(cmdStr, cwd, outFilePath);
     }
     if (outFilePath) {
       const stdOutStream = fs.createWriteStream(outFileResolvedPath, {

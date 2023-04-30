@@ -1,5 +1,8 @@
-export const generate = () => {
-  return 'HELLO from inside generator module';
+export const generate = (config = {}) => {
+  return {
+    runBefore: [],
+    runAfter: ['npx depla'],
+  };
 };
 // export const generate = (config: Config) => {
 //   const commands = [

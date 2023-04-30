@@ -6,7 +6,7 @@ import mkdirp from 'mkdirp';
 // import * as p from '@clack/prompts';
 import inquirer from 'inquirer';
 import * as crypto from 'crypto';
-import { postSchema, createWorkspace, execCommandAndStreamOutput } from 'depla';
+import { execCommandAndStreamOutput } from 'depla';
 import chalk from 'chalk';
 import {
   Command,

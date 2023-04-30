@@ -1,0 +1,16 @@
+{
+  "name": "@depla/slice-nx-workspace",
+  "version": "0.0.1",
+  "type": "module",
+  "bin": {
+    "@depla/slice-nx-workspace": "./bin/index.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=16.16.0"
+  }
+}

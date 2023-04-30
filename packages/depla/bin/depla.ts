@@ -7,12 +7,7 @@ import mkdirp from 'mkdirp';
 // import * as p from '@clack/prompts';
 import inquirer from 'inquirer';
 import * as crypto from 'crypto';
-import {
-  postSchema,
-  createWorkspace,
-  execCommandAndStreamOutput,
-  slicesRunner,
-} from '../src/index.js';
+import { slicesRunner } from '../src/index.js';
 import chalk from 'chalk';
 import {
   Command,
@@ -59,6 +54,7 @@ export const main = () => {
       const config = JSON.parse(
         (await readFile(resolve(path as string, 'depla.json'))).toString()
       );
+      console.log('running slices runner with config: ', config);
       slicesRunner(config);
       // const config = fs.readFileSync(resolve('./depla.json'));
       // console.log('OPPPPPAAA', JSON.parse(config.toString()));

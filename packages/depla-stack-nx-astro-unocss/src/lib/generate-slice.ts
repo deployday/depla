@@ -38,10 +38,10 @@ export const generateSlice = async (
 
 export const generateSliceForAllEntities = async (
   filesDir: string,
+  generator,
   config
 ): Promise<IGenerateStack> => {
-  const runBefore = [];
-  const runAfter = ['npx depla'];
+  const { runBefore, runAfter } = generator();
 
   const files = await createZipFromFolder(filesDir);
   const newFiles = new JSZip();
