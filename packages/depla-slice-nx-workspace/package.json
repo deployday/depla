@@ -5,6 +5,9 @@
   "bin": {
     "@depla/slice-nx-workspace": "./bin/index.js"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "bin",
     "src",

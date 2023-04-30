@@ -1,9 +1,12 @@
 {
   "name": "depla",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "bin": {
     "depla": "./bin/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "bin",
