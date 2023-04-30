@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { readFile } from 'fs/promises';
 import { resolve } from 'node:path';
 import * as os from 'os';
 import * as process from 'process';
@@ -45,7 +46,7 @@ export const main = () => {
     .argument(
       '[path]',
       'directory where application will be unpacked (`.` for current working directory)',
-      ''
+      '.'
     )
     .option('--stack', 'what stack shall we use', 'depla-stack-nx-astro-unocss')
     .option('-y, --yes', 'do not ask any questions ', false)
@@ -55,7 +56,10 @@ export const main = () => {
     .hook('preAction', printVerboseHook)
     // @ts-ignore
     .action(async (path, options: OptionValues) => {
-      slicesRunner();
+      const config = JSON.parse(
+        (await readFile(resolve(path as string, 'depla.json'))).toString()
+      );
+      slicesRunner(config);
       // const config = fs.readFileSync(resolve('./depla.json'));
       // console.log('OPPPPPAAA', JSON.parse(config.toString()));
     });

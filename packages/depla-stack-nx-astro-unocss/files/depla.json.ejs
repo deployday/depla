@@ -1,8 +1,9 @@
 {
   "entities": <%- JSON.stringify(entities, null, 4) %>,
   "relationships": [],
-  "shared": {
+  "workspaces": [{
     "slices": [
+      "@depla/slice-nx-workspace@0.0.4",
       {
         "name": "@depla/slice-data",
         "options": {
@@ -17,13 +18,6 @@
           }
         }
       }
-    ]
-  },
-  "workspaces": [{
-    "name": "root",
-    "baseDir": ".",
-    "slices": [
-      "@depla/slice-nx-workspace@0.0.4",
     ],
     "apps": [
       {

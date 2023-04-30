@@ -10,6 +10,7 @@
     "create-depla:build": "nx run create-depla:build",
     "create-depla:watch": "nx run create-depla:build-base --watch",
     "create-depla:publish": "nx publish create-depla",
+    "local": "cd build/packages/create-depla && chmod +x ./bin/index.js && npm i ../depla && cd ../depla-stack-nx-astro-unocss && chmod +x bin/index.js && npm i ../depla && cd ../depla && chmod +x ./bin/index.js",
     "start": "npx nx affected:build --watch --parallel --maxParallel=100 --all",
     "link": "source $(npm bin)/../../tools/scripts/link.sh $(npm bin)/../../build/packages",
     "unlink": "source $(npm bin)/../../tools/scripts/unlink.sh $(npm bin)/../../build/packages"

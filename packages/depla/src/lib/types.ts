@@ -56,6 +56,7 @@ export interface ITemplateGenerator {
   generate: Function;
 }
 export interface IGenerateStack {
-  commands: string[];
+  runBefore: string[];
+  runAfter: string[];
   zip: JSZip;
 }

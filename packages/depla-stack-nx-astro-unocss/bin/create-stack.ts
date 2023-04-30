@@ -71,13 +71,19 @@ export const main = () => {
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const filesDir = path.resolve(__dirname, `../files`);
-      const { commands, zip }: IGenerateStack =
+      const { runBefore, runAfter, zip }: IGenerateStack =
         await generateSliceForAllEntities(filesDir, {
           scope: projectPath,
           entities: domain,
         });
 
-      console.log('GOT BACK commands: ', commands, ' AND ZIP: ', zip);
+      console.log(
+        'GOT BACK commands: ',
+        runBefore,
+        runAfter,
+        ' AND ZIP: ',
+        zip
+      );
       //   [
       //     {
       //       name: 'asda',
@@ -96,10 +102,10 @@ export const main = () => {
       //   { scope: 'asd', name: 'asd' }
       // );
       try {
-        console.log(
-          chalk.yellow('AND HERE are the commands to run:')
-          // commands
-        );
+        console.log(chalk.yellow('Running before stack'), runBefore);
+        for (let i = 0; i < runBefore.length; i++) {
+          await execCommandAndStreamOutput(runBefore[i]);
+        }
         console.log('========');
         console.log(chalk.green('AND HERE is contents of zip'));
         zip.forEach(async (relativePath, file) => {
@@ -118,8 +124,9 @@ export const main = () => {
           }
         });
 
-        for (let i = 0; i < commands.length; i++) {
-          await execCommandAndStreamOutput(commands[i]);
+        console.log(chalk.yellow('Running after stack'), runAfter);
+        for (let i = 0; i < runAfter.length; i++) {
+          await execCommandAndStreamOutput(runAfter[i]);
         }
       } catch (e) {
         console.log('ERROR catched: ', e);

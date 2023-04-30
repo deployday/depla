@@ -10,11 +10,12 @@ export const generateSlice = async (
   domain: IEntity[],
   config: Config
 ): Promise<IGenerateStack> => {
-  const { commands, zip } = await [null].concat(domain).reduce(
+  const { runBefore, runAfter, zip } = await [null].concat(domain).reduce(
     async (accumulator, entity): Promise<IGenerateStack> => {
       const slice = await accumulator;
-      const { commands, zip } = generator(entity, domain, config);
-      slice.commands.push(...commands);
+      const { runBefore, runAfter, zip } = generator(entity, domain, config);
+      slice.runBefore.push(...runBefore);
+      slice.runAfter.push(...runAfter);
       const zipContents = await zip.generateAsync({ type: 'nodebuffer' });
       slice.zip = await slice.zip.loadAsync(zipContents, {
         createFolders: true,
@@ -22,13 +23,15 @@ export const generateSlice = async (
       return Promise.resolve(slice);
     },
     Promise.resolve({
-      commands: [],
+      runBefore: [],
+      runAfter: [],
       zip: new JSZip(),
     })
   );
 
   return {
-    commands,
+    runBefore,
+    runAfter,
     zip,
   };
 };
@@ -37,7 +40,8 @@ export const generateSliceForAllEntities = async (
   filesDir: string,
   config
 ): Promise<IGenerateStack> => {
-  const commands = ['echo HALLO'];
+  const runBefore = [];
+  const runAfter = ['npx depla'];
 
   const files = await createZipFromFolder(filesDir);
   const newFiles = new JSZip();
@@ -67,7 +71,8 @@ export const generateSliceForAllEntities = async (
   // });
 
   return {
-    commands,
+    runBefore,
+    runAfter,
     zip: files,
   };
 };

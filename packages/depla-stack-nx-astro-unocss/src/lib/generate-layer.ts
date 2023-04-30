@@ -8,7 +8,8 @@ export const generateLayer = (generator, domain, config): IGenerateStack => {
   console.log('saving ' + folder);
   zip.folder(folder).file('oppa.txt', 'Hello World\n');
   return {
-    commands: ['echo hey hey wowo ' + folder],
+    runBefore: ['echo hey hey wowo ' + folder],
+    runAfter: [],
     zip,
   };
 };
