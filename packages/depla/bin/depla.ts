@@ -55,7 +55,7 @@ export const main = () => {
         (await readFile(resolve(path as string, 'depla.json'))).toString()
       );
       console.log('running slices runner with config: ', config);
-      await slicesRunner(config);
+      slicesRunner(config);
       // const config = fs.readFileSync(resolve('./depla.json'));
       // console.log('OPPPPPAAA', JSON.parse(config.toString()));
     });
