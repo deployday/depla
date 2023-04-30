@@ -59,15 +59,15 @@ export const main = () => {
         .concat(['post', 'tag'])
         .map((entity) => entityFactory(entity.trim()));
 
-      const deplaJSONPath = path.resolve('depla.json');
-      if (!existsSync(deplaJSONPath)) {
-        console.log('creating JSONNNNN', deplaJSONPath);
-
-        // await writeFile(deplaJSONPath, JSON.stringify(deplaJSON), 'utf8');
-        // await execCommandAndStreamOutput(
-        //   `rm -fr ${projectPath} && cp -r ${cache_dir} ${projectPath}`
-        // );
-      }
+      // const deplaJSONPath = path.resolve('depla.json');
+      // if (!existsSync(deplaJSONPath)) {
+      //   console.log('creating JSONNNNN', deplaJSONPath);
+      //
+      //   // await writeFile(deplaJSONPath, JSON.stringify(deplaJSON), 'utf8');
+      //   // await execCommandAndStreamOutput(
+      //   //   `rm -fr ${projectPath} && cp -r ${cache_dir} ${projectPath}`
+      //   // );
+      // }
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const filesDir = path.resolve(__dirname, `../files`);
@@ -113,7 +113,8 @@ export const main = () => {
               Buffer.from(await fileObj.async('arraybuffer'))
             );
           } else {
-            mkdirp.sync(relativePath);
+            const dirPath = path.resolve(path.join('./', relativePath));
+            mkdirp.sync(dirPath);
           }
         });
 
