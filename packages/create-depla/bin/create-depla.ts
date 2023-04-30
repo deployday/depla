@@ -88,7 +88,7 @@ export const main = () => {
       //   entities: [postSchema],
       //   name: project as string,
       // });
-      const cmds = `npx ${stack} ${project}`;
+      const cmds = `npx --yes ${stack} ${project}`;
 
       // const s = p.spinner();
 

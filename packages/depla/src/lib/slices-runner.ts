@@ -9,7 +9,7 @@ export const slicesRunner = async (config: any) => {
   for (let i = 0; i < workspaces.length; i++) {
     const workspace = getWorkspaceByName(workspaces[i].name, config);
     for (let y = 0; y < workspace.slices.length; y++) {
-      const cmd = `${VOLTA_BINARY} run --node ${NODE_VERSION} npx ${workspace.slices[y]} ${workspace.name}`;
+      const cmd = `${VOLTA_BINARY} run --node ${NODE_VERSION} npx --yes ${workspace.slices[y]} ${workspace.name}`;
       console.log(cmd);
       await execCommandAndStreamOutput(cmd);
     }
