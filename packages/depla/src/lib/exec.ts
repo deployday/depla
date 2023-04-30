@@ -125,7 +125,7 @@ export const execCommandAndStreamOutput = async (
     console.log(chalk.yellow(subcommand));
     if (!subcommand) return Promise.resolve();
     let childProcess: ChildProcess;
-    let cmdStr = subcommand.replace('SPECIAL_CHAR_TMP', ';');
+    const cmdStr = subcommand.replace('SPECIAL_CHAR_TMP', ';');
     if (subcommand.indexOf('|') !== -1) {
       childProcess = await spawnWithPipe(cmdStr, cwd, outFilePath);
     } else {
@@ -142,6 +142,24 @@ export const execCommandAndStreamOutput = async (
     }
 
     await onExit(childProcess);
+  }
+};
+
+export const execBulk = async (commands) => {
+  const defaultCWD = path.resolve('./');
+  let cwd, cmd;
+  for (let i = 0; i < commands.length; i++) {
+    try {
+      cmd = commands[i];
+      if (Array.isArray(commands[i])) {
+        [cmd, cwd = defaultCWD] = commands[i];
+        console.log('OPOPOPOPOPOPOPOP', cmd, cwd);
+      }
+      cmd = cmd.replace(/\\|\r?\n|\r/g, ' ').trim();
+      await execCommandAndStreamOutput(cmd, cwd);
+    } catch (e) {
+      console.log('CATCHED', e);
+    }
   }
 };
 

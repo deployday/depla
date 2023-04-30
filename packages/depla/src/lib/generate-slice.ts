@@ -37,13 +37,12 @@ export const generateSlice = async (
 };
 
 export const generateSliceForAllEntities = async (
-  filesDir: string,
   generator,
-  config
+  { domain, templatesPath, context }
 ): Promise<IGenerateStack> => {
-  const { runBefore, runAfter } = generator();
+  const { runBefore, runAfter } = generator(context);
 
-  const files = await createZipFromFolder(filesDir);
+  const files = await createZipFromFolder(templatesPath);
   const newFiles = new JSZip();
   const keys = Object.keys(files.files);
   for (const key of keys) {
@@ -53,22 +52,11 @@ export const generateSliceForAllEntities = async (
     const isFile = fileObj;
     if (isFile) {
       const contents = await fileObj.async('string');
-      const rendered = ejs.render(contents, config);
+      const rendered = ejs.render(contents, context);
       files.remove(file.name);
       files.file(file.name.replace('.ejs', ''), rendered);
-      // console.log('HEREREREREQQQQQUUUUU', files);
-
-      // files.file(file.name.replace('.ejs', '')).lock();
-      // files.lock();
-      // console.log('=======', rendered);
     }
   }
-  // console.log('YYYYYYY');
-  // console.log('QWEQWEQWEQWEQWE', files);
-  // const zipContents = await zip.generateAsync({ type: 'nodebuffer' });
-  // stack.zip = await stack.zip.loadAsync(zipContents, {
-  //   createFolders: true,
-  // });
 
   return {
     runBefore,

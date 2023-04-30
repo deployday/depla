@@ -1,0 +1,19 @@
+{
+  "name": "@depla/slice-data",
+  "version": "0.0.1",
+  "type": "module",
+  "bin": {
+    "@depla/slice-data": "./bin/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "bin",
+    "src",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=16.16.0"
+  }
+}

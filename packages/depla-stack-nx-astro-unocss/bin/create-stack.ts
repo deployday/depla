@@ -16,11 +16,11 @@ import {
   OptionValues,
   CommandUnknownOpts,
 } from '@commander-js/extra-typings';
-import { generateSliceForAllEntities } from '../src/index.js';
 import {
-  execCommandAndStreamOutput,
+  execBulk,
   entityFactory,
   IEntity,
+  generateSliceForAllEntities,
   IGenerateStack,
 } from 'depla';
 // import { printVerboseHook, rootDebug } from '../src/utils.js';
@@ -70,11 +70,15 @@ export const main = () => {
       // }
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
-      const filesDir = path.resolve(__dirname, `../files`);
+      const templatesPath = path.resolve(__dirname, `../files`);
       const { runBefore, runAfter, zip }: IGenerateStack =
-        await generateSliceForAllEntities(filesDir, generate, {
-          name: projectPath,
-          entities: domain,
+        await generateSliceForAllEntities(generate, {
+          domain,
+          templatesPath,
+          context: {
+            name: projectPath,
+            entities: domain,
+          },
         });
 
       console.log(
@@ -103,17 +107,13 @@ export const main = () => {
       // );
       try {
         console.log(chalk.yellow('Running before stack'), runBefore);
-        for (let i = 0; i < runBefore.length; i++) {
-          await execCommandAndStreamOutput(runBefore[i]);
-        }
+        execBulk(runBefore);
         console.log('========');
         console.log(chalk.green('AND HERE is contents of zip'));
         zip.forEach(async (relativePath, file) => {
           const fileObj = zip.file(file.name);
           const isFile = fileObj;
           if (isFile) {
-            console.log('HEREREREREE', fileObj);
-            // zip.file("hello.txt").async("string");
             fs.writeFileSync(
               path.resolve(path.join('./', relativePath)),
               Buffer.from(await fileObj.async('arraybuffer'))
@@ -125,9 +125,7 @@ export const main = () => {
         });
 
         console.log(chalk.yellow('Running after stack'), runAfter);
-        for (let i = 0; i < runAfter.length; i++) {
-          await execCommandAndStreamOutput(runAfter[i]);
-        }
+        execBulk(runAfter);
       } catch (e) {
         console.log('ERROR catched: ', e);
       }

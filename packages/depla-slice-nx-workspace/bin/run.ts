@@ -1,13 +1,14 @@
 import { readFile } from 'fs/promises';
 import { resolve } from 'node:path';
 import * as os from 'os';
+import fs from 'fs';
 import * as process from 'process';
 import mkdirp from 'mkdirp';
 // import * as p from '@clack/prompts';
 import inquirer from 'inquirer';
 import * as crypto from 'crypto';
 import { generate } from '../src/index.js';
-import { execCommandAndStreamOutput, getWorkspaceByName } from 'depla';
+import { execBulk, getWorkspaceByName } from 'depla';
 import chalk from 'chalk';
 import {
   Command,
@@ -26,32 +27,20 @@ export const main = () => {
     // .argument('-w, --workspace', 'what workspace shall we use', 'acme')
     // @ts-ignore
     .action(async (workspaceName) => {
-      // @ts-ignore
-      // const { workspace: workspaceName } = options;
-      // console.log('asdaASDASD', options);
       const config = JSON.parse(
         (await readFile(resolve('depla.json'))).toString()
       );
-      console.log('YYYYYY', config);
       const workspace = getWorkspaceByName(workspaceName as string, config);
-      const { runBefore } = await generate(workspace);
-      console.log(runBefore);
-      const defaultCWD = resolve('./');
-      let cwd, cmd;
-      for (let i = 0; i < runBefore.length; i++) {
-        try {
-          cmd = runBefore[i][0];
-          if (runBefore[i][1]) {
-            cwd = runBefore[i][1];
-          } else {
-            cwd = defaultCWD;
-          }
-          cmd = cmd.replace(/\\|\r?\n|\r/g, ' ').trim();
-          await execCommandAndStreamOutput(cmd, cwd);
-        } catch (e) {
-          console.log('CATCHED', e);
-        }
+      if (fs.existsSync(resolve(workspace.baseDir))) {
+        console.log(
+          chalk.green(
+            `Workspace ${workspaceName} is already installed. Moving on...`
+          )
+        );
+        return Promise.resolve();
       }
+      const { runBefore } = await generate(workspace);
+      execBulk(runBefore);
     });
 
   program.parse();
