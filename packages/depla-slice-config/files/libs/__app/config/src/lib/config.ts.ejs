@@ -1,0 +1,20 @@
+import { isProd } from '@depla/utils-environment';
+
+export const config = {
+  name: '<%= app.name %>',
+
+  basePathname: '/',
+  trailingSlash: false,
+
+  title: '<%= app.name %>',
+  description:
+    '🚀 <%= app.name %>',
+
+  defaultTheme: 'system', // Values: "system" | "light" | "dark" | "light:only" | "dark:only"
+
+  language: 'en',
+  textDirection: 'ltr',
+
+  googleAnalyticsId: false, // or "G-XXXXXXXXXX",
+  googleSiteVerificationId: 'orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M',
+};

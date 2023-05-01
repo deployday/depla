@@ -48,22 +48,23 @@ export const main = () => {
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);
-      const { runBefore, runAfter, zip, expectingInjections }: IGenerateStack =
+      const { runBefore, runAfter, zip, writingInjections }: IGenerateStack =
         await generateSliceForAllEntities(generate, {
           domain: config.entities,
           templatesPath,
           context,
         });
 
+      await updateInjections(
+        {
+          writingInjections,
+        },
+        context
+      );
+
       try {
         await execBulk(runBefore);
         await extractArchive(zip, context);
-        await updateInjections(
-          {
-            expectingInjections,
-          },
-          context
-        );
         await execBulk(runAfter);
       } catch (e) {
         console.log('ERROR catched: ', e);

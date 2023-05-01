@@ -1,9 +1,9 @@
 {
-  "name": "depla-stack-nx-astro-unocss",
-  "version": "0.0.12",
+  "name": "@depla/slice-config",
+  "version": "0.0.1",
   "type": "module",
   "bin": {
-    ": workspaced/epla-stack-nx-astro-unocss": "./bin/index.js"
+    "@depla/slice-config": "./bin/index.js"
   },
   "publishConfig": {
     "access": "public"

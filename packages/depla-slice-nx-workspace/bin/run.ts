@@ -30,7 +30,10 @@ export const main = () => {
       const config = JSON.parse(
         (await readFile(resolve('depla.json'))).toString()
       );
-      const workspace = getWorkspaceByName(workspaceName as string, config);
+      const workspace = getWorkspaceByName(
+        workspaceName as string,
+        config.workspaces
+      );
       if (fs.existsSync(resolve(workspace.baseDir, 'nx.json'))) {
         console.log(
           chalk.green(

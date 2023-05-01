@@ -6,14 +6,13 @@ export const extractArchive = async (zip, context) => {
   return await zip.forEach(async (relativePath, file) => {
     const fileObj = zip.file(file.name);
     const isFile = fileObj;
-    const populatedPath = relativePath.replace('__app', context.app.name);
     if (isFile) {
       fs.writeFileSync(
-        path.resolve(path.join('./', populatedPath)),
+        path.resolve(path.join('./', relativePath)),
         Buffer.from(await fileObj.async('arraybuffer'))
       );
     } else {
-      const dirPath = path.resolve(path.join('./', populatedPath));
+      const dirPath = path.resolve(path.join('./', relativePath));
       mkdirp.sync(dirPath);
     }
   });

@@ -42,7 +42,10 @@ export const main = () => {
         (await readFile(path.resolve('depla.json'))).toString()
       );
       console.log('YYYYYY', config);
-      const workspace = getWorkspaceByName(workspaceName as string, config);
+      const workspace = getWorkspaceByName(
+        workspaceName as string,
+        config.workspaces
+      );
       const context = { workspace };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));

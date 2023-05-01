@@ -10,6 +10,8 @@ export const generateSlice = async (
   domain: IEntity[],
   config: Config
 ): Promise<IGenerateStack> => {
+  const writingInjections = [];
+  const expectingInjections = [];
   const { runBefore, runAfter, zip } = await [null].concat(domain).reduce(
     async (accumulator, entity): Promise<IGenerateStack> => {
       const slice = await accumulator;
@@ -33,6 +35,8 @@ export const generateSlice = async (
     runBefore,
     runAfter,
     zip,
+    writingInjections,
+    expectingInjections,
   };
 };
 
@@ -40,7 +44,9 @@ export const generateSliceForAllEntities = async (
   generator,
   { domain, templatesPath, context }
 ): Promise<IGenerateStack> => {
-  const { runBefore, runAfter } = generator(context);
+  const { runBefore, runAfter, writingInjections } = generator(context);
+  const { workspace, app } = context;
+  const expectingInjections = [];
 
   const files = await createZipFromFolder(templatesPath);
   const newFiles = new JSZip();
@@ -53,8 +59,26 @@ export const generateSliceForAllEntities = async (
     if (isFile) {
       const contents = await fileObj.async('string');
       const rendered = ejs.render(contents, context);
+      const filename = file.name
+        .replace('.ejs', '')
+        .replace('__app', context?.app?.name);
+      // if this file expects for injections, save a reference to it and
+      // when all slices are done, re-render this file with all the injections
+      // left by other slices
+      const injects = new Set(contents.match(/injects\.(\w+)/g));
+      if (injects.size) {
+        injects.forEach((injectionName) => {
+          expectingInjections.push({
+            workspaceName: workspace.name,
+            appName: app.name,
+            filename,
+            contents,
+            injectionName: injectionName.replace('injects.', ''),
+          });
+        });
+      }
       files.remove(file.name);
-      files.file(file.name.replace('.ejs', ''), rendered);
+      files.file(filename, rendered);
     }
   }
 
@@ -62,6 +86,8 @@ export const generateSliceForAllEntities = async (
     runBefore,
     runAfter,
     zip: files,
+    writingInjections,
+    expectingInjections,
   };
 };
 

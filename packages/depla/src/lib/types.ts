@@ -55,8 +55,31 @@ export interface ILayer {
 export interface ITemplateGenerator {
   generate: Function;
 }
+
+export interface IInjection {
+  workspaceName: string;
+  appName: string;
+  injectionName: string;
+  injectionObject: any;
+}
+
+export interface IExpectedInjection {
+  workspaceName: string;
+  appName: string;
+  filename: string;
+  injectionName: string;
+  contents?: string;
+}
+
 export interface IGenerateStack {
   runBefore: string[];
   runAfter: string[];
   zip: JSZip;
+  writingInjections: IInjection[];
+  expectingInjections: IExpectedInjection[];
+}
+
+export interface IContext {
+  workspace: any;
+  app: any;
 }
