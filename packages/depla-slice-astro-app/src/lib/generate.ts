@@ -6,7 +6,7 @@ import chalk from 'chalk';
 const VOLTA_BINARY = `${os.homedir()}/.volta/bin/volta`;
 const NODE_VERSION = '16.16.0';
 
-export const generate = (app: any) => {
+export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
   const libraryExists = fs.existsSync(resolve('./libs/website/app'));
   if (libraryExists)
     console.log(
@@ -20,11 +20,11 @@ export const generate = (app: any) => {
         npm i @nrwl/js`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
-        app --directory=website --importPath=@${app.name}/website/app \
+        app --directory=website --importPath=${workspace.scope}/website/app \
          --bundler=tsc --unitTestRunner=none`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
-        app --directory=shared/generated --importPath=@${app.name}/shared/generated/app \
+        app --directory=shared/generated --importPath=${workspace.scope}/shared/generated/app \
          --bundler=tsc --unitTestRunner=none`,
     ],
     runAfter: [''],
