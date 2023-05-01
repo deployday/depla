@@ -31,7 +31,7 @@ export const main = () => {
         (await readFile(resolve('depla.json'))).toString()
       );
       const workspace = getWorkspaceByName(workspaceName as string, config);
-      if (fs.existsSync(resolve(workspace.baseDir))) {
+      if (fs.existsSync(resolve(workspace.baseDir, 'nx.json'))) {
         console.log(
           chalk.green(
             `Workspace ${workspaceName} is already installed. Moving on...`
