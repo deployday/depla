@@ -3,6 +3,7 @@ export const getWorkspaceByName = (name = 'default', config) => {
   for (let i = 0; i < workspaces.length; i++) {
     const workspace = {
       name: 'default',
+      scope: '@' + (workspaces[i]?.name || 'default'),
       baseDir: './',
       ...workspaces[i],
     };

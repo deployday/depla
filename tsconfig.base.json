@@ -27,6 +27,7 @@
       "@depla/generate-code": ["packages/generate-code/src/index.ts"],
       "@depla/generate-stack": ["packages/generate-stack/src/index.ts"],
       "@depla/ioc": ["packages/ioc/src/index.ts"],
+      "@depla/slice-astro-app": ["packages/depla-slice-astro-app/src/index.ts"],
       "@depla/slice-data": ["packages/depla-slice-data/src/index.ts"],
       "@depla/slice-nx-workspace": [
         "packages/depla-slice-nx-workspace/src/index.ts"

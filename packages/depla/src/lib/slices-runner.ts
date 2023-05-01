@@ -15,5 +15,15 @@ export const slicesRunner = async (config: any) => {
       console.log(cmd);
       await execCommandAndStreamOutput(cmd);
     }
+    for (let y = 0; y < workspace.apps.length; y++) {
+      const app = workspace.apps[y];
+      for (let z = 0; z < app.slices.length; z++) {
+        const slice = app.slices[z];
+        const slicePackage = typeof slice === 'object' ? slice.name : slice;
+        const cmd = `${VOLTA_BINARY} run --node ${NODE_VERSION} npx --yes ${slicePackage} ${workspace.name} ${app.name}`;
+        console.log(cmd);
+        await execCommandAndStreamOutput(cmd);
+      }
+    }
   }
 };
