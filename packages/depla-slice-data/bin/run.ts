@@ -18,6 +18,7 @@ import {
 
 import {
   execBulk,
+  extractArchive,
   getWorkspaceByName,
   generateSliceForAllEntities,
   IGenerateStack,
@@ -42,6 +43,7 @@ export const main = () => {
       );
       console.log('YYYYYY', config);
       const workspace = getWorkspaceByName(workspaceName as string, config);
+      const context = { workspace };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);
@@ -49,27 +51,12 @@ export const main = () => {
         await generateSliceForAllEntities(generate, {
           domain: config.entities,
           templatesPath,
-          context: workspace,
+          context,
         });
 
       try {
         await execBulk(runBefore);
-
-        zip.forEach(async (relativePath, file) => {
-          const fileObj = zip.file(file.name);
-          const isFile = fileObj;
-          if (isFile) {
-            fs.writeFileSync(
-              path.resolve(path.join('./', relativePath)),
-              Buffer.from(await fileObj.async('arraybuffer'))
-            );
-          } else {
-            const dirPath = path.resolve(path.join('./', relativePath));
-            mkdirp.sync(dirPath);
-          }
-        });
-
-        console.log(chalk.yellow('Running after stack'), runAfter);
+        await extractArchive(zip, context);
         await execBulk(runAfter);
       } catch (e) {
         console.log('ERROR catched: ', e);

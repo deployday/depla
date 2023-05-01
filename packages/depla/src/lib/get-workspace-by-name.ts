@@ -1,5 +1,4 @@
-export const getWorkspaceByName = (name = 'default', config) => {
-  const { workspaces } = config;
+export const getWorkspaceByName = (name = 'default', workspaces) => {
   for (let i = 0; i < workspaces.length; i++) {
     const workspace = {
       name: 'default',

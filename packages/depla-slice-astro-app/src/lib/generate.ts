@@ -7,7 +7,7 @@ const VOLTA_BINARY = `${os.homedir()}/.volta/bin/volta`;
 const NODE_VERSION = '16.16.0';
 
 export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
-  const libraryExists = fs.existsSync(resolve('./libs/website/app'));
+  const libraryExists = fs.existsSync(resolve(`./libs/${app.name}/app`));
   if (libraryExists)
     console.log(
       chalk.green(
@@ -17,10 +17,18 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
   return {
     runBefore: !libraryExists && [
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npm i @nrwl/js`,
+        npm i @nrwl/js @depla/ioc @depla/utils-astro-collections-facade`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
-        app --directory=website --importPath=${workspace.scope}/website/app \
+        app --directory=${app.name} --importPath=${workspace.scope}/${app.name}/app \
+         --bundler=tsc --unitTestRunner=none`,
+      `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+        npx --yes nx g @nrwl/js:lib \
+        app --directory=${app.name}/generated --importPath=${workspace.scope}/${app.name}/generated/app \
+         --bundler=tsc --unitTestRunner=none`,
+      `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+        npx --yes nx g @nrwl/js:lib \
+        app --directory=shared --importPath=${workspace.scope}/shared/app \
          --bundler=tsc --unitTestRunner=none`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \

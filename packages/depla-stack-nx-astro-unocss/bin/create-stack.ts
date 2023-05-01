@@ -22,6 +22,7 @@ import {
   IEntity,
   generateSliceForAllEntities,
   IGenerateStack,
+  extractArchive,
 } from 'depla';
 // import { printVerboseHook, rootDebug } from '../src/utils.js';
 // import { postSchema } from '../src/entities.js';
@@ -52,22 +53,15 @@ export const main = () => {
     // @ts-ignore
     .action(async (projectPath: string, options: OptionValues) => {
       const entities: string = options.entities as string;
-      console.log('UUUUU', projectPath);
-      console.log('UUUUU', options['entities']);
       const domain: IEntity[] = entities
         .split(',')
         .concat(['post', 'tag'])
         .map((entity) => entityFactory(entity.trim()));
 
-      // const deplaJSONPath = path.resolve('depla.json');
-      // if (!existsSync(deplaJSONPath)) {
-      //   console.log('creating JSONNNNN', deplaJSONPath);
-      //
-      //   // await writeFile(deplaJSONPath, JSON.stringify(deplaJSON), 'utf8');
-      //   // await execCommandAndStreamOutput(
-      //   //   `rm -fr ${projectPath} && cp -r ${cache_dir} ${projectPath}`
-      //   // );
-      // }
+      const context = {
+        name: projectPath,
+        entities: domain,
+      };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);
@@ -75,56 +69,12 @@ export const main = () => {
         await generateSliceForAllEntities(generate, {
           domain,
           templatesPath,
-          context: {
-            name: projectPath,
-            entities: domain,
-          },
+          context,
         });
 
-      console.log(
-        'GOT BACK commands: ',
-        runBefore,
-        runAfter,
-        ' AND ZIP: ',
-        zip
-      );
-      //   [
-      //     {
-      //       name: 'asda',
-      //       generator: () => {
-      //         return 'foo';
-      //       },
-      //     },
-      //     {
-      //       name: 'asda',
-      //       generator: () => {
-      //         return 'zombie';
-      //       },
-      //     },
-      //   ],
-      //   domain,
-      //   { scope: 'asd', name: 'asd' }
-      // );
       try {
-        console.log(chalk.yellow('Running before stack'), runBefore);
         execBulk(runBefore);
-        console.log('========');
-        console.log(chalk.green('AND HERE is contents of zip'));
-        zip.forEach(async (relativePath, file) => {
-          const fileObj = zip.file(file.name);
-          const isFile = fileObj;
-          if (isFile) {
-            fs.writeFileSync(
-              path.resolve(path.join('./', relativePath)),
-              Buffer.from(await fileObj.async('arraybuffer'))
-            );
-          } else {
-            const dirPath = path.resolve(path.join('./', relativePath));
-            mkdirp.sync(dirPath);
-          }
-        });
-
-        console.log(chalk.yellow('Running after stack'), runAfter);
+        extractArchive(zip, context);
         execBulk(runAfter);
       } catch (e) {
         console.log('ERROR catched: ', e);
