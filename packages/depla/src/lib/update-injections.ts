@@ -40,10 +40,13 @@ export const updateInjections = async (
   for (let [injectionName, injections] of Object.entries(writingInjections)) {
     const arr =
       config.writingInjections[workspace.name][app.name][injectionName] || [];
-    config.writingInjections[workspace.name][app.name][injectionName] = [
-      ...arr,
-      ...injections,
-    ];
+    config.writingInjections[workspace.name][app.name][injectionName] =
+      Object.values(
+        [...arr, ...injections].reduce((a, c) => {
+          a[c.name + '|' + c.module] = c;
+          return a;
+        }, {})
+      );
   }
 
   config.expectingInjections = {
