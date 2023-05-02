@@ -30,7 +30,8 @@ export const updateInjections = async (
     ...{
       writingInjections: {
         [workspace.name]: {
-          [app.name]: {},
+          [app.name]:
+            config?.writingInjections?.[workspace.name]?.[app.name] || {},
         },
       },
     },
