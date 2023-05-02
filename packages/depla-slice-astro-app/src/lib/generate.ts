@@ -17,7 +17,11 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
   return {
     runBefore: !libraryExists && [
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npm i @nrwl/js @depla/ioc @depla/utils-astro-collections-facade`,
+        npm i -D @nrwl/js @nxtensions/astro@3.3.0`,
+      `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+        npm i @depla/ioc @depla/utils-astro-collections-facade`,
+      `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+        npx --yes nx g @nxtensions/astro:app ${app.name}`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         app --directory=${app.name} --importPath=${workspace.scope}/${app.name}/app \
