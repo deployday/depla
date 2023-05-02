@@ -1,7 +1,7 @@
 export const generate = (config = {}) => {
   return {
     runBefore: [],
-    runAfter: ['npx --yes depla'],
+    runAfter: ['npx --yes depla@latest'],
   };
 };
 // export const generate = (config: Config) => {
