@@ -1,4 +1,4 @@
-import { config } from '<%= workspace.scope %>/<%= app.name %>/config';
+import { config } from './<%= app.name %>-config';
 
 export const provider = (c) => {
   c.service('config', (c) => config);

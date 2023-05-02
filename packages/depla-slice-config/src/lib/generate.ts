@@ -26,6 +26,14 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
         npx --yes nx g @nrwl/js:lib \
         config --directory=${app.name}/generated --importPath=${workspace.scope}/${app.name}/generated/config \
          --bundler=tsc --unitTestRunner=none`,
+      `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+        npx --yes nx g @nrwl/js:lib \
+        config --directory=shared --importPath=${workspace.scope}/shared/config \
+         --bundler=tsc --unitTestRunner=none`,
+      `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+        npx --yes nx g @nrwl/js:lib \
+        config --directory=shared/generated --importPath=${workspace.scope}/shared/generated/config \
+         --bundler=tsc --unitTestRunner=none`,
     ],
     runAfter: [''],
     writingInjections: {

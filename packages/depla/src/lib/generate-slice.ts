@@ -61,7 +61,7 @@ export const generateSliceForAllEntities = async (
       const rendered = ejs.render(contents, context);
       const filename = file.name
         .replace('.ejs', '')
-        .replace('__app', context?.app?.name);
+        .replaceAll('__app', context?.app?.name);
       // if this file expects for injections, save a reference to it and
       // when all slices are done, re-render this file with all the injections
       // left by other slices
