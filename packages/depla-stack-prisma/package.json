@@ -1,18 +1,13 @@
 {
-  "name": "depla",
-  "version": "0.0.14",
+  "name": "@depla/stack-prisma",
+  "version": "0.0.2",
   "type": "module",
   "bin": {
-    "depla": "./bin/index.js"
+    "@depla/stack-prisma": "./bin/index.js"
   },
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "bin",
-    "src",
-    "package.json"
-  ],
   "engines": {
     "node": ">=16.16.0"
   }

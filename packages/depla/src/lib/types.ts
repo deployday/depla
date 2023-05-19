@@ -81,5 +81,5 @@ export interface IGenerateStack {
 
 export interface IContext {
   workspace: any;
-  app: any;
+  app?: any;
 }

@@ -56,10 +56,24 @@ export const slicesRunner = async (config: any) => {
     );
     const app = getAppByName(val.appName, workspaceO.apps);
     const injectionName = val.injectionName;
+    const injects =
+      injectionsJSON.writingInjections[val.workspaceName]['workspace-global'];
+    for (const [injectionName, injections] of Object.entries(
+      injectionsJSON.writingInjections[val.workspaceName][val.appName]
+    )) {
+      const arr = injects[injectionName] || [];
+      const injs = Array.isArray(injections) ? injections : [];
+      injects[injectionName] = Object.values(
+        [...arr, ...injs].reduce((a, c) => {
+          a[c.name + '|' + c.module] = c;
+          return a;
+        }, {})
+      );
+    }
     const context = {
       workspace: workspaceO,
       app,
-      injects: injectionsJSON.writingInjections[val.workspaceName][val.appName],
+      injects,
     };
     console.log('POOOOOOOO', context);
     const rendered = ejs.render(val.contents, context);

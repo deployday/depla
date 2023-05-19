@@ -1,18 +1,13 @@
 {
-  "name": "depla",
-  "version": "0.0.14",
+  "name": "@depla/stack-prisma-astro",
+  "version": "0.0.1",
   "type": "module",
   "bin": {
-    "depla": "./bin/index.js"
+    "@depla/stack-prisma-astro": "./bin/index.js"
   },
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "bin",
-    "src",
-    "package.json"
-  ],
   "engines": {
     "node": ">=16.16.0"
   }

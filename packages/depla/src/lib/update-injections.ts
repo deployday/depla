@@ -25,13 +25,21 @@ export const updateInjections = async (
     ? JSON.parse((await readFile(injectionsJSONPath)).toString())
     : {};
 
+  const appName = app?.name || 'workspace-global';
+  console.log('UPDATEING WRITINGS', appName, writingInjections);
   config = {
     ...config,
     ...{
       writingInjections: {
-        [workspace.name]: {
-          [app.name]:
-            config?.writingInjections?.[workspace.name]?.[app.name] || {},
+        ...config?.writingInjections,
+        ...{
+          [workspace.name]: {
+            ...config?.writingInjections?.[workspace.name],
+            ...{
+              [appName]:
+                config?.writingInjections?.[workspace.name]?.[appName] || {},
+            },
+          },
         },
       },
     },
@@ -39,8 +47,8 @@ export const updateInjections = async (
 
   for (let [injectionName, injections] of Object.entries(writingInjections)) {
     const arr =
-      config.writingInjections[workspace.name][app.name][injectionName] || [];
-    config.writingInjections[workspace.name][app.name][injectionName] =
+      config.writingInjections[workspace.name][appName][injectionName] || [];
+    config.writingInjections[workspace.name][appName][injectionName] =
       Object.values(
         [...arr, ...injections].reduce((a, c) => {
           a[c.name + '|' + c.module] = c;

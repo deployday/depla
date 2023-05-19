@@ -33,6 +33,10 @@
       "@depla/slice-nx-workspace": [
         "packages/depla-slice-nx-workspace/src/index.ts"
       ],
+      "@depla/stack-prisma": ["packages/depla-stack-prisma/src/index.ts"],
+      "@depla/stack-prisma-astro": [
+        "packages/depla-stack-prisma-astro/src/index.ts"
+      ],
       "@depla/utils-astro-collections-facade": [
         "packages/utils/astro-collections-facade/src/index.ts"
       ],
