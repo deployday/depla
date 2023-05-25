@@ -17,27 +17,33 @@ export const generate = ({
   app: any;
   entity: any;
 }) => {
-  const libraryExists = fs.existsSync(resolve('./lib/shared/entities'));
+  const libraryExists = fs.existsSync(
+    resolve(`./lib/shared/entities/${entity?.model}`)
+  );
   if (libraryExists)
-    console.log(chalk.green(`prisma astro stack is already installed`));
+    console.log(chalk.green(`entity  ${entity?.model} is already installed`));
 
   return {
-    runBefore: !libraryExists && [
-      [
-        `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+    runBefore: !libraryExists
+      ? [
+          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
-        data --directory=website --importPath=@${workspace.scope}/website/data \
+        ${entity?.model} --directory=shared/entities --importPath=${workspace.scope}/shared/entities/${entity?.model} \
          --bundler=tsc --unitTestRunner=none`,
-      ],
-    ],
+          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+        npx --yes nx g @nrwl/js:lib \
+        ${entity?.model} --directory=shared/generated/entities --importPath=${workspace.scope}/shared/generated/entities/${entity?.model} \
+         --bundler=tsc --unitTestRunner=none`,
+        ]
+      : [],
     runAfter: [`npx prisma migrate dev --name init`],
     writingInjections: {
-      // providers: [
-      //   {
-      //     name: 'db',
-      //     module: `${workspace.scope}/data-provider`,
-      //   },
-      // ],
+      providers: [
+        {
+          name: entity?.model,
+          module: `${workspace.scope}/shared/entities/${entity?.model}`,
+        },
+      ],
     },
   };
 };

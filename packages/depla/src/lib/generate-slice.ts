@@ -63,8 +63,14 @@ export const generateSlice = async (
           entity,
           ...{ domain },
         });
+        console.log(
+          'Just finished RUYNNING generator for ENTITY',
+          entity,
+          slice,
+          generated
+        );
         const { runBefore, runAfter } = generated;
-        const writingInjections: any[] = generated.writingInjections;
+        const writingInjections = generated.writingInjections;
         console.log('HEREREREERERRERERASDAS', runBefore);
 
         const zip = new JSZip();
@@ -90,7 +96,7 @@ export const generateSlice = async (
           slice.writingInjections[injectionName] = [
             ...new Set(
               Object.values(
-                [...arr, ...injections].reduce((a, c) => {
+                [...arr, ...(injections as any[])].reduce((a, c) => {
                   a[c.name + '|' + c.module] = c;
                   return a;
                 }, {})
@@ -104,8 +110,8 @@ export const generateSlice = async (
         });
         return Promise.resolve({
           ...slice,
-          runBefore: [...new Set(runBefore)],
-          runAfter: [...new Set(runAfter)],
+          runBefore,
+          runAfter,
           writingInjections,
         });
       },

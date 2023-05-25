@@ -23,7 +23,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
       [
         `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
-        data --directory=website --importPath=@${workspace.scope}/website/data \
+        data --directory=website --importPath=${workspace.scope}/website/data \
          --bundler=tsc --unitTestRunner=none`,
       ],
     ],

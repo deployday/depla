@@ -9,40 +9,36 @@ const NODE_VERSION = '16.16.0';
 export const generate = ({
   domain,
   workspace,
-  entity,
 }: {
   domain: any;
   workspace: any;
-  entity: any;
 }) => {
   const libraryExists = fs.existsSync(resolve('./prisma'));
   if (libraryExists)
     console.log(chalk.green(`prisma stack is already installed`));
 
   const ret = {
-    runBefore: [
-      ...(!libraryExists
-        ? [
-            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+    runBefore: !libraryExists
+      ? [
+          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npm i prisma@4.11.0`,
 
-            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npm i @depla/utils-db@latest`,
 
-            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes prisma init --datasource-provider sqlite`,
 
-            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
-        prisma --directory=shared --importPath=@${workspace.scope}/shared/prisma \
+        prisma --directory=shared --importPath=${workspace.scope}/shared/prisma \
          --bundler=tsc --unitTestRunner=none`,
-            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
-        prisma --directory=shared/generated --importPath=@${workspace.scope}/shared/generated/prisma \
+        prisma --directory=shared/generated --importPath=${workspace.scope}/shared/generated/prisma \
          --bundler=tsc --unitTestRunner=none`,
-          ]
-        : []),
-    ],
+        ]
+      : [],
     runAfter: [`npx prisma migrate dev --name init`],
     writingInjections: {
       providers: [

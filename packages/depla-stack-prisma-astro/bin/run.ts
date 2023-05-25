@@ -55,15 +55,14 @@ export const main = () => {
           context,
         });
 
-      const weNeedToUpdateInjections =
-        Boolean(app) && Boolean(writingInjections);
-      if (weNeedToUpdateInjections)
-        await updateInjections(
-          {
-            writingInjections,
-          },
-          context
-        );
+      await updateInjections(
+        {
+          writingInjections,
+        },
+        context
+      );
+
+      console.log('OK WE ARE AFTER THAT HERE IS RUNBEFORE', runBefore);
 
       try {
         await execBulk(runBefore);

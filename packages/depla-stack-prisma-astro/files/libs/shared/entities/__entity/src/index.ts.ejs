@@ -1,1 +1,3 @@
-export * from './lib/entity';
+<% if (locals.entityName) { %>
+export * from './lib/shared-entities-<%= locals.entityName %>.js';
+<% } %>

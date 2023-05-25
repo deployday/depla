@@ -22,6 +22,7 @@ import {
   getWorkspaceByName,
   generateSlice,
   IGenerateStack,
+  generateSliceForAllEntities,
 } from 'depla';
 
 const program: CommandUnknownOpts = new Command();
@@ -48,7 +49,7 @@ export const main = () => {
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);
       const { runBefore, runAfter, zip, writingInjections }: IGenerateStack =
-        await generateSlice(generate, {
+        await generateSliceForAllEntities(generate, {
           domain: config.entities,
           templatesPath,
           context,
@@ -63,6 +64,7 @@ export const main = () => {
         },
         context
       );
+      console.log('WROTE INJECTIONS AFTER STACK-PRISMA', writingInjections);
 
       try {
         await execBulk(runBefore);
