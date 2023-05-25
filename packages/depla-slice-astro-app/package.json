@@ -1,6 +1,6 @@
 {
   "name": "@depla/slice-astro-app",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "type": "module",
   "bin": {
     "depla-stack-nx-astro-unocss": "./bin/index.js"

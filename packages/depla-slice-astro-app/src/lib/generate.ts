@@ -17,7 +17,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
   return {
     runBefore: !libraryExists && [
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npm i -D @nrwl/js @nxtensions/astro@3.3.0`,
+        npm i -D @nrwl/js @nxtensions/astro`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npm i @depla/ioc @depla/utils-astro-collections-facade`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
