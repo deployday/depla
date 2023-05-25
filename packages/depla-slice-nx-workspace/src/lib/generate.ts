@@ -10,7 +10,7 @@ export const generate = (workspace: any) => {
     runBefore: [
       [
         `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npx --yes create-nx-workspace@latest ${workspace.name} \
+        npx --yes create-nx-workspace@15.7.2 ${workspace.name} \
             --preset=empty \
             --nxCloud=false --pm=npm`,
       ],
