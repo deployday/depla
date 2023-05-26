@@ -22,6 +22,10 @@ export const generate = ({
     process.cwd(),
     `libs/shared/entities/${entity?.ref}`
   );
+  const entityGeneratedDirectoryPath = path.join(
+    process.cwd(),
+    `libs/shared/generated/entities/${entity?.ref}`
+  );
   const libraryExists = fs.existsSync(entityDirectoryPath);
   if (libraryExists)
     console.log(chalk.green(`entity  ${entity?.model} is already installed`));
@@ -33,10 +37,12 @@ export const generate = ({
         npx --yes nx g @nrwl/js:lib \
         ${entity?.ref} --directory=shared/entities --importPath=${workspace.scope}/shared/entities/${entity?.ref} \
          --unitTestRunner=none`,
+          `rm -fr ${entityDirectoryPath}/src/lib`,
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         ${entity?.ref} --directory=shared/generated/entities --importPath=${workspace.scope}/shared/generated/entities/${entity?.ref} \
          --unitTestRunner=none`,
+          `rm -fr ${entityGeneratedDirectoryPath}/src/lib`,
         ]
       : [],
     runAfter: [
