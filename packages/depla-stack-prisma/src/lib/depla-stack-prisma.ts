@@ -1,4 +1,4 @@
-import { resolve } from 'node:path';
+import * as path from 'node:path';
 import * as os from 'os';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -13,7 +13,8 @@ export const generate = ({
   domain: any;
   workspace: any;
 }) => {
-  const libraryExists = fs.existsSync(resolve('./prisma'));
+  const prismaDirectoryPath = path.resolve('prisma');
+  const libraryExists = fs.existsSync(prismaDirectoryPath);
   if (libraryExists)
     console.log(chalk.green(`prisma stack is already installed`));
 
@@ -28,6 +29,8 @@ export const generate = ({
 
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes prisma init --datasource-provider sqlite`,
+
+          `rm -fr ${prismaDirectoryPath}/schema.prisma`,
 
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
