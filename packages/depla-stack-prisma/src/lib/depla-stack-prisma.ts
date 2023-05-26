@@ -19,29 +19,36 @@ export const generate = ({
     console.log(chalk.green(`prisma stack is already installed`));
 
   const ret = {
-    runBefore: !libraryExists
-      ? [
-          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+    runBefore: [
+      // although this file doesn't have `generated` in it's path
+      // (our internal convention to separate files that can be overwritten
+      // from others)
+      // we want to overwrite it every time so let's delete it first
+      `rm -f ${prismaDirectoryPath}/schema.prisma`,
+      ...(!libraryExists
+        ? [
+            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npm i prisma@4.11.0`,
 
-          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npm i @depla/utils-db@latest`,
 
-          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes prisma init --datasource-provider sqlite`,
 
-          `rm -fr ${prismaDirectoryPath}/schema.prisma`,
+            `rm -fr ${prismaDirectoryPath}/schema.prisma`,
 
-          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         prisma --directory=shared --importPath=${workspace.scope}/shared/prisma \
          --unitTestRunner=none`,
-          `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         prisma --directory=shared/generated --importPath=${workspace.scope}/shared/generated/prisma \
          --unitTestRunner=none`,
-        ]
-      : [],
+          ]
+        : []),
+    ],
     runAfter: [`npx prisma migrate dev --name init`],
     writingInjections: {
       providers: [
