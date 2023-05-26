@@ -8,7 +8,7 @@ import {
 } from '@depla/utils-url';
 import { prependAsyncCallbackToObjectMethods } from '@depla/utils-js-object';
 import { <%= entity.model %> as <%= entity.model %>Model } from '@prisma/client';
-import { <%= entity.model %>Seed } from './shared-generated-entities-__entity-seed';
+import { <%= entity.model %>Seed } from './shared-generated-entities-<%= entity.ref %>-seed';
 
 export function <%= entity.model %>(app, config) {
   const { <%= entity.ref %>: <%= entity.ref %>Model }: { <%= entity.ref %>: <%= entity.model %>Model } = app.db;
