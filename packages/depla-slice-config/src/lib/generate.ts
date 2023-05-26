@@ -17,23 +17,23 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
   return {
     runBefore: !libraryExists && [
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npm i @nrwl/js @depla/utils-environment`,
+        npm i @nrwl/js@15.7.2 @depla/utils-environment`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         config --directory=${app.name} --importPath=${workspace.scope}/${app.name}/config \
-         --bundler=tsc --unitTestRunner=none`,
+         --unitTestRunner=none`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         config --directory=${app.name}/generated --importPath=${workspace.scope}/${app.name}/generated/config \
-         --bundler=tsc --unitTestRunner=none`,
+         --unitTestRunner=none`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         config --directory=shared --importPath=${workspace.scope}/shared/config \
-         --bundler=tsc --unitTestRunner=none`,
+         --unitTestRunner=none`,
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         config --directory=shared/generated --importPath=${workspace.scope}/shared/generated/config \
-         --bundler=tsc --unitTestRunner=none`,
+         --unitTestRunner=none`,
     ],
     runAfter: [''],
     writingInjections: {

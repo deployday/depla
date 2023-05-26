@@ -32,11 +32,11 @@ export const generate = ({
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         prisma --directory=shared --importPath=${workspace.scope}/shared/prisma \
-         --bundler=tsc --unitTestRunner=none`,
+         --unitTestRunner=none`,
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         prisma --directory=shared/generated --importPath=${workspace.scope}/shared/generated/prisma \
-         --bundler=tsc --unitTestRunner=none`,
+         --unitTestRunner=none`,
         ]
       : [],
     runAfter: [`npx prisma migrate dev --name init`],

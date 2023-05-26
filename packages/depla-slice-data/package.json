@@ -1,6 +1,6 @@
 {
   "name": "@depla/slice-data",
-  "version": "0.0.7",
+  "version": "0.0.11",
   "type": "module",
   "bin": {
     "@depla/slice-data": "./bin/index.js"

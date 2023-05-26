@@ -15,17 +15,21 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
       )
     );
   return {
-    runBefore: !libraryExists && [
-      [
-        `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npm i @nrwl/js`,
-      ],
-      [
-        `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+    runBefore: [
+      ...(!libraryExists
+        ? [
+            [
+              `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+        npm i @nrwl/js@15.7.2`,
+            ],
+            [
+              `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         data --directory=website --importPath=${workspace.scope}/website/data \
-         --bundler=tsc --unitTestRunner=none`,
-      ],
+         --unitTestRunner=none`,
+            ],
+          ]
+        : []),
     ],
     runAfter: [''],
   };
