@@ -1,3 +1,5 @@
+import * as os from 'os';
+
 const VOLTA_BINARY = `${os.homedir()}/.volta/bin/volta`;
 const NODE_VERSION = '16.16.0';
 
