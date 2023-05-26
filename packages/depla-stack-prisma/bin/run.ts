@@ -44,13 +44,12 @@ export const main = () => {
         (workspaceName as string) || (currentDirectoryName as string),
         config.workspaces
       );
-      const context = { workspace };
+      const context = { workspace, domain: config.entities };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);
       const { runBefore, runAfter, zip, writingInjections }: IGenerateStack =
         await generateSliceForAllEntities(generate, {
-          domain: config.entities,
           templatesPath,
           context,
         });

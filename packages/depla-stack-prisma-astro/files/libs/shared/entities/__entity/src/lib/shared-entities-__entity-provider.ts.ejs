@@ -1,0 +1,5 @@
+import { <%= entity.model %> } from './shared-entities-<%= entity.ref %>';
+
+export const provider = (c) => {
+  c.service('<%= entity.ref %>', (c) => <%= entity.model %>(c));
+};

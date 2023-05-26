@@ -1,3 +1,5 @@
-<% if (locals.entityName) { %>
-export * from './lib/shared-entities-<%= locals.entityName %>.js';
+<% if (locals.entity) { %>
+export * from './lib/shared-entities-<%= entity.ref %>.js';
+export * from './lib/shared-entities-<%= entity.ref %>-provider.js';
+export * from './lib/shared-entities-<%= entity.ref %>-types.js';
 <% } %>

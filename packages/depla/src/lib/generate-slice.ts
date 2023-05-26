@@ -1,11 +1,12 @@
 import * as path from 'node:path';
 import JSZip from 'jszip';
-import { IGenerateStack, IEntity, Config, createZipFromFolder } from 'depla';
+import { Config, IGenerateStack, IEntity } from './types.js';
+import { createZipFromFolder } from './archive-folder.js';
 import ejs from 'ejs';
 
 export const generateSlice = async (
   generator,
-  { domain, templatesPath, context }
+  { templatesPath, context }
 ): Promise<IGenerateStack> => {
   const { workspace, app } = context;
   const expectingInjections = [];
@@ -24,13 +25,14 @@ export const generateSlice = async (
     const isEJS = file?.name.indexOf('.ejs') !== -1;
     let contents;
     if (isFile) contents = await fileObj.async('string');
-    if (filename.indexOf('__entity') !== -1) {
-      if (isFile) {
-        entityTemplateFiles.push({ name: file?.name, contents });
-      }
+    const isEntityFile = filename.indexOf('__entity') !== -1;
+    if (isEntityFile && isFile) {
+      entityTemplateFiles.push({ name: file?.name, contents });
     }
     if (isFile) {
-      const rendered = isEJS ? ejs.render(contents, context) : contents;
+      console.log('~~~GENERATIIIIIING ', file.name);
+      const rendered =
+        isEJS && !isEntityFile ? ejs.render(contents, context) : contents;
       // if this file expects for injections, save a reference to it and
       // when all slices are done, re-render this file with all the injections
       // left by other slices
@@ -52,14 +54,13 @@ export const generateSlice = async (
   }
 
   const { runBefore, runAfter, zip, writingInjections } = await []
-    .concat(domain)
+    .concat(context?.domain)
     .reduce(
       async (accumulator, entity): Promise<IGenerateStack> => {
         const slice = await accumulator;
         const generated = generator({
           ...context,
           entity,
-          ...{ domain },
         });
         console.log(
           'Just finished RUYNNING generator for ENTITY',
@@ -78,16 +79,17 @@ export const generateSlice = async (
           const filename = originalFilename
             .replace('.ejs', '')
             .replaceAll('__app', context?.app?.name);
+          console.log('GENERATIIIIIING ', filename, entity);
           const rendered = ejs.render(contents, {
             ...context,
-            entityName: entity?.model,
+            entity,
           });
-          zip.file(filename.replaceAll('__entity', entity?.model), rendered);
+          zip.file(filename.replaceAll('__entity', entity?.ref), rendered);
         }
 
-        slice.runBefore.push(...runBefore);
-        slice.runAfter.push(...runAfter);
-        for (let [injectionName, injections] of Object.entries(
+        slice.runBefore = [...slice.runBefore, ...runBefore];
+        slice.runAfter = [...slice.runAfter, ...runAfter];
+        for (const [injectionName, injections] of Object.entries(
           writingInjections
         )) {
           const arr = slice.writingInjections[injectionName] || [];
@@ -106,12 +108,7 @@ export const generateSlice = async (
         slice.zip = await slice.zip.loadAsync(zipContents, {
           createFolders: true,
         });
-        return Promise.resolve({
-          ...slice,
-          runBefore,
-          runAfter,
-          writingInjections,
-        });
+        return Promise.resolve(slice);
       },
       Promise.resolve({
         runBefore: [],
@@ -141,11 +138,10 @@ export const generateSlice = async (
 
 export const generateSliceForAllEntities = async (
   generator,
-  { domain, templatesPath, context }
+  { templatesPath, context }
 ): Promise<IGenerateStack> => {
   const { runBefore, runAfter, writingInjections } = generator({
     ...context,
-    ...{ domain },
   });
   const { workspace, app } = context;
   const expectingInjections = [];

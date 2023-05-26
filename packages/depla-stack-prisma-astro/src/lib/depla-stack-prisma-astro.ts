@@ -1,7 +1,8 @@
-import { resolve } from 'node:path';
+import path from 'node:path';
 import * as os from 'os';
 import fs from 'fs';
 import chalk from 'chalk';
+import { fileURLToPath } from 'url';
 
 const VOLTA_BINARY = `${os.homedir()}/.volta/bin/volta`;
 const NODE_VERSION = '16.16.0';
@@ -17,9 +18,11 @@ export const generate = ({
   app: any;
   entity: any;
 }) => {
-  const libraryExists = fs.existsSync(
-    resolve(`./lib/shared/entities/${entity?.model}`)
+  const entityDirectoryPath = path.join(
+    process.cwd(),
+    `libs/shared/entities/${entity?.ref}`
   );
+  const libraryExists = fs.existsSync(entityDirectoryPath);
   if (libraryExists)
     console.log(chalk.green(`entity  ${entity?.model} is already installed`));
 
@@ -28,20 +31,22 @@ export const generate = ({
       ? [
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
-        ${entity?.model} --directory=shared/entities --importPath=${workspace.scope}/shared/entities/${entity?.model} \
+        ${entity?.ref} --directory=shared/entities --importPath=${workspace.scope}/shared/entities/${entity?.ref} \
          --unitTestRunner=none`,
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
-        ${entity?.model} --directory=shared/generated/entities --importPath=${workspace.scope}/shared/generated/entities/${entity?.model} \
+        ${entity?.ref} --directory=shared/generated/entities --importPath=${workspace.scope}/shared/generated/entities/${entity?.ref} \
          --unitTestRunner=none`,
         ]
       : [],
-    runAfter: [`npx prisma migrate dev --name init`],
+    runAfter: [
+      ...(!libraryExists ? [`npx prisma migrate dev --name init`] : []),
+    ],
     writingInjections: {
       providers: [
         {
-          name: entity?.model,
-          module: `${workspace.scope}/shared/entities/${entity?.model}`,
+          name: entity?.ref,
+          module: `${workspace.scope}/shared/entities/${entity?.ref}`,
         },
       ],
     },

@@ -1,21 +1,29 @@
 import { IEntity } from './types.js';
 
 export const userSchema: IEntity = {
+  ref: 'User',
+  refs: 'Users',
   model: 'user',
-  modelPlural: 'users',
+  models: 'users',
 };
 
 export const postSchema: IEntity = {
+  ref: 'Post',
+  refs: 'Posts',
   model: 'post',
-  modelPlural: 'posts',
+  models: 'posts',
 };
 
 export const homeSchema: IEntity = {
+  ref: 'Home',
+  refs: 'Homes',
   model: 'home',
-  modelPlural: 'home',
+  models: 'home',
 };
 
 export const loginSchema: IEntity = {
+  ref: 'Login',
+  refs: 'Logins',
   model: 'login',
-  modelPlural: 'login',
+  models: 'login',
 };

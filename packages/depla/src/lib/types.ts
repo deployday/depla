@@ -38,8 +38,10 @@ interface ILib {
 }
 
 export interface IEntity {
+  ref: string;
+  refs: string;
   model: string;
-  modelPlural: string;
+  models: string;
 }
 
 export interface Command {

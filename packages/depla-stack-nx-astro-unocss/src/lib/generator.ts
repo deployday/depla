@@ -1,6 +1,12 @@
+const VOLTA_BINARY = `${os.homedir()}/.volta/bin/volta`;
+const NODE_VERSION = '16.16.0';
+
 export const generate = (config = {}) => {
   return {
-    runBefore: [],
+    runBefore: [
+      `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+        npm i @depla/utils-image @depla/utils-url @depla/utils-js-object`,
+    ],
     runAfter: ['npx --yes depla@latest'],
   };
 };

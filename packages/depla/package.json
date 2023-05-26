@@ -1,6 +1,6 @@
 {
   "name": "depla",
-  "version": "0.0.16",
+  "version": "0.0.21",
   "type": "module",
   "bin": {
     "depla": "./bin/index.js"

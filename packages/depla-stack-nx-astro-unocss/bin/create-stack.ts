@@ -60,14 +60,13 @@ export const main = () => {
 
       const context = {
         name: projectPath,
-        entities: domain,
+        domain,
       };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);
       const { runBefore, runAfter, zip }: IGenerateStack =
         await generateSliceForAllEntities(generate, {
-          domain,
           templatesPath,
           context,
         });
