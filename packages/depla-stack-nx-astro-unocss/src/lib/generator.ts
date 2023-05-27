@@ -9,7 +9,10 @@ export const generate = (config = {}) => {
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npm i @depla/utils-image @depla/utils-url @depla/utils-js-object`,
     ],
-    runAfter: ['npx --yes depla@latest'],
+    runAfter: [
+      `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+      npx --yes depla@latest`,
+    ],
   };
 };
 // export const generate = (config: Config) => {

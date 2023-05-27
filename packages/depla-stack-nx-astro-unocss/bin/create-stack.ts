@@ -102,12 +102,14 @@ export const main = () => {
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);
+      console.log('ASASDASDSAASSAQQWQQQQ', templatesPath, entities);
       const { runBefore, runAfter, zip }: IGenerateStack =
         await generateSliceForAllEntities(generate, {
           templatesPath,
           context,
         });
 
+      console.log('TEREREE', runBefore, zip);
       try {
         execBulk(runBefore);
         extractArchive(zip, context);
