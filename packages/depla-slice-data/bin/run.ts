@@ -22,6 +22,7 @@ import {
   entityFactory,
   extractArchive,
   getWorkspaceByName,
+  getAppByName,
   generateSliceForAllEntities,
   IGenerateStack,
 } from 'depla';
@@ -33,13 +34,11 @@ program
 
 export const main = () => {
   program
-    .argument('[workspace]', 'what workspace shall we use', 'acme')
+    .argument('[app]', 'what app shall we use', 'website')
+    .argument('[workspace]', 'what workspace shall we use', '')
     // .argument('-w, --workspace', 'what workspace shall we use', 'acme')
     // @ts-ignore
-    .action(async (workspaceName) => {
-      // @ts-ignore
-      // const { workspace: workspaceName } = options;
-      // console.log('asdaASDASD', options);
+    .action(async (appName, workspaceName) => {
       const config = JSON.parse(
         (await readFile(path.resolve('depla.json'))).toString()
       );
@@ -48,10 +47,11 @@ export const main = () => {
         workspaceName as string,
         config.workspaces
       );
+      const app = getAppByName(appName as string, workspace.apps);
       const domain: IEntity[] = config.entities.map((entity: string) =>
         entityFactory(entity.trim())
       );
-      const context = { workspace, domain };
+      const context = { workspace, app, domain };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);

@@ -39,12 +39,12 @@ export const generate = ({
         npx --yes nx g @nrwl/js:lib \
         ${entity?.ref} --directory=shared/entities --importPath=${workspace.scope}/shared/entities/${entity?.ref} \
          --unitTestRunner=none`,
-          `rm -fr ${entityDirectoryPath}/src/lib`,
+          `rm -fr ${entityDirectoryPath}/src`,
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         ${entity?.ref} --directory=shared/generated/entities --importPath=${workspace.scope}/shared/generated/entities/${entity?.ref} \
          --unitTestRunner=none`,
-          `rm -fr ${entityGeneratedDirectoryPath}/src/lib`,
+          `rm -fr ${entityGeneratedDirectoryPath}/src`,
         ]
       : [],
     runAfter: [

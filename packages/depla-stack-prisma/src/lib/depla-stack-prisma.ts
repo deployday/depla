@@ -14,6 +14,10 @@ export const generate = ({
   workspace: any;
 }) => {
   const prismaDirectoryPath = path.resolve('prisma');
+  const sharedPrismaDirectoryPath = path.join(
+    process.cwd(),
+    `libs/shared/prisma`
+  );
   const libraryExists = fs.existsSync(prismaDirectoryPath);
   if (libraryExists)
     console.log(chalk.green(`prisma stack is already installed`));
@@ -40,15 +44,6 @@ export const generate = ({
         npx --yes prisma init --datasource-provider sqlite`,
 
             `cp domain.prisma ${prismaDirectoryPath}/schema.prisma`,
-
-            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npx --yes nx g @nrwl/js:lib \
-        prisma --directory=shared --importPath=${workspace.scope}/shared/prisma \
-         --unitTestRunner=none`,
-            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npx --yes nx g @nrwl/js:lib \
-        prisma --directory=shared/generated --importPath=${workspace.scope}/shared/generated/prisma \
-         --unitTestRunner=none`,
           ]
         : []),
     ],

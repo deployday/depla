@@ -3,15 +3,17 @@
   "workspaces": [{
     "name": "<%= name %>",
     "slices": [
-      "@depla/slice-nx-workspace@latest",
-      "@depla/slice-data@latest",
-      "@depla/stack-prisma@latest"
+      "@depla/slice-nx-workspace@latest"
     ],
     "apps": [
       {
         "name": "website",
         "entities": "*",
         "slices": [
+          "@depla/slice-data@latest",
+          "@depla/slice-config@latest",
+          "@depla/stack-prisma@latest",
+          "@depla/stack-prisma-astro@latest",
           {
             "name": "@depla/slice-astro-app@latest",
             "features": [
@@ -60,9 +62,7 @@
                 ]
               }
             ]
-          },
-          "@depla/slice-config@latest",
-          "@depla/stack-prisma-astro@latest"
+          }
         ]
       }
     ]
