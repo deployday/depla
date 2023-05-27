@@ -31,12 +31,15 @@ export const generate = ({
         npm i prisma@4.11.0`,
 
             `${VOLTA_BINARY} run --node ${NODE_VERSION} \
+        npm i -D zod-prisma-types@2.7.1`,
+
+            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npm i @depla/utils-db@latest`,
 
             `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes prisma init --datasource-provider sqlite`,
 
-            `rm -fr ${prismaDirectoryPath}/schema.prisma`,
+            `cp domain.prisma ${prismaDirectoryPath}/schema.prisma`,
 
             `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \

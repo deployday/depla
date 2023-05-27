@@ -37,30 +37,67 @@ program
   .name('Obsidian PDF album creator')
   .description('Create printable styled PDF album from Obsidian');
 
+const schema = {
+  User: {
+    email: 'String  @unique',
+    name: 'String?',
+    posts: 'Post[]',
+  },
+  Page: {
+    name: 'String',
+  },
+  Post: {
+    slug: 'String',
+    title: 'String?',
+    description: 'String?',
+    image: 'String?',
+    canonical: 'String?',
+    permalink: 'String?',
+    publishDate: 'DateTime @default(now())',
+    draft: 'Boolean @default(false)',
+    excerpt: 'String?',
+    category: 'String?',
+    content: 'String?',
+    readingTime: 'Int?',
+    author: 'User    @relation(fields: [authorId], references: [id])',
+    authorId: 'Int',
+    tags: 'PostTags[]',
+  },
+  Tag: {
+    name: 'String? @unique',
+    posts: 'PostTags[]',
+  },
+  PostTags: {
+    tag: 'Tag @relation(fields: [tagId], references: [id])',
+    tagId: 'Int',
+
+    post: 'Post @relation(fields: [postId], references: [id])',
+    postId: 'Int',
+
+    '@@id([postId, tagId])': '',
+  },
+};
+
 const defaults: {
-  domain: string[];
+  entities: string[];
 } = {
-  domain: ['user', 'page'],
+  entities: ['user', 'page', 'post', 'tag'],
 };
 
 export const main = () => {
   program
-    .argument('[path]', 'where to unpack', defaults.domain.join(', '))
-    .option('-e, --entities', 'domain entities', defaults.domain.join(', '))
+    .argument('[path]', 'where to unpack', defaults.entities.join(', '))
+    .option('-e, --entities', 'domain entities', defaults.entities.join(', '))
     .option('-y, --yes', 'do not ask any questions ', false)
     .option('-v, --verbose', 'output debug logs', false)
     // .hook('preAction', printVerboseHook)
     // @ts-ignore
     .action(async (projectPath: string, options: OptionValues) => {
       const entities: string = options.entities as string;
-      const domain: IEntity[] = entities
-        .split(',')
-        .concat(['post', 'tag'])
-        .map((entity) => entityFactory(entity.trim()));
 
       const context = {
         name: projectPath,
-        domain,
+        entities: entities.split(', ').map((entity) => entity.trim()),
       };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));

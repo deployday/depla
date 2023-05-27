@@ -18,6 +18,8 @@ import {
 
 import {
   execBulk,
+  IEntity,
+  entityFactory,
   extractArchive,
   getWorkspaceByName,
   generateSliceForAllEntities,
@@ -46,7 +48,10 @@ export const main = () => {
         workspaceName as string,
         config.workspaces
       );
-      const context = { workspace, domain: config.entities };
+      const domain: IEntity[] = config.entities.map((entity: string) =>
+        entityFactory(entity.trim())
+      );
+      const context = { workspace, domain };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);

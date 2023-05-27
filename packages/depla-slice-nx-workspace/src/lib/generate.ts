@@ -13,6 +13,11 @@ export const generate = (workspace: any) => {
         npx --yes create-nx-workspace@15.7.2 ${workspace.name} \
             --preset=ts \
             --nxCloud=false --pm=npm`,
+        // although this file doesn't have `generated` in it's path
+        // (our internal convention to separate files that can be overwritten
+        // from others)
+        // we want to overwrite it every time so let's delete it first
+        `rm -f nx.json`,
       ],
       // [
       //   `sed -i '' '2s/^/"plugins": ["@sergeylukin\\/nxtensions-astro"],\n/' nx.json`,

@@ -16,12 +16,14 @@ import {
 
 import {
   execBulk,
+  entityFactory,
   extractArchive,
   updateInjections,
   getAppByName,
   getWorkspaceByName,
   generateSliceForAllEntities,
   IGenerateStack,
+  IEntity,
 } from 'depla';
 
 const program: CommandUnknownOpts = new Command();
@@ -44,7 +46,14 @@ export const main = () => {
         config.workspaces
       );
       const app = getAppByName(appName as string, workspace.apps);
-      const context = { workspace, app, domain: config.entities };
+      const domain: IEntity[] = config.entities.map((entity: string) =>
+        entityFactory(entity.trim())
+      );
+      const context = {
+        workspace,
+        app,
+        domain,
+      };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);

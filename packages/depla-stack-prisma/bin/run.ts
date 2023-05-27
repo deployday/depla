@@ -17,6 +17,8 @@ import {
 import {
   execBulk,
   extractArchive,
+  IEntity,
+  entityFactory,
   updateInjections,
   getAppByName,
   getWorkspaceByName,
@@ -44,7 +46,10 @@ export const main = () => {
         (workspaceName as string) || (currentDirectoryName as string),
         config.workspaces
       );
-      const context = { workspace, domain: config.entities };
+      const domain: IEntity[] = config.entities.map((entity: string) =>
+        entityFactory(entity.trim())
+      );
+      const context = { workspace, domain };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);

@@ -1,9 +1,9 @@
 {
   "name": "depla-stack-nx-astro-unocss",
-  "version": "0.0.20",
+  "version": "0.0.23",
   "type": "module",
   "bin": {
-    ": workspaced/epla-stack-nx-astro-unocss": "./bin/index.js"
+    "depla-stack-nx-astro-unocss": "./bin/index.js"
   },
   "publishConfig": {
     "access": "public"
