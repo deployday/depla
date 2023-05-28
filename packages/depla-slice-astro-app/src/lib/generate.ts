@@ -35,6 +35,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
           astro@2.3.0 \
           @depla/ioc@latest \
           @depla/utils-astro-collections-facade@latest \
+          @depla/utils-image@latest \
           unocss-preset-daisy@3.0.1 \
           @unocss/astro@0.50.6 \
           @unocss/preset-wind@0.50.6 \

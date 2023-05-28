@@ -1,6 +1,32 @@
 import { I<%= entity.model %> } from './shared-generated-entities-__entity-types';
 import { cleanSlug, generatePermalink } from '@astro-nx-depla/shared/util/url';
 
+<% if (entity.ref == 'user') { %>
+export async function UserSeed() {
+  if (!flag) {
+    flag = true;
+    const userExist = await this.db.user._count({
+      where: {
+        name: 'foo',
+      },
+    });
+
+    if (!userExist) {
+      await this.db.user._create({
+        data: {
+          name: 'foo',
+          email: 'foo@example.com',
+        },
+      });
+    }
+    const author = await this.db.user._findUnique({
+      where: {
+        email: 'foo@example.com',
+      },
+    });
+  }
+}
+<% } else { %>
 async function getNormalized<%= entity.model %>(<%= entity.ref %>: I<%= entity.model %>, user, config): Promise<I<%= entity.model %>> {
   const { id, body, slug: rawSlug = '', data } = <%= entity.ref %>;
   const { remarkPluginFrontmatter } = await <%= entity.ref %>.render();
@@ -97,3 +123,4 @@ export async function <%= entity.model %>Seed() {
     }
   }
 }
+<% } %>

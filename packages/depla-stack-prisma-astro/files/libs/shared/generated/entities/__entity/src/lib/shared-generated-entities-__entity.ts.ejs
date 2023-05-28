@@ -146,6 +146,7 @@ export function <%= entity.model %>(app, config) {
         })
       );
     },
+    <% if (entity.ref != 'page') { %>
     getMetaByPage(page) {
       const currentPage = page.currentPage ?? 1;
 
@@ -156,6 +157,7 @@ export function <%= entity.model %>(app, config) {
         ogType: 'blog',
       };
     },
+    <% } %>
     async getMetaBy<%= entity.model %>(<%= entity.ref %>) {
       const url = getCanonical(
         createPath(config.pathname, <%= entity.ref %>.permalink),
