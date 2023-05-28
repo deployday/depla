@@ -1,6 +1,6 @@
 ---
 export const prerender = true;
-import { app } from '@astro-nx-depla/website/app';
+import { app } from '<%= workspace.scope %>/website/app';
 
 import {
   PageLayout as Layout,
@@ -14,7 +14,7 @@ import {
   FAQs,
   Stats,
   CallToAction,
-} from '@astro-nx-depla/shared/ui';
+} from '<%= workspace.scope %>/shared/ui';
 
 const meta = {
   title: app.config.title,

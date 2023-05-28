@@ -1,6 +1,6 @@
 ---
 export const prerender = true;
-import { PageLayout as Layout } from '@astro-nx-depla/shared/ui';
+import { PageLayout as Layout } from '<%= workspace.scope %>/shared/ui';
 
 import {
   Header,
@@ -8,9 +8,9 @@ import {
   Steps2,
   Content,
   CallToAction,
-} from '@astro-nx-depla/shared/ui';
+} from '<%= workspace.scope %>/shared/ui';
 
-import { headerData } from '@astro-nx-depla/website/data';
+import { headerData } from '<%= workspace.scope %>/website/data';
 
 const meta = {
   title: 'Saas Landing Page',
