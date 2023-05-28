@@ -1,0 +1,14 @@
+{
+  "name": "@depla/stack-env",
+  "version": "0.0.2",
+  "type": "module",
+  "bin": {
+    "@depla/stack-env": "./bin/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16.16.0"
+  }
+}

@@ -34,6 +34,7 @@
       "@depla/slice-nx-workspace": [
         "packages/depla-slice-nx-workspace/src/index.ts"
       ],
+      "@depla/stack-env": ["packages/depla-stack-env/src/index.ts"],
       "@depla/stack-prisma": ["packages/depla-stack-prisma/src/index.ts"],
       "@depla/stack-prisma-astro": [
         "packages/depla-stack-prisma-astro/src/index.ts"
