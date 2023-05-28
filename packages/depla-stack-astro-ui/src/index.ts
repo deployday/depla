@@ -1,1 +1,1 @@
-export * from './lib/depla-stack-astro-ui';
+export * from './lib/depla-stack-astro-ui.js';
