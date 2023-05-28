@@ -31,9 +31,34 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
       ...(!libraryExists
         ? [
             `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npm i @depla/ioc @depla/utils-astro-collections-facade`,
-            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npx --yes nx g @sergeylukin/nxtensions-astro:app ${app.name} --no-interactive`,
+        npm i \
+          astro@2.3.0 \
+          @depla/ioc@latest \
+          @depla/utils-astro-collections-facade@latest \
+          unocss-preset-daisy@3.0.1 \
+          @unocss/astro@0.50.6 \
+          @unocss/preset-wind@0.50.6 \
+          @unocss/preset-tagify@0.50.6 \
+          @unocss/preset-web-fonts@0.50.6 \
+          @unocss/preset-typography@0.50.6 \
+          @unocss/transformer-directives@0.50.6 \
+          @astrojs/sitemap@1.1.0 \
+          @depla/astro-image@0.15.2 \
+          @astrojs/mdx@0.17.2 \
+          @astrojs/react@2.0.2 \
+          @astrojs/partytown@1.0.3 \
+          astro-compress@1.1.35 \
+          @depla/utils-astro-plugin-predict-reading-time@latest \
+          @depla/utils-astro-plugin-inject@latest \
+          @astrojs/netlify@2.2.2 \
+          @astrojs/node@5.1.1 \
+          astro-copy@0.0.8
+
+          esbuild@0.17.10 \
+          esbuild-plugin-alias@0.2.1 \
+          esbuild-plugin-replace@1.3.0 \
+          `,
+
             `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         app --directory=${app.name} --importPath=${workspace.scope}/${app.name}/app \

@@ -1,0 +1,10 @@
+---
+import { BaseLayout as Layout } from '@astro-nx-depla/shared/ui';
+import { Cms } from '@cms';
+
+export const prerender = true;
+---
+
+<Layout>
+  <Cms client:only="react" />
+</Layout>

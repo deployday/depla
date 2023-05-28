@@ -152,9 +152,10 @@ export const generateSliceForAllEntities = async (
     const file = files.files[key];
     const fileObj = files.file(file.name);
     const isFile = fileObj;
+    const isEJS = file?.name.indexOf('.ejs') !== -1;
     if (isFile) {
       const contents = await fileObj.async('string');
-      const rendered = ejs.render(contents, context);
+      const rendered = isEJS ? ejs.render(contents, context) : contents;
       const filename = file.name
         .replace('.ejs', '')
         .replaceAll('__app', context?.app?.name);

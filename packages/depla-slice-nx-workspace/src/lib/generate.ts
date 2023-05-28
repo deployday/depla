@@ -17,6 +17,7 @@ export const generate = (workspace: any) => {
       // from others)
       // we want to overwrite it every time so let's delete it first
       [`rm -f nx.json`, resolve(workspace.name)],
+      [`rm -f .env`, resolve(workspace.name)],
       // [
       //   `sed -i '' '2s/^/"plugins": ["@sergeylukin\\/nxtensions-astro"],\n/' nx.json`,
       //   resolve(workspace.name),
@@ -32,7 +33,7 @@ export const generate = (workspace: any) => {
       ],
       [`rm -fr ${resolve(workspace.name)}`],
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npm i -D @nrwl/js@15.7.2 @nrwl/cypress@15.7.2 @sergeylukin/nxtensions-astro@8.0.3`,
+        npm i -D @nrwl/js@15.7.2 @nrwl/cypress@15.7.2`,
     ],
     runAfter: [''],
   };
