@@ -168,8 +168,11 @@ export default defineConfig({
   ],
 
   vite: {
+    ssr: {
+      noExternal: ['@depla/utils-astro-collections-facade'],
+    },
     optimizeDeps: {
-      exclude: ['prismock'],
+      exclude: ['prismock', 'astro:content'],
     },
     resolve: {
       alias: {
