@@ -1,1 +1,1 @@
-export * from './lib/utils-time';
+export * from './lib/utils-time.js';
