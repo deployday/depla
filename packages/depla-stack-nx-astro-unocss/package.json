@@ -1,6 +1,6 @@
 {
   "name": "depla-stack-nx-astro-unocss",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "type": "module",
   "bin": {
     "depla-stack-nx-astro-unocss": "./bin/index.js"
