@@ -71,7 +71,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["npx astro dev apps/<%= app.name %>/astro.config.mjs"]
+        "commands": ["npx astro dev --root=apps/<%= app.name %> --config=astro.config.mjs"]
       }
     },
     "netlify-cms-proxy": {

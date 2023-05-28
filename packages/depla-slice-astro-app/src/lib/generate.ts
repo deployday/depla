@@ -33,6 +33,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
             `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npm i \
           astro@2.3.0 \
+          @depla/nx-astro@latest \
           @depla/ioc@latest \
           @depla/utils-astro-collections-facade@latest \
           @depla/utils-image@latest \
