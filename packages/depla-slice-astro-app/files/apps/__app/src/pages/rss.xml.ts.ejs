@@ -1,6 +1,6 @@
 import rss from '@astrojs/rss';
 
-import { app } from '@astro-nx-depla/website/app';
+import { app } from '<%= workspace.scope %>/<%= app.name %>/app';
 
 export const prerender = true;
 

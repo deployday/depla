@@ -3,9 +3,6 @@ import { app } from '<%= workspace.scope %>/shared/app';
 <% if (locals.injects) { %><% injects.providers.forEach(function(provider) { %>
 import { provider as <%= provider.name %>Provider } from '<%= provider.module %>';
 <% }) %><% } %>
-import { collectionsProvider } from '@depla/utils-astro-collections-facade';
-
-collectionsProvider(app);
 <% if (locals.injects) { %>
 <% injects.providers.forEach(function(provider) { %>
 <%= provider.name %>Provider(app);

@@ -1,5 +1,5 @@
 import { I<%= entity.model %> } from './shared-generated-entities-__entity-types';
-import { cleanSlug, generatePermalink } from '@astro-nx-depla/shared/util/url';
+import { cleanSlug, generatePermalink } from '@depla/utils-url';
 
 <% if (entity.ref == 'user') { %>
 export async function UserSeed() {

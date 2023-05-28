@@ -36,6 +36,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
           @depla/ioc@latest \
           @depla/utils-astro-collections-facade@latest \
           @depla/utils-image@latest \
+          @depla/utils-url@latest \
           unocss-preset-daisy@3.0.1 \
           @unocss/astro@0.50.6 \
           @unocss/preset-wind@0.50.6 \
@@ -44,6 +45,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
           @unocss/preset-typography@0.50.6 \
           @unocss/transformer-directives@0.50.6 \
           @astrojs/sitemap@1.1.0 \
+          @astrojs/rss@2.1.1 \
           @depla/astro-image@0.15.2 \
           @astrojs/mdx@0.17.2 \
           @astrojs/react@2.0.2 \

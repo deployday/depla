@@ -1,5 +1,10 @@
 // @ts-ignore
-import { getCollection, getEntryBySlug } from 'astro:content';
+let content;
+try {
+  content = require('astro:content');
+} catch (e) {
+  console.log('failed to load astro:content');
+}
 
-export { getCollection };
-export { getEntryBySlug };
+export const getCollection = content.getCollection;
+export const getEntryBySlug = content.getEntryBySlug;

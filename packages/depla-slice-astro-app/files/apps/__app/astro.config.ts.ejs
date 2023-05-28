@@ -18,7 +18,7 @@ import react from '@astrojs/react';
 import partytown from '@astrojs/partytown';
 import compress from 'astro-compress';
 import { readingTimeRemarkPlugin } from '@depla/utils-astro-plugin-predict-reading-time';
-import { app } from '<%= workspace.scope %>/shared/app';
+import { app } from '<%= workspace.scope %>/<%= app.name %>/generated/app';
 import { inject } from '@depla/utils-astro-plugin-inject';
 import netlify from '@astrojs/netlify/functions';
 import node from '@astrojs/node';
@@ -136,7 +136,7 @@ export default defineConfig({
     }),
     react(),
     inject({
-      filePath: '<%= workspace.scope %>/<%= app.name %>/app/src/lib/_ssr-bootstrap.ts',
+      filePath: path.join(__dirname, '../..', 'libs/<%= app.name %>/app/src/lib/_ssr-bootstrap.ts'),
     }),
     sitemap(),
     copyFromBuild({

@@ -1,1 +1,1 @@
-export * from './lib/utils-image';
+export * from './lib/utils-image.js';

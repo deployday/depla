@@ -1,7 +1,7 @@
 {
   "name": "@depla/utils-image",
-  "version": "0.0.1",
-  "type": "commonjs",
+  "version": "0.0.3",
+  "type": "module",
   "main": "src/index.js",
   "publishConfig": {
     "access": "public"

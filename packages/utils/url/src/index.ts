@@ -1,1 +1,1 @@
-export * from './lib/utils-url';
+export * from './lib/utils-url.js';

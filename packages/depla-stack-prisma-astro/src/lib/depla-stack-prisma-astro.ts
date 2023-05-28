@@ -34,7 +34,11 @@ export const generate = ({
     runBefore: !libraryExists
       ? [
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-          npm i prismock@1.13.1`,
+          npm i \
+        prismock@1.13.1 \
+        @depla/utils-js-object@latest \
+        @depla/utils-url@latest
+        `,
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
         ${entity?.ref} --directory=shared/entities --importPath=${workspace.scope}/shared/entities/${entity?.ref} \
