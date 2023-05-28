@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "name": "nx-astro",
+  "version": "0.0.1",
+  "generators": {
+    "nx-astro": {
+      "factory": "./src/generators/nx-astro/generator",
+      "schema": "./src/generators/nx-astro/schema.json",
+      "description": "nx-astro generator"
+    }
+  }
+}
