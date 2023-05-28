@@ -57,40 +57,42 @@ export async function <%= entity.model %>Seed() {
       for (const <%= entity.ref %> of <%= entity.refs %>) {
         const user = await this.user.findFirst();
         const data = await getNormalized<%= entity.model %>(<%= entity.ref %>, user, this.db.<%= entity.ref %>.config);
-        if (data.tags.length === 0) {
-          data.tags.push('default');
-        }
-        const tags = await Promise.all(
-          data.tags.map(async (tagName) => {
-            const tagInDb = await this.db.tag.findFirst({
-              where: {
-                name: tagName,
-              },
-            });
-            if (!tagInDb) {
-              const newTagInDb = await this.db.tag.create({
-                data: {
+        <% if (entity.ref != 'tag') { %>
+          if (data.tags.length === 0) {
+            data.tags.push('default');
+          }
+          const tags = await Promise.all(
+            data.tags.map(async (tagName) => {
+              const tagInDb = await this.db.tag.findFirst({
+                where: {
                   name: tagName,
                 },
               });
-              return { id: newTagInDb.id, name: tagName };
-            } else {
-              return { id: tagInDb.id, name: tagName };
-            }
-          })
-        );
-        delete data.tags;
-        const result = await this.db.<%= entity.ref %>._create({ data });
-        await Promise.all(
-          tags.map(async (tag) => {
-            await this.db.<%= entity.ref %>Tags.create({
-              data: {
-                <%= entity.ref %>: { connect: { id: result.id } },
-                tag: { connect: { id: tag.id } },
-              },
-            });
-          })
-        );
+              if (!tagInDb) {
+                const newTagInDb = await this.db.tag.create({
+                  data: {
+                    name: tagName,
+                  },
+                });
+                return { id: newTagInDb.id, name: tagName };
+              } else {
+                return { id: tagInDb.id, name: tagName };
+              }
+            })
+          );
+          delete data.tags;
+          const result = await this.db.<%= entity.ref %>._create({ data });
+          await Promise.all(
+            tags.map(async (tag) => {
+              await this.db.<%= entity.ref %>Tags.create({
+                data: {
+                  <%= entity.ref %>: { connect: { id: result.id } },
+                  tag: { connect: { id: tag.id } },
+                },
+              });
+            })
+          );
+        <% } %>
       }
     }
   }

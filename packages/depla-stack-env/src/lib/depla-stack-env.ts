@@ -20,7 +20,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
       )
     );
   return {
-    runBefore: !libraryExists && [
+    runBefore: [
       `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npm i @depla/utils-environment`,
     ],
