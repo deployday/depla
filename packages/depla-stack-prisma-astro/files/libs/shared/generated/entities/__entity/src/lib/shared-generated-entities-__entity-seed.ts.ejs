@@ -2,6 +2,7 @@ import { I<%= entity.model %> } from './shared-generated-entities-__entity-types
 import { cleanSlug, generatePermalink } from '@depla/utils-url';
 
 <% if (entity.ref == 'user') { %>
+let flag = false;
 export async function UserSeed() {
   if (!flag) {
     flag = true;
