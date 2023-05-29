@@ -17,6 +17,7 @@ import {
 import {
   execBulk,
   extractArchive,
+  transferBlobs,
   updateInjections,
   IEntity,
   entityFactory,
@@ -53,11 +54,16 @@ export const main = () => {
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);
-      const { runBefore, runAfter, zip, writingInjections }: IGenerateStack =
-        await generateSliceForAllEntities(generate, {
-          templatesPath,
-          context,
-        });
+      const {
+        runBefore,
+        runAfter,
+        zip,
+        blobs,
+        writingInjections,
+      }: IGenerateStack = await generateSliceForAllEntities(generate, {
+        templatesPath,
+        context,
+      });
 
       await updateInjections(
         {
@@ -69,6 +75,7 @@ export const main = () => {
       try {
         await execBulk(runBefore);
         await extractArchive(zip, context);
+        await transferBlobs(blobs, process.cwd());
         await execBulk(runAfter);
       } catch (e) {
         console.log('ERROR catched: ', e);
