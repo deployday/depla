@@ -17,7 +17,7 @@ export const get = async () => {
   return rss({
     title: `${app.config.name}’s Blog`,
     description: app.config.description,
-    site: import.meta.env.SITE,
+    site: import.meta.env.WEBSITE_BASE_URL || 'http://localhost:3000',
 
     items: await Promise.all(
       posts.map(async (post) => {
