@@ -27,7 +27,7 @@ export async function UserSeed() {
     });
   }
 }
-<% } else { %>
+<% } else if (entity.ref == 'post') { %>
 async function getNormalized<%= entity.model %>(<%= entity.ref %>: I<%= entity.model %>, user, config): Promise<I<%= entity.model %>> {
   const { id, body, slug: rawSlug = '', data } = <%= entity.ref %>;
   const { remarkPluginFrontmatter } = await <%= entity.ref %>.render();
@@ -111,12 +111,16 @@ export async function <%= entity.model %>Seed() {
           const result = await this.db.<%= entity.ref %>._create({ data });
           await Promise.all(
             tags.map(async (tag) => {
-              await this.db.<%= entity.ref %>Tags.create({
-                data: {
-                  <%= entity.ref %>: { connect: { id: result.id } },
-                  tag: { connect: { id: tag.id } },
-                },
-              });
+              try {
+                await this.db.<%= entity.ref %>Tags.create({
+                  data: {
+                    <%= entity.ref %>: { connect: { id: result.id } },
+                    tag: { connect: { id: tag.id } },
+                  },
+                });
+              } catch(e) {
+                console.log("catched following Error while inserting <%= entity.Model %>Tags", e)
+              }
             })
           );
         <% } %>
@@ -124,4 +128,21 @@ export async function <%= entity.model %>Seed() {
     }
   }
 }
+<% } else { %>
+let flag = false;
+
+export async function <%= entity.model %>Seed() {
+  if (!flag) {
+    flag = true;
+    const <%= entity.refs %>Exist = await this.db.<%= entity.ref %>._count();
+    if (!<%= entity.refs %>Exist) {
+      const tags = await this.collections.getCollection('<%= entity.ref %>');
+      for (const <%= entity.ref %> of <%= entity.refs %>) {
+        const user = await this.user.findFirst();
+        const data = await getNormalized<%= entity.Model %>(<%= entity.ref %>, user, this.db.<%= entity.ref %>.config);
+      }
+    }
+  }
+}
+
 <% } %>
