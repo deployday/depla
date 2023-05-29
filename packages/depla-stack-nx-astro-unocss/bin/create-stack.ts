@@ -81,7 +81,7 @@ const schema = {
 const defaults: {
   entities: string[];
 } = {
-  entities: ['user', 'page', 'post', 'tag'],
+  entities: ['user', 'tag', 'post', 'page'],
 };
 
 export const main = () => {
