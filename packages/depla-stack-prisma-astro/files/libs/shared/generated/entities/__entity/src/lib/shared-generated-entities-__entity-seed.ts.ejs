@@ -84,7 +84,7 @@ export async function <%= entity.model %>Seed() {
       for (const <%= entity.ref %> of <%= entity.refs %>) {
         const user = await this.user.findFirst();
         const data = await getNormalized<%= entity.model %>(<%= entity.ref %>, user, this.db.<%= entity.ref %>.config);
-        <% if (entity.ref != 'tag') { %>
+        <% if (entity.ref == 'post') { %>
           if (data.tags.length === 0) {
             data.tags.push('default');
           }
