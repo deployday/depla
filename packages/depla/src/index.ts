@@ -9,3 +9,4 @@ export * from './lib/get-workspace-by-name.js';
 export * from './lib/get-app-by-name.js';
 export * from './lib/generate-slice.js';
 export * from './lib/update-injections.js';
+export * from './lib/transfer-blobs.js';

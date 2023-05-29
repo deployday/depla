@@ -73,10 +73,16 @@ export interface IExpectedInjection {
   contents?: string;
 }
 
+export interface IBlob {
+  absolutePath: string;
+  relativePath: string;
+}
+
 export interface IGenerateStack {
   runBefore: string[];
   runAfter: string[];
   zip: JSZip;
+  blobs?: IBlob[];
   writingInjections: IInjection[];
   expectingInjections: IExpectedInjection[];
 }

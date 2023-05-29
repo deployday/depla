@@ -1,7 +1,10 @@
 import * as path from 'node:path';
 import JSZip from 'jszip';
-import { Config, IGenerateStack, IEntity } from './types.js';
-import { createZipFromFolder } from './archive-folder.js';
+import { Config, IBlob, IGenerateStack, IEntity } from './types.js';
+import {
+  createListOfBlobsFromFolder,
+  createZipFromFolder,
+} from './archive-folder.js';
 import ejs from 'ejs';
 
 export const generateSlice = async (
@@ -146,6 +149,11 @@ export const generateSliceForAllEntities = async (
   const { workspace, app } = context;
   const expectingInjections = [];
 
+  const blobs: IBlob[] = await createListOfBlobsFromFolder(
+    templatesPath,
+    (name) => name.replaceAll('__app', context?.app?.name)
+  );
+
   const files = await createZipFromFolder(templatesPath);
   const keys = Object.keys(files.files);
   for (const key of keys) {
@@ -183,6 +191,7 @@ export const generateSliceForAllEntities = async (
     runBefore,
     runAfter,
     zip: files,
+    blobs,
     writingInjections,
     expectingInjections,
   };

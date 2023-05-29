@@ -1,9 +1,9 @@
 {
   "name": "@depla/slice-astro-app",
-  "version": "0.0.43",
+  "version": "0.0.45",
   "type": "module",
   "bin": {
-    "depla-stack-nx-astro-unocss": "./bin/index.js"
+    "@depla/slice-astro-app": "./bin/index.js"
   },
   "publishConfig": {
     "access": "public"

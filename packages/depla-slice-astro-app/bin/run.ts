@@ -17,6 +17,7 @@ import {
 import {
   execBulk,
   extractArchive,
+  transferBlobs,
   IEntity,
   entityFactory,
   updateInjections,
@@ -53,15 +54,22 @@ export const main = () => {
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);
-      const { runBefore, runAfter, zip, expectingInjections }: IGenerateStack =
-        await generateSliceForAllEntities(generate, {
-          templatesPath,
-          context,
-        });
+      const {
+        runBefore,
+        runAfter,
+        zip,
+        blobs,
+        expectingInjections,
+      }: IGenerateStack = await generateSliceForAllEntities(generate, {
+        templatesPath,
+        context,
+      });
 
+      console.log('BLLLLLLOOOOBS', blobs);
       try {
         await execBulk(runBefore);
         await extractArchive(zip, context);
+        await transferBlobs(blobs, process.cwd());
         await updateInjections(
           {
             expectingInjections,
