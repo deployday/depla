@@ -100,6 +100,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
         '.env',
         '.netlify',
         'prisma/generated/',
+        'dist/',
       ],
     },
   };
