@@ -60,12 +60,13 @@ export const main = () => {
         zip,
         blobs,
         expectingInjections,
+        writingInjections,
       }: IGenerateStack = await generateSliceForAllEntities(generate, {
         templatesPath,
         context,
       });
 
-      console.log('BLLLLLLOOOOBS', blobs);
+      console.log('WRITING INJECTIONS FROM APP', writingInjections);
       try {
         await execBulk(runBefore);
         await extractArchive(zip, context);
@@ -73,6 +74,7 @@ export const main = () => {
         await updateInjections(
           {
             expectingInjections,
+            writingInjections,
           },
           context
         );

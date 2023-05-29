@@ -92,5 +92,15 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
         : []),
     ],
     runAfter: [''],
+    writingInjections: {
+      gitignorePatterns: [
+        '.astro',
+        'dev.db',
+        'prod.db',
+        '.env',
+        '.netlify',
+        'prisma/generated/',
+      ],
+    },
   };
 };
