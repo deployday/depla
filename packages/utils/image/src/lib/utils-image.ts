@@ -1,6 +1,6 @@
 // @ts-nocheck
 const load = async function () {
-  let images: Record<string, () => Promise<unknown>> | undefined = undefined;
+  let images: Record<string, () => Promise<unknown>> | string[] = [];
   try {
     images = import.meta.glob('~/assets/images/**');
   } catch (e) {
