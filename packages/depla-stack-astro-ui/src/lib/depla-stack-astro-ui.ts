@@ -31,11 +31,12 @@ export const generate = ({
           npm i \
             @depla/utils-time@latest \
             hast-util-sanitize@^4.1.0 \
-            hast-util-to-jsx-runtime@^1.2.0
-            @astrojs/image@0.15.1
-            astro-icon@0.8.0
-            @astrolib/analytics@0.3.0
-            @astrolib/seo@0.3.0
+            hast-util-to-jsx-runtime@^1.2.0 \
+            @astrojs/image@0.15.1 \
+            astro-icon@0.8.0 \
+            @astrolib/analytics@0.3.0 \
+            @astrolib/seo@0.3.0 \
+            netlify-cms-app@2.15.72
         `,
           `${VOLTA_BINARY} run --node ${NODE_VERSION} \
         npx --yes nx g @nrwl/js:lib \
