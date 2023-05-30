@@ -96,6 +96,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
       gitignorePatterns: [
         '.astro',
         'dev.db',
+        'dev.db-journal',
         'prod.db',
         '.env',
         '.netlify',

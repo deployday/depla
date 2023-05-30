@@ -55,28 +55,14 @@ export const slicesRunner = async (config: any) => {
       deplaJSON.workspaces
     );
     const app = getAppByName(val.appName, workspaceO.apps);
-    const injectionName = val.injectionName;
     const injects =
-      injectionsJSON.writingInjections[val.workspaceName]['workspace-global'] ||
+      injectionsJSON?.writingInjections?.[val.workspaceName]?.[val.appName] ||
       {};
-    for (const [injectionName, injections] of Object.entries(
-      injectionsJSON.writingInjections[val.workspaceName][val.appName]
-    )) {
-      const arr = injects?.[injectionName] || [];
-      const injs = Array.isArray(injections) ? injections : [];
-      injects[injectionName] = Object.values(
-        [...arr, ...injs].reduce((a, c) => {
-          a[c.name + '|' + c.module] = c;
-          return a;
-        }, {})
-      );
-    }
     const context = {
       workspace: workspaceO,
       app,
       injects,
     };
-    console.log('POOOOOOOO', context);
     const rendered = ejs.render(val.contents, context);
     fs.writeFileSync(path.resolve(`./${val.filename}`), rendered);
     console.log(rendered);

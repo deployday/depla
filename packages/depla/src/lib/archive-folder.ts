@@ -15,7 +15,6 @@ export const createZipFromFolder = async (dir: string): Promise<JSZip> => {
     const relative = filePath.replace(absRoot, '');
     const isBinary = !!filePath?.match(/jpg|jpeg|png|webp/);
     const stream = fs.createReadStream(filePath);
-    console.log('SRRRRRR', stream);
     if (!isBinary) {
       return z.file(relative, stream, {
         unixPermissions: '777', //you probably want less permissive permissions
