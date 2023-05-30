@@ -169,7 +169,8 @@ export default defineConfig({
 
   vite: {
     ssr: {
-      noExternal: ['@depla/utils-astro-collections-facade'],
+      noExternal: ['@depla/utils-astro-collections-facade',
+      '@depla/utils-image'],
     },
     optimizeDeps: {
       exclude: ['prismock', 'astro:content'],
