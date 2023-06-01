@@ -23,6 +23,8 @@ import {
   generateSliceForAllEntities,
   IGenerateStack,
   extractArchive,
+  kebabCase,
+  pascalCase,
 } from 'depla';
 // import { printVerboseHook, rootDebug } from '../src/utils.js';
 // import { postSchema } from '../src/entities.js';
@@ -96,7 +98,8 @@ export const main = () => {
       const entities: string = options.entities as string;
 
       const context = {
-        name: projectPath,
+        name: kebabCase(projectPath),
+        logoText: pascalCase(projectPath),
         entities: entities.split(', ').map((entity) => entity.trim()),
       };
 

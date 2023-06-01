@@ -12,7 +12,9 @@
         "slices": [
           "@depla/stack-astro-ui@latest",
           "@depla/slice-data@latest",
-          "@depla/slice-config@latest",
+          ["@depla/slice-config@latest", {
+            "logoText": "<%= logoText %>",
+          }],
           "@depla/stack-env@latest",
           "@depla/stack-prisma@latest",
           "@depla/stack-prisma-astro@latest",
