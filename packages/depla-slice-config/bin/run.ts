@@ -21,6 +21,7 @@ import {
   updateInjections,
   getAppByName,
   getWorkspaceByName,
+  getSliceOptions,
   generateSliceForAllEntities,
   IGenerateStack,
   IEntity,
@@ -49,10 +50,14 @@ export const main = () => {
       const domain: IEntity[] = config.entities.map((entity: string) =>
         entityFactory(entity.trim())
       );
+
+      const options = getSliceOptions('@depla/slice-config', workspace, app);
+      console.log('CONFIG OPTIONS', options);
       const context = {
         workspace,
         app,
         domain,
+        options,
       };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));

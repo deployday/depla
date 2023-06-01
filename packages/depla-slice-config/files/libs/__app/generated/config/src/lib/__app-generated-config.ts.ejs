@@ -1,12 +1,14 @@
 export const config = {
   name: '<%= app.name %>',
 
-  basePathname: '/',
-  trailingSlash: false,
-
   title: '<%= app.name %>',
   description:
     '🚀 <%= app.name %>',
+
+  logoText: '<%= get('options.logoText', 'Default Project') %>',
+
+  basePathname: '/',
+  trailingSlash: false,
 
   defaultTheme: 'system', // Values: "system" | "light" | "dark" | "light:only" | "dark:only"
 
