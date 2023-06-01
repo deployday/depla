@@ -74,7 +74,11 @@ export const main = () => {
 
       try {
         await execBulk(runBefore);
-        await extractArchive(zip, context);
+        await extractArchive(
+          zip,
+          context,
+          (filePath: string, relativePath: string) => true
+        );
         await transferBlobs(blobs, process.cwd());
         await execBulk(runAfter);
       } catch (e) {
