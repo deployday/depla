@@ -1,6 +1,6 @@
 ---
 import '@unocss/reset/tailwind.css';
-import { MetaTags, DefaultTheme as Theme } from '<%= workspace.scope %>/shared/ui';
+import { MetaTags } from '<%= workspace.scope %>/shared/ui';
 import BasicScripts from '../js/BasicScripts.astro';
 
 import { app } from '<%= workspace.scope %>/website/app';
@@ -12,6 +12,7 @@ export interface Props {
 
 const { meta = {} } = Astro.props;
 const { language = 'en', textDirection = 'ltr' } = app.config;
+const colorPalette = app.config.colorPalettes[app.config.selectedColorPalette];
 ---
 
 <!DOCTYPE html>
@@ -26,9 +27,53 @@ const { language = 'en', textDirection = 'ltr' } = app.config;
   >
     <slot />
     <BasicScripts />
-    <style is:global>
+    <style is:global define:vars={colorPalette}>
       img {
         content-visibility: auto;
+      }
+      :root {
+        --background: var(--background);
+        --foreground: var(--foreground);
+        --muted: var(--muted);
+        --muted-foreground: var(--mutedForeground);
+        --popover: var(--popover);
+        --popover-foreground: var(--popoverForeground);
+        --border: var(--border);
+        --input: var(--input);
+        --card: var(--card);
+        --card-foreground: var(--cardForeground);
+        --primary: var(--primary);
+        --primary-foreground: var(--primaryForeground);
+        --secondary: var(--secondary);
+        --secondary-foreground: var(--secondaryForeground);
+        --accent: var(--accent);
+        --accent-foreground: var(--accentForeground);
+        --destructive: var(--destructive);
+        --destructive-foreground: var(--destructiveForeground);
+        --ring: var(--ring);
+        --radius: var(--radius);
+      }
+      .dark {
+        --background: var(--backgroundDark);
+        --foreground: var(--foregroundDark);
+        --muted: var(--mutedDark);
+        --muted-foreground: var(--mutedForegroundDark);
+        --popover: var(--popoverDark);
+        --popover-foreground: var(--popoverForegroundDark);
+        --border: var(--borderDark);
+        --input: var(--inputDark);
+        --card: var(--cardDark);
+        --card-foreground: var(--cardForegroundDark);
+        --primary: var(--primaryDark);
+        --primary-foreground: var(--primaryForegroundDark);
+        --secondary: var(--secondaryDark);
+        --secondary-foreground: var(--secondaryForegroundDark);
+        --accent: var(--accentDark);
+        --accent-foreground: var(--accentForegroundDark);
+        --destructive: var(--destructiveDark);
+        --destructive-foreground: var(--destructiveForegroundDark);
+        --ring: var(--ringDark);
+        --radius: var(--radiusDark);
       }
     </style>
   </body>
