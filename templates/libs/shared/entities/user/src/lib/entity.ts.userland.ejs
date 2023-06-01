@@ -1,9 +1,0 @@
-import { User as UserFactory } from '@prisma/client';
-
-export function User(app) {
-  const user = UserFactory(app)
-
-  return Object.assign(user, {
-    // Your stuff goes here...
-  });
-}

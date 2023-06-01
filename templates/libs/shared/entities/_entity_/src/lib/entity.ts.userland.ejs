@@ -1,9 +1,0 @@
-import { <%= entity.nameCamelCase %> as <%= entity.nameCamelCase %>Factory } from '@prisma/client';
-
-export function <%= entity.nameCamelCase %>(app) {
-  const user = <%= entity.nameCamelCase %>Factory(app)
-
-  return Object.assign(<%= entity.name %>, {
-    // Your stuff goes here...
-  });
-}
