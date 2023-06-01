@@ -24,7 +24,7 @@ import {
   IGenerateStack,
   extractArchive,
   kebabCase,
-  pascalCase,
+  startCase,
 } from 'depla';
 // import { printVerboseHook, rootDebug } from '../src/utils.js';
 // import { postSchema } from '../src/entities.js';
@@ -99,7 +99,7 @@ export const main = () => {
 
       const context = {
         name: kebabCase(projectPath),
-        logoText: pascalCase(projectPath),
+        logoText: startCase(projectPath),
         entities: entities.split(', ').map((entity) => entity.trim()),
       };
 
