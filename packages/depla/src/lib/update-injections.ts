@@ -62,7 +62,7 @@ export const updateInjections = async (
     }
     return acc;
   }, {});
-  console.log('TADADAADADAADAD', workspaceObj);
+  console.log('TADADAADADAADAD', JSON.stringify(config, null, 2));
   config = merge(config, {
     writingInjections: {
       [workspace.name]: workspaceObj,

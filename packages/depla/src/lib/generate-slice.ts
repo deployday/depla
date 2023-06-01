@@ -6,6 +6,7 @@ import {
   createZipFromFolder,
 } from './archive-folder.js';
 import ejs from 'ejs';
+import { helpers } from './ejs-helpers.js';
 
 export const generateSlice = async (
   generator,
@@ -35,7 +36,9 @@ export const generateSlice = async (
     if (isFile) {
       console.log('~~~GENERATIIIIIING ', file.name);
       const rendered =
-        isEJS && !isEntityFile ? ejs.render(contents, context) : contents;
+        isEJS && !isEntityFile
+          ? ejs.render(contents, { ...helpers, ...context })
+          : contents;
       // if this file expects for injections, save a reference to it and
       // when all slices are done, re-render this file with all the injections
       // left by other slices
@@ -72,7 +75,9 @@ export const generateSlice = async (
           generated
         );
         const { runBefore, runAfter } = generated;
-        const writingInjections = generated.writingInjections;
+        const writingInjections = {
+          ...generated.writingInjections,
+        };
         console.log('HEREREREERERRERERASDAS', runBefore);
 
         const zip = new JSZip();
@@ -84,6 +89,7 @@ export const generateSlice = async (
             .replaceAll('__app', context?.app?.name);
           console.log('GENERATIIIIIING ', filename, entity);
           const rendered = ejs.render(contents, {
+            ...helpers,
             ...context,
             entity,
           });
@@ -99,8 +105,8 @@ export const generateSlice = async (
           slice.writingInjections[injectionName] = [
             ...new Set(
               Object.values(
-                [...arr, ...(injections as any[])].reduce((a, c) => {
-                  a[c.name + '|' + c.module] = c;
+                [...arr, ...(injections as any[])].reduce((a, b) => {
+                  a[b.name + '|' + b.module] = b;
                   return a;
                 }, {})
               )
@@ -163,7 +169,9 @@ export const generateSliceForAllEntities = async (
     const isEJS = file?.name.indexOf('.ejs') !== -1;
     if (isFile) {
       const contents = await fileObj.async('string');
-      const rendered = isEJS ? ejs.render(contents, context) : contents;
+      const rendered = isEJS
+        ? ejs.render(contents, { ...helpers, ...context })
+        : contents;
       const filename = file.name
         .replace('.ejs', '')
         .replaceAll('__app', context?.app?.name);

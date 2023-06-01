@@ -2,7 +2,14 @@ import path from 'node:path';
 import fs from 'node:fs';
 import mkdirp from 'mkdirp';
 
-export const extractArchive = async (zip, context) => {
+type overwriteCallback = (filePath: string, relativePath: string) => boolean;
+
+export const extractArchive = async (
+  zip,
+  context,
+  overwriteCallback: overwriteCallback = (filePath = '', relativePath = '') =>
+    false
+) => {
   return await zip.forEach(async (relativePath, file) => {
     const fileObj = zip.file(file.name);
     const isFile = fileObj;
@@ -10,7 +17,8 @@ export const extractArchive = async (zip, context) => {
     if (isFile) {
       if (
         !fs.existsSync(filePath) ||
-        relativePath.indexOf('generated') !== -1
+        relativePath.indexOf('generated') !== -1 ||
+        overwriteCallback(filePath, relativePath)
       ) {
         fs.writeFileSync(
           filePath,

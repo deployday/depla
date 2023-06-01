@@ -9,6 +9,7 @@ import {
   execCommandAndStreamOutput,
   IExpectedInjection,
 } from '../index.js';
+import { helpers } from './ejs-helpers.js';
 
 const VOLTA_BINARY = `${os.homedir()}/.volta/bin/volta`;
 const NODE_VERSION = '16.16.0';
@@ -28,7 +29,12 @@ export const slicesRunner = async (config: any) => {
       const app = workspace.apps[y];
       for (let z = 0; z < app.slices.length; z++) {
         const slice = app.slices[z];
-        const slicePackage = typeof slice === 'object' ? slice.name : slice;
+        const slicePackage = Array.isArray(slice)
+          ? slice[0]
+          : typeof slice === 'object'
+          ? slice.name
+          : slice;
+        console.log(slicePackage, slice, 'oppa');
         const cmd = `${VOLTA_BINARY} run --node ${NODE_VERSION} npx --yes ${slicePackage} ${app.name} ${workspace.name}`;
         console.log(cmd);
         await execCommandAndStreamOutput(cmd);
@@ -63,7 +69,7 @@ export const slicesRunner = async (config: any) => {
       app,
       injects,
     };
-    const rendered = ejs.render(val.contents, context);
+    const rendered = ejs.render(val.contents, { ...helpers, ...context });
     fs.writeFileSync(path.resolve(`./${val.filename}`), rendered);
     console.log(rendered);
   }
