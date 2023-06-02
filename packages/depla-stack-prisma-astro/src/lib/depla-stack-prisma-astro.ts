@@ -56,6 +56,8 @@ export const generate = ({
         ? [
             `DATABASE_URL='file:./dev.db' nx setup-prisma ${app.name}`,
             `npx prisma migrate dev --name init`,
+            `git add`,
+            `git commit --author="Dep La <la@depl.la>" -m "infra: depla initial commit"`,
           ]
         : []),
     ],
