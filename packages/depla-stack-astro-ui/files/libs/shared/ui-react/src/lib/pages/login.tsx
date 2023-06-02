@@ -12,7 +12,7 @@ export const metadata = {
   description: 'Authentication forms built using the components.',
 };
 
-export default function AuthenticationPage() {
+export function AuthenticationPage() {
   return (
     <>
       <div className="md:hidden">
