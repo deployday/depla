@@ -18,7 +18,7 @@ export const config = {
 
   defaultTheme: 'system', // Values: "system" | "light" | "dark" | "light:only" | "dark:only"
 
-  selectedColorPalette: 'shazam',
+  selectedColorPalette: '<%= get('options.selectedColorPalette', 'default') %>',
 
   colorPalettes: {
     default: {
