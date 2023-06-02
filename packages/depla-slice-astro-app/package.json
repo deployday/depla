@@ -1,6 +1,6 @@
 {
   "name": "@depla/slice-astro-app",
-  "version": "0.0.54",
+  "version": "0.0.55",
   "type": "module",
   "bin": {
     "@depla/slice-astro-app": "./bin/index.js"

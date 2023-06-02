@@ -105,8 +105,13 @@ export const generateSlice = async (
           slice.writingInjections[injectionName] = [
             ...new Set(
               Object.values(
-                [...arr, ...(injections as any[])].reduce((a, b) => {
-                  a[b.name + '|' + b.module] = b;
+                [...arr, ...(injections as any[])].reduce((a, c) => {
+                  if (typeof c === 'object' && c !== null) {
+                    const keys = Object.values(c).join('|');
+                    a[keys] = c;
+                  } else if (typeof c === 'string') {
+                    a[c] = c;
+                  }
                   return a;
                 }, {})
               )

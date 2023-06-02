@@ -64,6 +64,23 @@ export const slicesRunner = async (config: any) => {
     const injects =
       injectionsJSON?.writingInjections?.[val.workspaceName]?.[val.appName] ||
       {};
+    for (const [injectionName, injections] of Object.entries(
+      injectionsJSON.writingInjections[val.workspaceName][val.appName]
+    )) {
+      const arr = injects?.[injectionName] || [];
+      const injs = Array.isArray(injections) ? injections : [];
+      injects[injectionName] = Object.values(
+        [...arr, ...injs].reduce((a, c) => {
+          if (typeof c === 'object' && c !== null) {
+            const keys = Object.values(c).join('|');
+            a[keys] = c;
+          } else if (typeof c === 'string') {
+            a[c] = c;
+          }
+          return a;
+        }, {})
+      );
+    }
     const context = {
       workspace: workspaceO,
       app,

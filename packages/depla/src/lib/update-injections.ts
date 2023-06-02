@@ -52,7 +52,8 @@ export const updateInjections = async (
       acc[appName][injectionName] = Object.values(
         [...arr, ...(injections as any[])].reduce((a, c) => {
           if (typeof c === 'object' && c !== null) {
-            a[Object.keys(c).join('|')] = c;
+            const keys = Object.values(c).join('|');
+            a[keys] = c;
           } else if (typeof c === 'string') {
             a[c] = c;
           }
