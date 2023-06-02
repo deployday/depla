@@ -47,7 +47,10 @@ export const generate = ({
           ]
         : []),
     ],
-    runAfter: [`npx prisma migrate dev --name init`],
+    runAfter: [
+      ...(!libraryExists ? [`npx prisma migrate dev --name init`] : []),
+      `npx prisma generate`,
+    ],
     writingInjections: {
       providers: [
         {
