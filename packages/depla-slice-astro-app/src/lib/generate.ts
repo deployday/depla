@@ -91,7 +91,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
           ]
         : []),
     ],
-    runAfter: [...(!libraryExists ? [`npx --yes nx update-`] : [])],
+    runAfter: [...(!libraryExists ? [] : [])],
     writingInjections: {
       gitignorePatterns: [
         '.astro',
