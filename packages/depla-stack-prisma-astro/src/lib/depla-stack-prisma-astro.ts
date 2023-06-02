@@ -52,14 +52,7 @@ export const generate = ({
         ]
       : [],
     runAfter: [
-      ...(!libraryExists
-        ? [
-            `nx setup-prisma ${app.name}`,
-            `git add . -A`,
-            'git commit -m infra',
-            `npx prisma migrate dev --name init`,
-          ]
-        : []),
+      ...(!libraryExists ? [`git add . -A`, 'git commit -m infra'] : []),
     ],
     writingInjections: {
       providers: [
