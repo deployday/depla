@@ -54,10 +54,10 @@ export const generate = ({
     runAfter: [
       ...(!libraryExists
         ? [
-            // `:./dev.db' nx setup-prisma ${app.name}`,
-            // `npx prisma migrate dev --name init`,
-            `git add .`,
-            `git commit --author="Dep La <la@depl.la>" -m "infra: depla initial commit"`,
+            `nx setup-prisma ${app.name}`,
+            `git add . -A`,
+            'git commit -m infra',
+            `npx prisma migrate dev --name init`,
           ]
         : []),
     ],
