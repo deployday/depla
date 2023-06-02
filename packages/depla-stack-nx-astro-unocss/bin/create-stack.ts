@@ -97,9 +97,12 @@ export const main = () => {
     .action(async (projectPath: string, options: OptionValues) => {
       const entities: string = options.entities as string;
 
+      const palettes = ['default', 'shazam'];
       const context = {
         name: kebabCase(projectPath),
         logoText: startCase(projectPath),
+        selectedColorPalette:
+          palettes[Math.floor(Math.random() * palettes.length)],
         entities: entities.split(', ').map((entity) => entity.trim()),
       };
 
