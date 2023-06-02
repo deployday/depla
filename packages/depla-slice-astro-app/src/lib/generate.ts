@@ -91,7 +91,11 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
           ]
         : []),
     ],
-    runAfter: [...(!libraryExists ? [] : [])],
+    runAfter: [
+      ...(!libraryExists
+        ? [`git add . -A`, `git commit -m depla-slice-astro-app`]
+        : []),
+    ],
     writingInjections: {
       gitignorePatterns: [
         '.astro',
