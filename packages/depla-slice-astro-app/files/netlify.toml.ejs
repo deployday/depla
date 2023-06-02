@@ -1,5 +1,5 @@
 [build]
-  command = "npm ci --include=dev && DATABASE_URL='file:./prod.db' npx nx setup-prisma <%= app.name %> && DATABASE_URL='file:./prod.db' npx nx build <%= app.name %>"
+  command = "npm ci --include=dev && DATABASE_URL='file:./prod.db' npx prisma migrate dev --name init && npx prisma generate && DATABASE_URL='file:./prod.db' npx nx build website"
   functions = "apps/<%= app.name %>/netlify/functions"
   publish = "dist/apps/<%= app.name %>"
 
