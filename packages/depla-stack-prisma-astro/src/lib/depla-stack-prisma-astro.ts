@@ -54,7 +54,7 @@ export const generate = ({
     runAfter: [
       ...(!libraryExists
         ? [
-            `DATABASE_URL='file:./dev.db' nx setup-prisma ${app.name}`,
+            `[[ -f prisma/dev.db ]] || DATABASE_URL='file:./dev.db' nx setup-prisma ${app.name}`,
             `npx prisma migrate dev --name init`,
             `git add`,
             `git commit --author="Dep La <la@depl.la>" -m "infra: depla initial commit"`,
