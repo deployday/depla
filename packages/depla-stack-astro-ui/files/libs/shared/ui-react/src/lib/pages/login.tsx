@@ -3,9 +3,9 @@
 // import Link from 'next/link';
 import { Command } from 'lucide-react';
 
-import { cn } from '../';
-import { buttonVariants } from '../';
-import { UserAuthForm } from '../';
+import { cn } from '../../';
+import { buttonVariants } from '../../';
+import { UserAuthForm } from '../../';
 
 export const metadata = {
   title: 'Authentication',
