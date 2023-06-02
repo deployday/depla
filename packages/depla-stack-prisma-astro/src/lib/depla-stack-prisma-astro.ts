@@ -52,7 +52,12 @@ export const generate = ({
         ]
       : [],
     runAfter: [
-      ...(!libraryExists ? [`npx prisma migrate dev --name init`] : []),
+      ...(!libraryExists
+        ? [
+            `DATABASE_URL='file:./dev.db' nx setup-prisma ${app.name}`,
+            `npx prisma migrate dev --name init`,
+          ]
+        : []),
     ],
     writingInjections: {
       providers: [
