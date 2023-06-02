@@ -16,7 +16,6 @@ export { default as HighlightedPosts } from './lib/HighlightedPosts.astro';
 export { default as LatestPosts } from './lib/LatestPosts.astro';
 export { default as Logo } from './lib/Logo.astro';
 export { default as MetaTags } from './lib/MetaTags.astro';
-export { default as DefaultTheme } from './lib/themes/DefaultTheme.astro';
 export { default as Note } from './lib/Note.astro';
 export { default as Pagination } from './lib/Pagination.astro';
 export { default as PostsGrid } from './lib/PostsGrid.astro';
