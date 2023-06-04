@@ -46,13 +46,9 @@ export const main = () => {
         config.workspaces
       );
       const app = getAppByName(appName as string, workspace.apps);
-      const domain: IEntity[] = config.entities.map((entity: string) =>
-        entityFactory(entity.trim())
-      );
       const context = {
         workspace,
         app,
-        domain,
       };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));

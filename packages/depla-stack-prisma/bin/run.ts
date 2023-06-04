@@ -46,10 +46,7 @@ export const main = () => {
         (workspaceName as string) || (currentDirectoryName as string),
         config.workspaces
       );
-      const domain: IEntity[] = config.entities.map((entity: string) =>
-        entityFactory(entity.trim())
-      );
-      const context = { workspace, domain };
+      const context = { workspace };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);

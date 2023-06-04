@@ -1,9 +1,9 @@
 {
-  "entities": <%- JSON.stringify(entities, null, 4) %>,
   "workspaces": [{
     "name": "<%= name %>",
     "slices": [
-      "@depla/slice-nx-workspace@latest"
+      "@depla/slice-nx-workspace@latest",
+      "@depla/layer-domain@latest"
     ],
     "apps": [
       {

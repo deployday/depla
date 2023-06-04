@@ -80,35 +80,27 @@ const schema = {
   },
 };
 
-const defaults: {
-  entities: string[];
-} = {
-  entities: ['user', 'tag', 'post', 'page'],
-};
-
 export const main = () => {
   program
-    .argument('[path]', 'where to unpack', defaults.entities.join(', '))
-    .option('-e, --entities', 'domain entities', defaults.entities.join(', '))
+    .argument('[path]', 'where to unpack', './')
     .option('-y, --yes', 'do not ask any questions ', false)
     .option('-v, --verbose', 'output debug logs', false)
     // .hook('preAction', printVerboseHook)
     // @ts-ignore
     .action(async (projectPath: string, options: OptionValues) => {
-      const entities: string = options.entities as string;
-
+      if (options.yes) {
+        console.log('Gotcha, not going to ask questions...');
+      }
       const palettes = ['default', 'shazam'];
       const context = {
         name: kebabCase(projectPath),
         logoText: startCase(projectPath),
         selectedColorPalette:
           palettes[Math.floor(Math.random() * palettes.length)],
-        entities: entities.split(', ').map((entity) => entity.trim()),
       };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));
       const templatesPath = path.resolve(__dirname, `../files`);
-      console.log('ASASDASDSAASSAQQWQQQQ', templatesPath, entities);
       const { runBefore, runAfter, zip }: IGenerateStack =
         await generateSliceForAllEntities(generate, {
           templatesPath,

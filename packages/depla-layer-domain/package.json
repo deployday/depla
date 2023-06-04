@@ -1,9 +1,9 @@
 {
-  "name": "@depla/stack-env",
-  "version": "0.0.4",
+  "name": "@depla/layer-domain",
+  "version": "0.0.2",
   "type": "module",
   "bin": {
-    "@depla/stack-env": "./bin/index.js"
+    "@depla/layer-domain": "./bin/index.js"
   },
   "publishConfig": {
     "access": "public"

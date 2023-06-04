@@ -7,15 +7,7 @@ import { fileURLToPath } from 'url';
 const VOLTA_BINARY = `${os.homedir()}/.volta/bin/volta`;
 const NODE_VERSION = '16.16.0';
 
-export const generate = ({
-  domain,
-  workspace,
-  app,
-}: {
-  domain: any;
-  workspace: any;
-  app: any;
-}) => {
+export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
   const uiDirectoryPath = path.join(process.cwd(), `libs/shared/ui`);
   const uiGeneratedDirectoryPath = path.join(
     process.cwd(),
@@ -46,7 +38,6 @@ export const generate = ({
             @radix-ui/react-avatar@1.0.3 \
             @radix-ui/react-checkbox@1.0.4 \
             @radix-ui/react-collapsible@1.0.3 \
-            @radix-ui/react-context-menu@2.1.4 \
             @radix-ui/react-dialog@1.0.4 \
             @radix-ui/react-dropdown-menu@2.0.5 \
             @radix-ui/react-hover-card@1.0.6 \

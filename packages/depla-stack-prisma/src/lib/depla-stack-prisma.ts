@@ -6,13 +6,7 @@ import chalk from 'chalk';
 const VOLTA_BINARY = `${os.homedir()}/.volta/bin/volta`;
 const NODE_VERSION = '16.16.0';
 
-export const generate = ({
-  domain,
-  workspace,
-}: {
-  domain: any;
-  workspace: any;
-}) => {
+export const generate = ({ workspace }: { workspace: any }) => {
   const prismaDirectoryPath = path.resolve('prisma');
   const libraryExists = fs.existsSync(prismaDirectoryPath);
   if (libraryExists)
@@ -20,11 +14,6 @@ export const generate = ({
 
   const ret = {
     runBefore: [
-      // although this file doesn't have `generated` in it's path
-      // (our internal convention to separate files that can be overwritten
-      // from others)
-      // we want to overwrite it every time so let's delete it first
-      `rm -f ${prismaDirectoryPath}/schema.prisma`,
       ...(!libraryExists
         ? [
             `${VOLTA_BINARY} run --node ${NODE_VERSION} \
