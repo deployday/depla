@@ -7,8 +7,8 @@ const VOLTA_BINARY = `${os.homedir()}/.volta/bin/volta`;
 const NODE_VERSION = '16.16.0';
 
 export const generate = ({ workspace }: { workspace: any }) => {
-  const prismaDirectoryPath = path.resolve('prisma');
-  const libraryExists = fs.existsSync(prismaDirectoryPath);
+  const prismaInstallationPath = path.resolve('prisma/dev.db');
+  const libraryExists = fs.existsSync(prismaInstallationPath);
   if (libraryExists)
     console.log(chalk.green(`prisma stack is already installed`));
 
@@ -17,13 +17,9 @@ export const generate = ({ workspace }: { workspace: any }) => {
       ...(!libraryExists
         ? [
             `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npm i prisma@4.11.0`,
-
-            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npm i -D zod-prisma-types@2.7.1`,
-
-            `${VOLTA_BINARY} run --node ${NODE_VERSION} \
-        npm i @depla/utils-db@latest`,
+            npm i prisma@4.11.0 \
+            @depla/utils-db@latest
+            `,
           ]
         : []),
     ],

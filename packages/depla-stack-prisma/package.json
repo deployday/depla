@@ -1,6 +1,6 @@
 {
   "name": "@depla/stack-prisma",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "type": "module",
   "bin": {
     "@depla/stack-prisma": "./bin/index.js"
