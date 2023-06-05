@@ -6,6 +6,7 @@ import ejs from 'ejs';
 import {
   getAppByName,
   getWorkspaceByName,
+  execBulk,
   execCommandAndStreamOutput,
   IExpectedInjection,
 } from '../index.js';
@@ -90,4 +91,5 @@ export const slicesRunner = async (config: any) => {
     fs.writeFileSync(path.resolve(`./${val.filename}`), rendered);
     console.log(rendered);
   }
+  await execBulk([`git add . -A`, `git commit -m depla`]);
 };
