@@ -3,6 +3,7 @@ import {
   printSchema,
   createPrismaSchemaBuilder,
 } from '@mrleebo/prisma-ast';
+import mkdirp from 'mkdirp';
 import { readFile } from 'fs/promises';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -29,6 +30,11 @@ export const main = () => {
           (workspaceName as string) || (currentDirectoryName as string),
           config.workspaces
         );
+        const deplaDir = path.resolve('.depla');
+        if (!fs.existsSync(deplaDir)) {
+          mkdirp.sync(deplaDir);
+        }
+        const domainJSONPath = path.resolve('./.depla', 'domain.json');
         const source = fs
           .readFileSync(path.resolve('prisma/schema.prisma'))
           .toString();
@@ -57,10 +63,7 @@ export const main = () => {
           { entities: [], recentItemFlags: [] }
         );
         // Write all the entities into .depla/domain.json
-        fs.writeFileSync(
-          '.depla/domain.json',
-          JSON.stringify(domainJSON, null, 2)
-        );
+        fs.writeFileSync(domainJSONPath, JSON.stringify(domainJSON, null, 2));
       } catch (e) {
         console.log('ERROR catched: ', e);
       }
