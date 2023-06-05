@@ -47,6 +47,7 @@ model Tag {
   posts PostTags[]
 }
 
+// @depla FLAG ignore
 model PostTags {
   tag   Tag @relation(fields: [tagId], references: [id])
   tagId Int

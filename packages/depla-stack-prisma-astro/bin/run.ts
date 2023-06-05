@@ -46,9 +46,10 @@ export const main = () => {
         config.workspaces
       );
       const app = getAppByName(appName as string, workspace.apps);
-      const domain: IEntity[] = config.entities.map((entity: string) =>
-        entityFactory(entity.trim())
+      const domainJSON = JSON.parse(
+        (await readFile(path.resolve('.depla/domain.json'))).toString()
       );
+      const domain: IEntity[] = domainJSON.entities;
       const context = { workspace, app, domain };
 
       const __dirname = path.dirname(fileURLToPath(import.meta.url));

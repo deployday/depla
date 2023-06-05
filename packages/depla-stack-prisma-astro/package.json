@@ -1,6 +1,6 @@
 {
   "name": "@depla/stack-prisma-astro",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "type": "module",
   "bin": {
     "@depla/stack-prisma-astro": "./bin/index.js"
