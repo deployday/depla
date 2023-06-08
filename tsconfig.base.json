@@ -23,6 +23,7 @@
       ],
       "@depl/olddispatcher": ["packages/olddispatcher/src/index.ts"],
       "@depl/unpacker": ["packages/unpacker/src/index.ts"],
+      "@depla/ast": ["packages/depla-ast/src/index.ts"],
       "@depla/astro-image": ["packages/astro-image/src/index.ts"],
       "@depla/generate-code": ["packages/generate-code/src/index.ts"],
       "@depla/generate-stack": ["packages/generate-stack/src/index.ts"],
