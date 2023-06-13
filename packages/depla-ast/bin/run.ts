@@ -14,7 +14,7 @@ import {
 } from '@commander-js/extra-typings';
 import { parse } from '@astrojs/compiler';
 
-import { convertAst } from '../src/index.js';
+import { convertAstroASTintoRekaAST } from '../src/index.js';
 
 const program: CommandUnknownOpts = new Command();
 program
@@ -36,10 +36,11 @@ export const main = () => {
           position: false, // defaults to `true`
         });
 
-        const o = convertAst(result.ast, path.basename(filePath).split('.')[0]);
-        const components = o[1]();
-        console.log('YEEEEEY', components);
-        console.log(JSON.stringify([o[0], ...components], null, 2));
+        const ast = convertAstroASTintoRekaAST(
+          result.ast,
+          path.basename(filePath).split('.')[0]
+        );
+        console.log('YEEEEEY', JSON.stringify(ast, null, 2));
       } catch (e) {
         console.log('ERROR catched: ', e);
       }

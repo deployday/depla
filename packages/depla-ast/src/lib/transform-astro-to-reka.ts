@@ -1,5 +1,7 @@
 import * as path from 'node:path';
 import * as fs from 'node:fs';
+import { convertAstroASTintoRekaAST } from './depla-ast.js';
+import { parse } from '@astrojs/compiler';
 // import type { TLocalTransformOptions } from './';
 
 // import { transformJsValue } from './transformJsValue.js';
@@ -16,16 +18,35 @@ import * as fs from 'node:fs';
 //   }
 // };
 
-export const transformAstroToReka = (source: string, id: string) => {
+export const transformAstroToReka = async (source: string, id: string) => {
   if (id.match(/pages([\/\-\w]+)\.astro$/)) {
     console.log('TRANSFORM', id);
-    const filePath = `${id.replace('.astro', '')}-reka.json`;
-    const json = {
-      vars: {
-        posts: null,
-      },
+    const filename = path.basename(id).split('.')[0];
+    const filePath = `${id.replace('.astro', '')}-editor.json.ts`;
+    const astro = fs.readFileSync(id, { encoding: 'utf8' });
+    const result = await parse(astro, {
+      position: false, // defaults to `true`
+    });
+    console.log('HER', JSON.stringify(result.ast, null, 2));
+
+    const json = await convertAstroASTintoRekaAST(
+      result.ast,
+      path.basename(id).split('.')[0]
+    );
+    // const components = o[1]();
+    // console.log('YEEEEEY', components);
+    // console.log('0 element: ', JSON.stringify([o[0], ...components], null, 2));
+    console.log('UPDATEING', filePath);
+    fs.writeFileSync(
+      filePath,
+      `
+export async function get({params, request}) {
+    return {
+        body: JSON.stringify(${JSON.stringify(json, null, 2)}, null, 2)
     };
-    fs.writeFileSync(filePath, JSON.stringify(json, null, 2));
+}
+`
+    );
     // OPEN ORIGINAL .ASTRO FILE
 
     // CONVERT TO AST
