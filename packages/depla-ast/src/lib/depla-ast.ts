@@ -234,8 +234,22 @@ const CustomComponents = (function () {
         position: false, // defaults to `true`
       });
       console.log('ASTRO AST TREEJ', JSON.stringify(astroParsed.ast, null, 2));
+      const astroAst = astroParsed.ast;
+
+      const frontmatter =
+        astroAst.children[0].type === 'frontmatter'
+          ? astroAst.children[0].value
+          : '';
+      console.log('FRONTTTTTMATTTER', frontmatter, 'FRONTEND');
+      const props = frontmatter ? readProps(frontmatter) : [];
+      console.log('got PROPPPPPPRPRPRPRS', props);
+
       // console.log('PARSED ASTTTTTT', JSON.stringify(astroAST, null, 2));
-      const rekaAST = await convertAstroASTintoRekaAST(astroParsed.ast, name);
+      const rekaAST = await convertAstroASTintoRekaAST(
+        astroParsed.ast,
+        name,
+        props
+      );
       // console.log('GOT REKA', JSON.stringify(rekaAST, null, 2), name);
       const component = rekaAST.components[0];
       components[name] = component;
@@ -243,7 +257,11 @@ const CustomComponents = (function () {
   };
 })();
 
-export const convertAstroASTintoRekaAST = async (astroAst: any, name = '') => {
+export const convertAstroASTintoRekaAST = async (
+  astroAst: any,
+  name = '',
+  props = []
+) => {
   if (astroAst.type === 'root') {
     console.log('ROOOOOOT');
     const defaultTemplate = () => ({
@@ -257,13 +275,6 @@ export const convertAstroASTintoRekaAST = async (astroAst: any, name = '') => {
       classList: null,
       tag: 'div',
     });
-    const frontmatter =
-      astroAst.children[0].type === 'frontmatter'
-        ? astroAst.children[0].value
-        : '';
-    console.log('FRONTTTTTMATTTER', frontmatter, 'FRONTEND');
-    const props = frontmatter ? readProps(frontmatter) : [];
-    console.log('got PROPPPPPPRPRPRPRS', props);
 
     const allElements = await Promise.all(
       astroAst.children.map(convertAstroASTintoRekaAST)
@@ -287,7 +298,15 @@ export const convertAstroASTintoRekaAST = async (astroAst: any, name = '') => {
       id: makeid(),
       name,
       meta: {},
-      props: [],
+      props: props.length
+        ? props.map((propName) => ({
+            type: 'ComponentProp',
+            id: makeid(),
+            meta: {},
+            name: propName,
+            init: null,
+          }))
+        : [],
       state: [],
       template: template || defaultTemplate(),
     };
