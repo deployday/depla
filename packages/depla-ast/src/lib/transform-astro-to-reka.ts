@@ -27,14 +27,14 @@ export const transformAstroToReka = async (source: string, id: string) => {
     const result = await parse(astro, {
       position: false, // defaults to `true`
     });
-    console.log('HER', JSON.stringify(result.ast, null, 2));
+    console.log('ASTRO AST TREEJ', JSON.stringify(result.ast, null, 2));
 
     const json = await convertAstroASTintoRekaAST(
       result.ast,
       path.basename(id).split('.')[0]
     );
     // const components = o[1]();
-    // console.log('YEEEEEY', components);
+    // console.log('ASTRO AST TREE', json);
     // console.log('0 element: ', JSON.stringify([o[0], ...components], null, 2));
     console.log('UPDATEING', filePath);
     fs.writeFileSync(
