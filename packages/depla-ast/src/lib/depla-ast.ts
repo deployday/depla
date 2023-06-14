@@ -2,15 +2,15 @@ import { Reka } from '@rekajs/core';
 import { Parser, jsToReka as astToReka, parseWithAcorn } from '@rekajs/parser';
 import * as TSParser from 'recast/parsers/typescript';
 import * as b from '@babel/types';
-import * as jscodeshift from 'jscodeshift';
-import acorn, { Parser as AcornParser } from 'acorn';
+import jscodeshift from 'jscodeshift';
+import * as Acorn from 'acorn';
 import * as recast from 'recast';
 import walk from 'acorn-walk';
-import tsPlugin from 'acorn-typescript';
+import * as tsPlugin from 'acorn-typescript';
 import * as t from '@rekajs/types';
 import { parse } from '@astrojs/compiler';
 import * as fs from 'node:fs';
-import { convert } from './attributes-to-props';
+import { convert } from './attributes-to-props.js';
 
 export const jsExpressionToReka = (source) => {
   const rekaAst = Parser.parseExpression(source);
@@ -20,7 +20,7 @@ export const jsExpressionToReka = (source) => {
 };
 
 export const jsToReka = (source: string): b.Node => {
-  const ast = parseWithAcorn(source, 0) as b.Node & acorn.Node;
+  const ast = parseWithAcorn(source, 0) as b.Node & Acorn.Node;
   // const rekaAst = astToReka(ast);
 
   console.log('GOT FOLLOWING AST PROGRAM BY SOURCE', ast, source);
@@ -35,7 +35,7 @@ export const readProps = (source) => {
   // const acornAst = TSParser.parse(source, {
   //   sourceType: 'module',
   // });
-  const acornAst = AcornParser.extend(tsPlugin()).parse(source, {
+  const acornAst = Acorn.Parser.extend(tsPlugin.tsPlugin()).parse(source, {
     sourceType: 'module',
     ecmaVersion: 'latest',
     locations: true,

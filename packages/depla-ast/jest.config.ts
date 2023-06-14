@@ -6,5 +6,8 @@ export default {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
+  "moduleNameMapper": {
+        "^(\\.\\/.+)\\.js$": "$1"
+      },
   coverageDirectory: '../../coverage/packages/ioc',
 };
