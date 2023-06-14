@@ -285,9 +285,7 @@ export const convertAstroASTintoRekaAST = async (
     // };
     // }
     console.log('ALLELEM', props, astroAst.name);
-    const templateElements = allElements.filter(
-      (node: any) => !!node && node.tag
-    );
+    const templateElements = allElements.filter((node: any) => !!node);
     const template = templateElements.find(
       (el) => !new RegExp(['script', 'style'].join('|')).test(el.tag)
     );
