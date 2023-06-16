@@ -378,4 +378,25 @@ describe('parser', () => {
       `);
     expect(props).toEqual(expected);
   });
+
+  it('reads astro', () => {
+    const expected = [];
+    const snippet = `
+component App() (
+<div className="scroll-mt-16">
+      {
+        [1,2,3].map((subitem) => (
+                  <h3><text value={subitem} /></h3>
+        ))
+      }
+</div>
+)
+    `;
+    try {
+      jsToReka(snippet);
+    } catch (e) {
+      console.log(e);
+    }
+    // expect(jsToReka(snippet)).toEqual(expected);
+  });
 });

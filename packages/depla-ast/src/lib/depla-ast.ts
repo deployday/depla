@@ -1,16 +1,27 @@
 import { Reka } from '@rekajs/core';
-import { Parser, jsToReka as astToReka, parseWithAcorn } from '@rekajs/parser';
+import {
+  Parser,
+  jsToReka as astToReka,
+  parseExpressionWithAcornToRekaType,
+  parseWithAcorn,
+} from '@rekajs/parser';
 import * as TSParser from 'recast/parsers/typescript';
+import putout from 'putout';
+// import * as babelParser from 'recast/parsers/esprima;
 import * as b from '@babel/types';
+import * as babel from '@babel/parser';
 import jscodeshift from 'jscodeshift';
 import * as Acorn from 'acorn';
+import jsx from 'acorn-jsx';
 import * as recast from 'recast';
-import walk from 'acorn-walk';
+import * as walk from 'acorn-walk';
 import * as tsPlugin from 'acorn-typescript';
+import { extend } from 'acorn-jsx-walk';
 import * as t from '@rekajs/types';
 import { parse } from '@astrojs/compiler';
 import * as fs from 'node:fs';
 import { convert } from './attributes-to-props.js';
+import transformAstroToReka from './codemod-transform-reka.js';
 
 export const jsExpressionToReka = (source) => {
   const rekaAst = Parser.parseExpression(source);
@@ -19,14 +30,125 @@ export const jsExpressionToReka = (source) => {
   return rekaAst;
 };
 
-export const jsToReka = (source: string): b.Node => {
-  const ast = parseWithAcorn(source, 0) as b.Node & Acorn.Node;
-  // const rekaAst = astToReka(ast);
+export const jsToReka = (source: string) => {
+  const ast = parseWithAcorn(source, 0) as b.Node;
+  const rekaAst = astToReka(ast as any);
 
-  console.log('GOT FOLLOWING AST PROGRAM BY SOURCE', ast, source);
-  return ast;
+  console.log('GOT FOLLOWING AST PROGRAM BY SOURCE', rekaAst, source);
+  return rekaAst;
 };
 
+extend(walk.base);
+export const astroToReka = (source: string) => {
+  // const ast = parseExpressionWithAcornToRekaType(source, 0);
+  try {
+    // const ast = putout(source, {
+    //   isJSX: true,
+    //   plugins: [
+    //     // here goes transformations
+    //   ],
+    // });
+    // console.log('HERE WE GOOO', ast);
+    // const c = transform1(
+    //   { source: '' },
+    //   { jscodeshift }
+    // );
+    const res = transformAstroToReka(source);
+    // const res1Ast = parseWithRecast(res1);
+    console.log('RES1AST', res);
+    return res;
+    // const res2 = transform1(ast, { jscodeshift });
+    // console.log('RESSSQQ', res2);
+    // return res2;
+    // const ast2 = parseWithRecast(res1)
+    // const c = transform1(ast2, {
+    //   jscodeshift,
+    // });
+    // console.log(c);
+    // return c;
+
+    // const astS = Acorn.Parser.extend(jsx()).parse('1 + 1', {
+    //   ecmaVersion: 'latest',
+    // });
+    // walk.full(
+    //   ast,
+    //   // {
+    //   // JSXElement(node: any) {
+    //   //   console.log('asdasdasd', node);
+    //   // },
+    //   // TypeMembers(node: any) {
+    //   //   console.log('HERE', JSON.stringify(node));
+    //   // },
+    //   // },
+    //   // @ts-ignore
+    //   (node: any) => {
+    //     switch (node.type) {
+    //       case 'JSXElement':
+    //         console.log('JSXXXXX');
+    //         break;
+    //       default:
+    //         console.log(`There's a ${node.type} node`, node);
+    //         break;
+    //     }
+    //     const reka = astToReka(node);
+    //     console.log('REKA: ', reka);
+    //   }
+    //   // {
+    //   //   ...walk.base,
+    //   //   type: () => {
+    //   //     console.log('ASDASDASDAS');
+    //   //   },
+    //   //   JSXElement: () => {},
+    //   //   Identifier: () => {
+    //   //     console.log('QQQQQ');
+    //   //   },
+    //   // }
+    // );
+  } catch (err) {
+    console.log(err);
+    if (!err.loc) return;
+    const { line, column } = err.loc;
+    const lines = source.split('\n');
+    console.log('PRINTINGGGGG', source, lines);
+    const errorMessage = `${err.message} Syntax error. Line: ${line}, Char: ${column} \n
+
+    ${lines[line]}
+    `;
+    throw Error(errorMessage);
+  }
+};
+
+// walk.simple(
+//   ast,
+//   {
+//     TypeMembers(node: any) {
+//       console.log('HERE', JSON.stringify(node));
+//     },
+//     // ImportDeclaration(node: any) {
+//     //   console.log('HERE', JSON.stringify(node.source.value));
+//     //   // modules.push([
+//     //   //   node.source.value,
+//     //   //   node.loc.start.line,
+//     //   //   node.loc.start.column,
+//     //   // ]);
+//     // },
+//     // modules.push([
+//     //   node.source.value,
+//     //   node.loc.start.line,
+//     //   node.loc.start.column,
+//     // ]);
+//     // },
+//   },
+//   {
+//     ...walk.base,
+//     type: () => {
+//       console.log('ASDASDASDAS');
+//     },
+//     interface: () => {
+//       console.log('QQQQQ');
+//     },
+//   }
+// );
 export const readProps = (source) => {
   const props = [];
   // const acornAst = recast.parse(source, {
@@ -164,6 +286,7 @@ export const readProps = (source) => {
 //   }
 //   return result;
 // }
+
 const makeidFactory = (def = 0) => {
   let counter = def || 0;
   const resetId = () => (counter = 0);
