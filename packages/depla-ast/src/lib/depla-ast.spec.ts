@@ -1,6 +1,7 @@
 import exp from 'constants';
 import {
   convertAstroASTintoRekaAST,
+  extractVariablesFromTS,
   jsExpressionToReka,
   jsToReka,
   readProps,
@@ -370,11 +371,12 @@ describe('parser', () => {
   it('reads props', () => {
     const expected = ['title', 'age'];
     const props = readProps(`
-      const foo = 'bar'
+      const foo = 'bar';
       export interface Props {
-      title?: string
-      age?: number
+        title?: string;
+        age?: number;
       }
+      import { age } from Astro.props;
       `);
     expect(props).toEqual(expected);
   });
@@ -398,5 +400,16 @@ component App() (
       console.log(e);
     }
     // expect(jsToReka(snippet)).toEqual(expected);
+  });
+});
+
+describe('variables', () => {
+  it('extracts declarations with default values', () => {
+    const expected = ['foo', 'zoo', 'first', 'second'];
+    const source = `
+    const { foo = 'bar', zoo } = someFunction();
+    const [first, second] = myArr;
+    `;
+    expect(extractVariablesFromTS(source)).toEqual(expected);
   });
 });

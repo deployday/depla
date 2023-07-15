@@ -50,6 +50,7 @@ export const createSharedStateGlobals = (variables: any) => {
           ...(functions(self) || {}),
         };
       },
+      components: [],
     },
   };
 };

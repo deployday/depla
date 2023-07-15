@@ -48,7 +48,7 @@ export const transformAstroToRekaInVite = (): Plugin => {
     },
     async resolveId(source, importer, options) {
       if (source.match(/ndex\.astro$/)) {
-        console.log('HOORAY RESOLVE ID ASTRO', source, importer, options);
+        // console.log('HOORAY RESOLVE ID ASTRO', source, importer, options);
       }
       // if (source === POLYFILL_ID) {
       // It is important that side effects are always respected
@@ -97,7 +97,10 @@ export const transformAstroToRekaInVite = (): Plugin => {
     //
 
     async transform(code, id) {
-      await transformAstroToReka(code, id);
+      if (id.match(/^((?!node_modules).)*\.astro$/)) {
+        const newCode = await transformAstroToReka(code, id);
+        return newCode;
+      }
       return code;
     },
   };

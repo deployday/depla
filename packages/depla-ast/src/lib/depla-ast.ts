@@ -1,23 +1,22 @@
-import { Reka } from '@rekajs/core';
+import { Reka } from '@depla/reka-core';
 import {
   Parser,
   jsToReka as astToReka,
   parseExpressionWithAcornToRekaType,
   parseWithAcorn,
-} from '@rekajs/parser';
+} from '@depla/reka-parser';
 import * as TSParser from 'recast/parsers/typescript';
-import putout from 'putout';
 // import * as babelParser from 'recast/parsers/esprima;
 import * as b from '@babel/types';
 import * as babel from '@babel/parser';
-import jscodeshift from 'jscodeshift';
+import j from 'jscodeshift';
 import * as Acorn from 'acorn';
 import jsx from 'acorn-jsx';
 import * as recast from 'recast';
 import * as walk from 'acorn-walk';
 import * as tsPlugin from 'acorn-typescript';
 import { extend } from 'acorn-jsx-walk';
-import * as t from '@rekajs/types';
+import * as t from '@depla/reka-types';
 import { parse } from '@astrojs/compiler';
 import * as fs from 'node:fs';
 import { convert } from './attributes-to-props.js';
@@ -26,7 +25,7 @@ import transformAstroToReka from './codemod-transform-reka.js';
 export const jsExpressionToReka = (source) => {
   const rekaAst = Parser.parseExpression(source);
 
-  console.log('GOT FOLLOWING AST BY SOURCE', rekaAst, source);
+  // console.log('GOT FOLLOWING AST BY SOURCE', rekaAst, source);
   return rekaAst;
 };
 
@@ -34,7 +33,7 @@ export const jsToReka = (source: string) => {
   const ast = parseWithAcorn(source, 0) as b.Node;
   const rekaAst = astToReka(ast as any);
 
-  console.log('GOT FOLLOWING AST PROGRAM BY SOURCE', rekaAst, source);
+  // console.log('GOT FOLLOWING AST PROGRAM BY SOURCE', rekaAst, source);
   return rekaAst;
 };
 
@@ -42,20 +41,15 @@ extend(walk.base);
 export const astroToReka = (source: string) => {
   // const ast = parseExpressionWithAcornToRekaType(source, 0);
   try {
-    // const ast = putout(source, {
-    //   isJSX: true,
-    //   plugins: [
-    //     // here goes transformations
-    //   ],
-    // });
     // console.log('HERE WE GOOO', ast);
     // const c = transform1(
     //   { source: '' },
     //   { jscodeshift }
     // );
+    const components = [];
     const res = transformAstroToReka(source);
     // const res1Ast = parseWithRecast(res1);
-    console.log('RES1AST', res);
+    // console.log('RES1AST', res);
     return res;
     // const res2 = transform1(ast, { jscodeshift });
     // console.log('RESSSQQ', res2);
@@ -149,8 +143,56 @@ export const astroToReka = (source: string) => {
 //     },
 //   }
 // );
+export const extractVariablesFromTS = (source) => {
+  const acornAst = Acorn.Parser.extend(tsPlugin.tsPlugin()).parse(source, {
+    sourceType: 'module',
+    ecmaVersion: 'latest',
+    locations: true,
+  });
+  const variables = [];
+
+  // https://astexplorer.net/#/gist/6268805aeaea30386c6a9611529af81e/e7a2a11cf3183ece5ffbd73a72d1508f7aa40f92
+  j(acornAst)
+    .find(j.Node)
+    .forEach((path) => {
+      if (j.ImportSpecifier.check(path.node)) {
+        variables.push(path.node.imported.name);
+        return;
+      }
+      if (j.VariableDeclaration.check(path.node)) {
+        // console.log(path.node);
+        if (path.node.declarations.length > 0) {
+          path.node.declarations.forEach((decl) => {
+            // [first, second] = myArr;
+            if (j.ArrayPattern.check(decl.id)) {
+              decl.id.elements.forEach((el) => {
+                variables.push(el.name);
+              });
+            } else if (j.Identifier.check(decl.id)) {
+              variables.push(decl.id.name);
+            } else if (decl.id.properties) {
+              decl.id.properties.forEach((prop) => {
+                if (prop.value) {
+                  if (j.AssignmentPattern.check(prop.value)) {
+                    variables.push(prop.value.left.name);
+                  } else {
+                    variables.push(prop.value.name);
+                  }
+                } else {
+                  variables.push(prop.key.name);
+                }
+              });
+            }
+          });
+        }
+        return;
+      }
+    });
+  return variables;
+};
+
 export const readProps = (source) => {
-  const props = [];
+  const variables = [];
   // const acornAst = recast.parse(source, {
   //   parser: TSParser,
   // });
@@ -162,117 +204,37 @@ export const readProps = (source) => {
     ecmaVersion: 'latest',
     locations: true,
   });
-  console.log('ACOCCCCCCCOOORN', acornAst);
-  jscodeshift(acornAst)
-    .find(
-      'TSInterfaceDeclaration',
-      (node) => node.id.name.indexOf('Props') !== -1
-    )
-    .forEach(function (path) {
-      path.node.body.body.forEach((node) => {
-        // console.log(node.key.name);
-        props.push(node.key.name);
-      });
+  // console.log('ACOCCCCCCCOOORN', acornAst);
+  j(acornAst)
+    .find(j.Node)
+    .forEach((path) => {
+      if (j.VariableDeclaration.check(path.node)) {
+        if (path.node.declarations.length > 0) {
+          path.node.declarations.forEach((decl) => {
+            if (
+              j.MemberExpression.check(decl.init) &&
+              j.Identifier.check(decl.init.object) &&
+              decl.init.object.name === 'Astro' &&
+              decl.init.property.name === 'props'
+            ) {
+              decl.id.properties.forEach((prop) => {
+                if (prop.value) {
+                  if (j.AssignmentPattern.check(prop.value)) {
+                    variables.push(prop.value.left.name);
+                  } else {
+                    variables.push(prop.value.name);
+                  }
+                } else {
+                  variables.push(prop.key.name);
+                }
+              });
+            }
+          });
+        }
+        return;
+      }
     });
-  console.log('PRPRPRPRPRPRP', props);
-  return props;
-
-  // const types = recast.types;
-  // const n = types.namedTypes;
-  // const b = types.builders;
-  // const acornAst = recast.parse(source, {
-  //   parser: require('recast/parsers/typescript'),
-  // });
-  //
-  // console.log('IOOIIOIOIOIO', acornAst);
-  // recast.visit(acornAst, {
-  //   visitTSInterfaceDeclaration(path) {
-  //     console.log('INTERRRRR', path);
-  //     this.traverse(path, {
-  //       visitTSInterfaceBody(astPath) {
-  //         // const { name } = astPath.node
-  //         const props = astPath.node.body;
-  //         props.forEach((prop) => {
-  //           console.log('prop ', prop.typeAnnotation);
-  //         });
-  //         this.traverse(astPath);
-  //       },
-  //     });
-  //   },
-  // });
-  // const ast = AcornParser.extend(tsPlugin()).parse(
-  //   `
-  //   const a = 1
-  //   type A = number
-  //   export {
-  //       a,
-  //       type A as B
-  //     }
-  //     `,
-  //   {
-  //     sourceType: 'module',
-  //     ecmaVersion: 'latest',
-  //     locations: true,
-  //   }
-  // );
-  // fs.writeFileSync('/tmp/ast.json', JSON.stringify(ast, null, 2));
-  // const node = ts.createSourceFile(
-  //   'x.ts', // fileName
-  //   fs.readFileSync('./my.component.ts', 'utf8'), // sourceText
-  //   ts.ScriptTarget.Latest // langugeVersion
-  // );
-  // const ast = AcornParser.extend(tsPlugin()).parse(p, {
-  //   sourceType: 'module',
-  //   ecmaVersion: 'latest',
-  //   locations: true,
-  // });
-  // const modules = [];
-  // walk.simple(
-  //   ast,
-  //   {
-  //     TypeMembers(node: any) {
-  //       console.log('HERE', JSON.stringify(node));
-  //     },
-  //     // ImportDeclaration(node: any) {
-  //     //   console.log('HERE', JSON.stringify(node.source.value));
-  //     //   // modules.push([
-  //     //   //   node.source.value,
-  //     //   //   node.loc.start.line,
-  //     //   //   node.loc.start.column,
-  //     //   // ]);
-  //     // },
-  //     Literal(_node, _state, ancestors) {
-  //       console.log('LITERARL: ', JSON.stringify(_node), _state, ancestors);
-  //     },
-  //     // modules.push([
-  //     //   node.source.value,
-  //     //   node.loc.start.line,
-  //     //   node.loc.start.column,
-  //     // ]);
-  //     // },
-  //   },
-  //   {
-  //     ...walk.base,
-  //     type: () => {
-  //       console.log('ASDASDASDAS');
-  //     },
-  //     interface: () => {
-  //       console.log('QQQQQ');
-  //     },
-  //   }
-  // );
-  // console.log('WAAAAALK', modules);
-  // walk.ancestor(ast, {
-  //   Literal(_node, _state, ancestors) {
-  //     console.log(
-  //       "This literal's ancestors are:",
-  //       ancestors?.map((n) => n.type)
-  //     );
-  //   },
-  // });
-
-  // console.log('GOT PROPS SRC', ast, source);
-  // return ast;
+  return variables;
 };
 // function makeid(length) {
 //   let result = '';
@@ -347,25 +309,27 @@ const CustomComponents = (function () {
     },
     set: async (name, convertAstroASTintoRekaAST) => {
       if (components.hasOwnProperty(name)) return;
-      console.log('SETTTING ', name);
+      // console.log('SETTTING ', name);
       const filePath = getFilePathByComponentName(name);
 
-      const astro = ['VendorIcon', 'Editor', 'Studio'].includes(name)
-        ? '<div>I</div>'
+      const astro = ['VendorIcon', 'Editor', 'Studio', 'GlobalStyles'].includes(
+        name
+      )
+        ? '<div></div>'
         : fs.readFileSync(filePath, { encoding: 'utf8' });
       const astroParsed = await parse(astro, {
         position: false, // defaults to `true`
       });
-      console.log('ASTRO AST TREEJ', JSON.stringify(astroParsed.ast, null, 2));
+      // console.log('ASTRO AST TREEJ', JSON.stringify(astroParsed.ast, null, 2));
       const astroAst = astroParsed.ast;
 
       const frontmatter =
         astroAst.children[0].type === 'frontmatter'
           ? astroAst.children[0].value
           : '';
-      console.log('FRONTTTTTMATTTER', frontmatter, 'FRONTEND');
+      // console.log('FRONTTTTTMATTTER', frontmatter, 'FRONTEND');
       const props = frontmatter ? readProps(frontmatter) : [];
-      console.log('got PROPPPPPPRPRPRPRS', props);
+      // console.log('got PROPPPPPPRPRPRPRS', props);
 
       // console.log('PARSED ASTTTTTT', JSON.stringify(astroAST, null, 2));
       const rekaAST = await convertAstroASTintoRekaAST(
@@ -386,7 +350,7 @@ export const convertAstroASTintoRekaAST = async (
   props = []
 ) => {
   if (astroAst.type === 'root') {
-    console.log('ROOOOOOT');
+    // console.log('ROOOOOOT');
     const defaultTemplate = () => ({
       type: 'TagTemplate',
       id: makeid(),
@@ -407,7 +371,7 @@ export const convertAstroASTintoRekaAST = async (
     //   props,
     // };
     // }
-    console.log('ALLELEM', props, astroAst.name);
+    // console.log('ALLELEM', props, astroAst.name);
     const templateElements = allElements.filter((node: any) => !!node);
     const template = templateElements.find(
       (el) => !new RegExp(['script', 'style'].join('|')).test(el.tag)
@@ -526,9 +490,9 @@ export const convertAstroASTintoRekaAST = async (
   // }
 
   if (astroAst.type === 'component') {
-    console.log('BEFORE SET', astroAst.name);
+    // console.log('BEFORE SET', astroAst.name);
     await CustomComponents.set(astroAst.name, convertAstroASTintoRekaAST);
-    console.log('AFTER SET');
+    // console.log('AFTER SET');
     // console.log(CustomComponents.get());
     const allElements = await Promise.all(
       astroAst.children.map(convertAstroASTintoRekaAST)
@@ -618,7 +582,7 @@ export const convertAstroASTintoRekaAST = async (
     const eachCondition = astroAst.children[0].value.match(
       /(.*)\.map\(\(\{?([^\{\}]*)\}?\)/
     );
-    console.log(eachCondition, 'ASDASDASDASDASD');
+    // console.log(eachCondition, 'ASDASDASDASDASD');
     if (ifCondition && astroAst.children[1]) {
       const allElements = await Promise.all(
         astroAst.children[1].children.map(convertAstroASTintoRekaAST)
@@ -708,7 +672,7 @@ export const convertAstroASTintoRekaAST = async (
       const propertyName = value?.[1] || '';
 
       if (objName === '(title || subtitle || highlight) && (') {
-        console.log('HHHHHHH', JSON.stringify(astroAst, null, 2));
+        // console.log('HHHHHHH', JSON.stringify(astroAst, null, 2));
       }
       return value
         ? {
