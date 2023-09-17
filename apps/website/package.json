@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@astrojs/netlify": "^2.6.0",
-    "astro": "^2.10.15"
-  }
-}

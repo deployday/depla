@@ -28,7 +28,7 @@
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["npx astro build --root=apps/website --config=astro-static.config.mjs"]
+        "commands": ["npx astro build --root=apps/website --config=astro.config.mjs"]
       },
       "dependsOn": [
         {
