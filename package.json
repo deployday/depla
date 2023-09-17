@@ -19,6 +19,7 @@
   "dependencies": {
     "@astrojs/compiler": "^1.5.0",
     "@astrojs/image": "^0.15.1",
+    "@astrojs/solid-js": "^2.2.0",
     "@clack/core": "^0.3.2",
     "@clack/prompts": "^0.6.3",
     "@commander-js/extra-typings": "^10.0.3",
@@ -53,10 +54,12 @@
     "mdast-util-to-string": "^3.1.1",
     "mkdirp": "^2.1.6",
     "pluralize": "^8.0.0",
+    "pocketbase": "^0.18.0",
     "prismock": "^1.13.1",
     "reading-time": "^1.5.0",
     "recast": "^0.20.5",
     "sharp": "^0.31.3",
+    "solid-js": "^1.7.11",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -84,7 +87,7 @@
     "@typescript-eslint/parser": "^5.57.0",
     "@vitest/coverage-c8": "~0.29.7",
     "@vitest/ui": "^0.29.7",
-    "astro": "^2.0.0",
+    "astro": "^2.10.15",
     "cypress": "^12.2.0",
     "esbuild": "^0.17.14",
     "eslint": "~8.36.0",

@@ -26,9 +26,11 @@ import { parse } from '@astrojs/compiler';
 // };
 const injectVariablesLogging = (id, source, propsVariables, stateVariables) => {
   if (!propsVariables) return source;
+  const isCurrentComponentAPage = id.indexOf('/pages/') !== -1;
 
-  const componentName =
-    id.indexOf('/pages/') !== -1 ? 'Page' : `${path.basename(id, '.astro')}`;
+  const componentName = isCurrentComponentAPage
+    ? 'Page'
+    : `${path.basename(id, '.astro')}`;
   const templateId = id
     .replace(path.resolve(), '')
     .replaceAll('/', '')
@@ -45,12 +47,21 @@ const injectVariablesLogging = (id, source, propsVariables, stateVariables) => {
   const state = stateVariables
     ?.reduce((acc, curr) => (acc += `,'${curr}': ${curr}`), '')
     ?.slice(1);
-  const js = `
+  const js =
+    `
   const __EDITOR_uri = Astro2.url.pathname.replaceAll('/', '') || 'home';
   const __EDITOR_stateFilePath = '${editorDirPath}/' + __EDITOR_uri + '.json'
-  const __EDITOR_state = fs.existsSync(__EDITOR_stateFilePath)
-    ? fromJSON(parse(fs.readFileSync(__EDITOR_stateFilePath, { encoding: 'utf8' })))
-    : {};
+  ` +
+    (isCurrentComponentAPage
+      ? `
+    const __EDITOR_state = {};
+  `
+      : `
+    const __EDITOR_state = fs.existsSync(__EDITOR_stateFilePath)
+      ? fromJSON(parse(fs.readFileSync(__EDITOR_stateFilePath, { encoding: 'utf8' })))
+      : {};
+  `) +
+    `
     if (!Array.isArray(__EDITOR_state['${componentName}'])) {
       __EDITOR_state['${componentName}'] = []
     }
@@ -94,19 +105,7 @@ export const transformAstroToReka = async (source: string, id: string) => {
     finalMarkup =
       id.indexOf('/pages/') !== -1
         ? jsxPartFiltered
-        : `<div>${jsxPartFiltered}</div>`;
-  }
-
-  const rekaObj = astroToReka(finalMarkup);
-  if (!rekaObj) {
-    console.log('===========FAILED TO CONVERT ASTRO TO REKA', finalMarkup, id);
-    const str = `
-
-  =============FAILED TO CONVERT ${id}
-  ${finalMarkup}
-
-  `;
-    return source;
+        : `<>${jsxPartFiltered}</>`;
   }
 
   const editorDirPath = path.resolve('./.depla', 'editor', 'components');
@@ -126,7 +125,7 @@ export const transformAstroToReka = async (source: string, id: string) => {
     .replaceAll('/', '')
     .replace('.astro', '');
   const rekaFileName = path.resolve(editorDirPath, `${templateId}.tsx`);
-  fs.writeFileSync(rekaFileName, rekaObj.source);
+  fs.writeFileSync(rekaFileName, finalMarkup);
 
   const astroJS = astroSource.split('---')[1];
   const allVariables = extractVariablesFromTS(astroJS);

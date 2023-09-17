@@ -1,6 +1,6 @@
 {
   "name": "@depla/ast",
-  "version": "0.0.134",
+  "version": "0.0.137",
   "type": "module",
   "bin": {
     "@depla/ast": "./bin/index.js"
