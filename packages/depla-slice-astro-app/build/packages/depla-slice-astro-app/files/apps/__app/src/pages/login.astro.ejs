@@ -1,0 +1,9 @@
+---
+export const prerender = true;
+import { BaseLayout as Layout } from '<%= workspace.scope %>/shared/ui';
+import { AuthenticationPage } from '<%= workspace.scope %>/shared/ui-react';
+---
+
+<Layout>
+  <AuthenticationPage client:load />
+</Layout>

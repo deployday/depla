@@ -51,7 +51,7 @@ export const generate = ({ workspace, app }: { workspace: any; app: any }) => {
           @astrojs/mdx@0.17.2 \
           @astrojs/react@2.0.2 \
           @astrojs/partytown@1.0.3 \
-          astro-compress@1.1.35 \
+          astro-compress@2.0.15 \
           @depla/utils-astro-plugin-predict-reading-time@latest \
           @depla/utils-astro-plugin-inject@latest \
           @astrojs/netlify@2.2.2 \

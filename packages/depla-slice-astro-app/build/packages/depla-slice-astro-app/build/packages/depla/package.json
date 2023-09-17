@@ -1,14 +1,18 @@
 {
-  "name": "@depla/slice-astro-app",
-  "version": "0.0.60",
+  "name": "depla",
+  "version": "0.0.34",
   "type": "module",
   "bin": {
-    "@depla/slice-astro-app": "./bin/index.js"
+    "depla": "./bin/index.js"
   },
   "publishConfig": {
     "access": "public"
   },
-  "main": "src/index.js",
+  "files": [
+    "bin",
+    "src",
+    "package.json"
+  ],
   "engines": {
     "node": ">=16.16.0"
   }
