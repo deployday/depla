@@ -1,0 +1,17 @@
+{
+  "name": "@depla/depla",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --out-dir dist"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.2.16"
+  }
+}

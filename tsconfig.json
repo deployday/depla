@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@depla/depla": ["packages/depla/src"]
+    }
+  }
+}
