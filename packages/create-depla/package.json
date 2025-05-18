@@ -1,0 +1,24 @@
+{
+  "name": "create-depla",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "create-depla": "./bin/create-depla.js"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "pnpm build && node dist/index.js",
+    "build": "tsup",
+    "prepare": "pnpm build"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "inquirer": "^9.2.5"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.6",
+    "tsup": "^7.1.0",
+    "typescript": "^5.4.0"
+  }
+}
+
