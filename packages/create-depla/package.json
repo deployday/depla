@@ -11,12 +11,7 @@
     "build": "tsup src/index.ts",
     "prepare": "pnpm build"
   },
-  "dependencies": {
-    "chalk": "^5.4.1",
-    "inquirer": "^9.2.5"
-  },
   "devDependencies": {
-    "@types/inquirer": "^9.0.6",
     "tsup": "^7.1.0",
     "typescript": "^5.4.0"
   }

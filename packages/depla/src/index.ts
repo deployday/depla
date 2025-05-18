@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATES_DIR = path.resolve(__dirname, "../templates");
 
 export async function scaffoldProject() {
-  console.log(chalk.cyan("🌱 Welcome to create-depla!"));
+  console.log(chalk.cyan(" welcome to create-depla!"));
 
   const { projectName, template } = await inquirer.prompt([
     {
