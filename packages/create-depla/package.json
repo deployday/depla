@@ -8,7 +8,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "pnpm build && node dist/index.js",
-    "build": "tsup",
+    "build": "tsup src/index.ts",
     "prepare": "pnpm build"
   },
   "dependencies": {
