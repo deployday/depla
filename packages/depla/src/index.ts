@@ -51,7 +51,7 @@ export async function scaffoldProject({
   targetDir: string;
   variables: Record<string, string>;
 }) {
-  const isRemote = /^([\w-]+\/[\w-]+)(#.*)?$/.test(template); // e.g. user/repo or user/repo#branch
+  const isRemote = /^([\w-]+\/[\w.-]+)(#.*)?$/.test(template); // e.g. user/repo or user/repo#branch
 
   const templateDir = path.resolve(".depla-temp-template");
 
