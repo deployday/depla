@@ -14,6 +14,9 @@
   "devDependencies": {
     "tsup": "^7.1.0",
     "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@depla/depla": "workspace:^",
+    "commander": "^14.0.0"
   }
 }
-
