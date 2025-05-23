@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@types/chalk": "^2.2.4",
+    "@types/degit": "^2.8.6",
     "@types/fs-extra": "^11.0.4",
     "@types/inquirer": "^9.0.6",
     "chalk": "^5.4.1",
+    "degit": "^2.8.4",
     "fs-extra": "^11.3.0",
     "inquirer": "^9.2.5"
   }

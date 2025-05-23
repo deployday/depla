@@ -3,6 +3,7 @@ import inquirer from "inquirer";
 import fs from "fs-extra";
 import path from "path";
 import { fileURLToPath } from "url";
+import degit from "degit";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const TEMPLATES_DIR = path.resolve(__dirname, "../templates");
@@ -30,39 +31,40 @@ async function copyAndReplace(templateDir: string, targetDir: string, vars: Reco
   }
 }
 
+export async function downloadTemplateFromGitHub(repo: string, targetDir: string) {
+  const emitter = degit(repo, {
+    cache: false,
+    force: true,
+    verbose: true,
+  });
 
-export async function scaffoldProject() {
-  console.log(chalk.cyan("🌱 welcome to create-depla!"));
-
-  const { projectName, template } = await inquirer.prompt([
-    {
-      type: "input",
-      name: "projectName",
-      message: "Enter project name:",
-      default: "my-depla-app",
-    },
-    {
-      type: "list",
-      name: "template",
-      message: "Select a template:",
-      choices: fs.readdirSync(TEMPLATES_DIR),
-    },
-  ]);
-
-  const targetDir = path.resolve(process.cwd(), projectName);
-  const templateDir = path.resolve(TEMPLATES_DIR, template);
-
-  console.log(chalk.gray(`→ Copying from ${templateDir}`));
-  console.log(chalk.gray(`→ Creating in ${targetDir}`));
-
-  try {
-    await fs.copy(templateDir, targetDir);
-    await copyAndReplace(templateDir, targetDir, {
-      projectName,
-      author: process.env.USER || "anonymous",
-    });
-    console.log(chalk.green("✔ Project scaffolded successfully!"));
-  } catch (err) {
-    console.error(chalk.red("❌ Failed to scaffold project:"), err);
-  }
+  await emitter.clone(targetDir);
 }
+
+
+export async function scaffoldProject({
+  template,
+  targetDir,
+  variables,
+}: {
+  template: string;
+  targetDir: string;
+  variables: Record<string, string>;
+}) {
+  const isRemote = /^([\w-]+\/[\w-]+)(#.*)?$/.test(template); // e.g. user/repo or user/repo#branch
+
+  const templateDir = path.resolve(".depla-temp-template");
+
+  if (isRemote) {
+    console.log(`📥 Downloading remote template from ${template}...`);
+    await downloadTemplateFromGitHub(template, templateDir);
+  } else {
+    const localPath = path.resolve(__dirname, "../templates", template);
+    if (!fs.existsSync(localPath)) throw new Error(`Template ${template} not found`);
+    await fs.copy(localPath, templateDir);
+  }
+
+  await copyAndReplace(templateDir, targetDir, variables);
+  await fs.remove(templateDir); // clean up temp
+}
+

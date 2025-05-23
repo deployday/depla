@@ -8,12 +8,12 @@ importers:
 
   .:
     dependencies:
-      '@depla/depla':
-        specifier: workspace:^
-        version: link:packages/depla
       '@types/chalk':
         specifier: ^2.2.4
         version: 2.2.4
+      '@types/degit':
+        specifier: ^2.8.6
+        version: 2.8.6
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -23,6 +23,9 @@ importers:
       chalk:
         specifier: ^5.4.1
         version: 5.4.1
+      degit:
+        specifier: ^2.8.4
+        version: 2.8.4
       fs-extra:
         specifier: ^11.3.0
         version: 11.3.0
@@ -851,6 +854,10 @@ packages:
       chalk: 5.4.1
     dev: false
 
+  /@types/degit@2.8.6:
+    resolution: {integrity: sha512-y0M7sqzsnHB6cvAeTCBPrCQNQiZe8U4qdzf8uBVmOWYap5MMTN/gB2iEqrIqFiYcsyvP74GnGD5tgsHttielFw==}
+    dev: false
+
   /@types/estree@1.0.7:
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
     dev: true
@@ -1153,6 +1160,12 @@ packages:
     resolution: {integrity: sha512-eFuaLoy/Rxalv2kr+lqMlUnrDWV+3j4pljOIJgLIhI058IQfWJ7vXhyEIHu+HtC738klGALYxOKDO0bQP3tg8A==}
     dependencies:
       clone: 1.0.4
+    dev: false
+
+  /degit@2.8.4:
+    resolution: {integrity: sha512-vqYuzmSA5I50J882jd+AbAhQtgK6bdKUJIex1JNfEUPENCgYsxugzKVZlFyMwV4i06MmnV47/Iqi5Io86zf3Ng==}
+    engines: {node: '>=8.0.0'}
+    hasBin: true
     dev: false
 
   /dir-glob@3.0.1:
